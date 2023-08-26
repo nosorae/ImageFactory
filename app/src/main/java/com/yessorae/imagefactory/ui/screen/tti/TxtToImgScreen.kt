@@ -62,12 +62,4 @@ fun TxtToImgScreen(
             }
         }
     }
-
-
-
-}
-
-fun String?.parseString(): String? {
-    Logger.temp("url: $this")
-    return this
 }
