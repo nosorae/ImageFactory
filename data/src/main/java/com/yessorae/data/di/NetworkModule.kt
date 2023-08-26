@@ -1,6 +1,6 @@
 package com.yessorae.data.di
 
-import com.common.DataConstants
+import com.yessorae.data.util.DataConstants
 import com.yessorae.common.Logger
 import dagger.Module
 import dagger.Provides
