@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory
+package com.yessorae.common
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
