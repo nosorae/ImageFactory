@@ -1,6 +1,5 @@
 package com.yessorae.common
 
-import android.util.Log
 import timber.log.Timber
 
 object Logger {
