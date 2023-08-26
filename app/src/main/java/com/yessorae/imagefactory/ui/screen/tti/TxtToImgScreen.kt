@@ -19,14 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
 
 @Composable
 fun TxtToImgScreen(
     viewModel: TxtToImgViewModel = viewModel()
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
@@ -54,7 +52,6 @@ fun TxtToImgScreen(
                         .background(color = Color.Green)
                         .aspectRatio(1f)
                 )
-
             }
 
             is TxtToImageUiState.Error -> {

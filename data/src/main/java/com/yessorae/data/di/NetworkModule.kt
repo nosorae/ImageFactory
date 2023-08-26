@@ -1,7 +1,7 @@
 package com.yessorae.data.di
 
-import com.yessorae.data.util.DataConstants
 import com.yessorae.common.Logger
+import com.yessorae.data.util.DataConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +23,6 @@ class NetworkModule {
             .Builder()
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
-
             .addInterceptor(
                 HttpLoggingInterceptor { message ->
                     Logger.network(message = message)
