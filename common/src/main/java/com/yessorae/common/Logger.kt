@@ -1,6 +1,7 @@
 package com.yessorae.common
 
 import android.util.Log
+import timber.log.Timber
 
 object Logger {
     private const val FULL_TAG = "SRN_FULL_TAG"
@@ -10,8 +11,8 @@ object Logger {
     private const val UI_STATE_TAG = "UI_STATE_TAG"
     private const val TEMP_TAG = "TEMP_TAG"
 
-    fun full(message: String, error: Boolean = false) {
-        log(FULL_TAG, message, error)
+    fun initialize() {
+        Timber.plant(Timber.DebugTree())
     }
 
     fun data(message: String, error: Boolean = false) {
@@ -39,11 +40,17 @@ object Logger {
         log(TEMP_TAG, message, error)
     }
 
+    private fun full(message: String, error: Boolean = false) {
+        log(FULL_TAG, message, error)
+    }
+
     private fun log(tag: String, message: String, error: Boolean = false) {
-        if (error) {
-            Log.e(tag, message)
-        } else {
-            Log.d(tag, message)
+        Timber.tag(tag).also {
+            if (error) {
+                it.e(message)
+            } else {
+                it.d(message)
+            }
         }
     }
 }
