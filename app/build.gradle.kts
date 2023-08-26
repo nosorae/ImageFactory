@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -52,6 +53,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+    implementation(project(":common"))
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation(platform("androidx.compose:compose-bom:2023.06.01"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
