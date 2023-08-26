@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ImageFactory"
 include(":app")
+include(":data")
