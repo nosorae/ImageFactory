@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.model
 
-import com.yessorae.imagefactory.ui.item.model.Cover
+import com.yessorae.imagefactory.ui.components.item.model.Cover
 import com.yessorae.imagefactory.ui.util.MockData
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString

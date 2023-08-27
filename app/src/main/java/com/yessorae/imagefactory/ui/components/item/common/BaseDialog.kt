@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.item.common
+package com.yessorae.imagefactory.ui.components.item.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog

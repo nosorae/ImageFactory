@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.layout
+package com.yessorae.imagefactory.ui.components.layout
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

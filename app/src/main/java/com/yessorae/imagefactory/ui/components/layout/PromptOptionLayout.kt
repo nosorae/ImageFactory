@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.layout
+package com.yessorae.imagefactory.ui.components.layout
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.mock
-import com.yessorae.imagefactory.ui.item.PromptChip
-import com.yessorae.imagefactory.ui.item.model.Option
+import com.yessorae.imagefactory.ui.components.item.PromptChip
+import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.UiConfig

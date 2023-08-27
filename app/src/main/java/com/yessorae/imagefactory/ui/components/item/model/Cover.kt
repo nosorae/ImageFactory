@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.item.model
+package com.yessorae.imagefactory.ui.components.item.model
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable

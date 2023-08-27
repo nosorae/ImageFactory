@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.item
+package com.yessorae.imagefactory.ui.components.item
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.item
+package com.yessorae.imagefactory.ui.components.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
-import com.yessorae.imagefactory.ui.item.common.SelectableImage
-import com.yessorae.imagefactory.ui.item.model.Cover
+import com.yessorae.imagefactory.ui.components.item.common.SelectableImage
+import com.yessorae.imagefactory.ui.components.item.model.Cover
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.Margin

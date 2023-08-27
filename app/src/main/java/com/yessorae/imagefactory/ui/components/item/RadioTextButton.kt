@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.item
+package com.yessorae.imagefactory.ui.components.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SizeOption
 import com.yessorae.imagefactory.model.mock
-import com.yessorae.imagefactory.ui.item.model.Option
+import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.Margin
