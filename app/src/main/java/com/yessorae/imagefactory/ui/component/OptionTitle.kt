@@ -7,35 +7,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
+import com.yessorae.imagefactory.ui.util.BasePreview
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.StringModel
+import com.yessorae.imagefactory.ui.util.TextString
 
 @Composable
 fun OptionTitle(
     modifier: Modifier,
     text: StringModel
 ) {
-    Text(
-        text = text.getValue(),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = Dimen.space_16)
-            .padding(top = Dimen.space_24, bottom = Dimen.space_8),
-        style = MaterialTheme.typography.headlineSmall,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1
-    )
+    OptionTitle(modifier = modifier, text = text, trailer = {})
 }
 
 @Composable
 fun OptionTitleWithMore(
     modifier: Modifier,
     text: StringModel,
-    onClickMore: () -> Unit
+    onClickMore: () -> Unit = {}
 ) {
     OptionTitle(
         modifier = modifier,
@@ -50,18 +45,19 @@ fun OptionTitleWithMore(
 fun OptionTitle(
     modifier: Modifier,
     text: StringModel,
-    trailer: @Composable () -> Unit
+    trailer: @Composable () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .padding(horizontal = Dimen.space_16)
-            .padding(top = Dimen.space_24, bottom = Dimen.space_8)
+            .padding(top = Dimen.space_24, bottom = Dimen.space_8),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = text.getValue(),
             modifier = Modifier
                 .weight(1f),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleSmall,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
@@ -73,6 +69,22 @@ fun OptionTitle(
 @Composable
 fun MoreButton(text: StringModel, onClick: () -> Unit) {
     TextButton(onClick = onClick) {
-        Text(text = text.getValue(), style = MaterialTheme.typography.titleSmall)
+        Text(text = text.getValue(), style = MaterialTheme.typography.bodySmall)
+    }
+}
+
+@Preview
+@Composable
+fun OptionTitlePreview() {
+    BasePreview {
+        OptionTitle(
+            modifier = Modifier,
+            text = TextString("이런 느낌이었으면 좋겠어요.")
+        )
+
+        OptionTitleWithMore(
+            modifier = Modifier,
+            text = TextString("이런 느낌이었으면 좋겠어요.")
+        )
     }
 }
