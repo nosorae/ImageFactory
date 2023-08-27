@@ -7,7 +7,8 @@ import com.yessorae.imagefactory.ui.util.TextString
 
 data class SDModel(
     override val model: Any,
-    override val title: StringModel
+    override val title: StringModel,
+    override val selected: Boolean
 ) : Cover {
     companion object
 }
@@ -19,7 +20,11 @@ fun SDModel.Companion.mock(): List<Cover> {
         "Quill", "Rabbit", "Snake", "Tiger"
     )
 
-    return words.mapIndexed { _, word ->
-        SDModel(model = MockData.MOCK_IMAGE_URL, title = TextString(word))
+    return words.mapIndexed { index, word ->
+        SDModel(
+            model = MockData.MOCK_IMAGE_URL,
+            title = TextString(word),
+            selected = index == 0
+        )
     }
 }

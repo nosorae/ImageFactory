@@ -27,4 +27,5 @@ interface Cover {
      */
     val model: Any
     val title: StringModel
+    val selected: Boolean
 }

@@ -1,34 +1,38 @@
 package com.yessorae.imagefactory.ui.component
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import coil.ImageLoader
-import coil.compose.SubcomposeAsyncImage
-import com.yessorae.common.Logger
+import androidx.compose.ui.unit.dp
+import com.yessorae.imagefactory.model.SDModel
+import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.component.common.BaseImage
+import com.yessorae.imagefactory.ui.component.common.SelectableImage
 import com.yessorae.imagefactory.ui.component.model.Cover
 import com.yessorae.imagefactory.ui.theme.Dimen
+import com.yessorae.imagefactory.ui.theme.PrimaryGradient
 import com.yessorae.imagefactory.ui.util.MockData
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.Margin
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
+import kotlinx.coroutines.selects.select
 
 @Composable
 fun ModelCover(
@@ -39,13 +43,17 @@ fun ModelCover(
     Column(
         modifier = modifier
             .width(Dimen.cover_size)
+            .clip(MaterialTheme.shapes.medium)
             .clickable {
                 onClick()
             }
     ) {
-        BaseImage(
+
+        SelectableImage(
             model = model.model,
-            modifier = Modifier.size(Dimen.cover_size)
+            modifier = Modifier
+                .size(Dimen.cover_size),
+            selected = model.selected
         )
 
         Margin(margin = Dimen.space_4)
@@ -56,6 +64,7 @@ fun ModelCover(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+        Margin(margin = Dimen.space_2)
     }
 }
 
@@ -73,11 +82,13 @@ fun GridModelCover(
                 onClick()
             }
     ) {
-        BaseImage(
+
+        SelectableImage(
             model = model.model,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
+                .aspectRatio(1f),
+            selected = model.selected
         )
 
         Margin(margin = Dimen.space_4)
@@ -88,6 +99,7 @@ fun GridModelCover(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+        Margin(margin = Dimen.space_2)
     }
 }
 
@@ -96,10 +108,7 @@ fun GridModelCover(
 fun ModelCoverPreview() {
     ColumnPreview {
         ModelCover(
-            model = object : Cover {
-                override val model: Any = MockData.MOCK_IMAGE_URL
-                override val title: StringModel = TextString("MidJourney V4")
-            }
+            model = SDModel.mock()[0]
         )
     }
 }

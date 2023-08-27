@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
 
 object Dimen {
+    val line = 1.dp
     val space_2 = 2.dp
     val space_4 = 4.dp
     val space_8 = 8.dp
