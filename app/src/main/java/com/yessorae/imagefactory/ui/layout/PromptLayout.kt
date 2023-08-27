@@ -18,7 +18,7 @@ import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.component.PromptChip
 import com.yessorae.imagefactory.ui.component.model.Chip
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.BasePreview
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.UiConfig
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -51,7 +51,7 @@ fun PromptOptionLayout(
 @Preview(heightDp = 300)
 @Composable
 fun PromptOptionLayoutPreview() {
-    BasePreview {
+    ColumnPreview {
         Box(modifier = Modifier.height(120.dp)) { // 높이 제한하지 않으면 크래시 발생
             PromptOptionLayout(
                 prompts = PromptChip.mock()

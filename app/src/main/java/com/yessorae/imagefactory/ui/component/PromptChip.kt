@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.component.model.Chip
-import com.yessorae.imagefactory.ui.util.compose.BasePreview
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 
@@ -33,7 +33,7 @@ fun PromptChip(
 @Preview
 @Composable
 fun PromptChipPreview() {
-    BasePreview {
+    ColumnPreview {
         PromptChip(
             model = object : Chip {
                 override val text: StringModel

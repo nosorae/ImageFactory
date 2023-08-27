@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.BasePreview
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
@@ -75,7 +75,7 @@ fun MoreButton(text: StringModel, onClick: () -> Unit) {
 @Preview
 @Composable
 fun OptionTitlePreview() {
-    BasePreview {
+    ColumnPreview {
         OptionTitle(
             modifier = Modifier,
             text = TextString("이런 느낌이었으면 좋겠어요.")

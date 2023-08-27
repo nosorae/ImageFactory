@@ -1,7 +1,6 @@
 package com.yessorae.imagefactory.ui.layout
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,8 +14,8 @@ import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.component.ModelCover
 import com.yessorae.imagefactory.ui.component.model.Cover
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.BasePreview
-import com.yessorae.imagefactory.ui.util.compose.getScreenDp
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
+
 
 @Composable
 fun ModelsLayout(
@@ -29,7 +28,7 @@ fun ModelsLayout(
         modifier = modifier,
         state = state,
         contentPadding = Dimen.carousel_padding_values,
-        horizontalArrangement = Arrangement.spacedBy(Dimen.space_8),
+        horizontalArrangement = Arrangement.spacedBy(Dimen.space_4),
     ) {
         itemsIndexed(items = models) { _, item ->
             ModelCover(
@@ -43,7 +42,7 @@ fun ModelsLayout(
 @Preview
 @Composable
 fun ModelsLayoutPreview() {
-    BasePreview {
+    ColumnPreview {
         ModelsLayout(
             modifier = Modifier.wrapContentHeight(),
             models = SDModel.mock()

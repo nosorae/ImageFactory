@@ -26,4 +26,11 @@ object Dimen {
         start = space_16,
         end = space_16
     )
+
+    val grid_padding_values = PaddingValues(
+        top = space_4,
+        bottom = cover_size,
+        start = space_16,
+        end = space_16
+    )
 }

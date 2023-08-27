@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.ui.theme.ImageFactoryTheme
 
 @Composable
-fun BasePreview(modifier: Modifier = Modifier, spacedBy: Dp = 0.dp, content: @Composable ColumnScope.() -> Unit) {
+fun ColumnPreview(modifier: Modifier = Modifier, spacedBy: Dp = 0.dp, content: @Composable ColumnScope.() -> Unit) {
     ImageFactoryTheme {
         Surface(modifier = modifier) {
             Column(
@@ -22,6 +22,15 @@ fun BasePreview(modifier: Modifier = Modifier, spacedBy: Dp = 0.dp, content: @Co
             ) {
                 content()
             }
+        }
+    }
+}
+
+@Composable
+fun ThemePreview(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    ImageFactoryTheme {
+        Surface(modifier = modifier) {
+                content()
         }
     }
 }

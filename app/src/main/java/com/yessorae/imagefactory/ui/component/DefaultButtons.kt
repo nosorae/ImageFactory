@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.BasePreview
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
 @Composable
 fun ActionButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
@@ -92,7 +92,7 @@ fun ButtonPreviews() {
         mutableStateOf(0.dp)
     }
     val density = LocalDensity.current
-    BasePreview(spacedBy = Dimen.space_8) {
+    ColumnPreview(spacedBy = Dimen.space_8) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Dimen.space_12)
