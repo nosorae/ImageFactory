@@ -50,7 +50,7 @@ fun OptionTitle(
     Row(
         modifier = modifier
             .padding(horizontal = Dimen.space_16)
-            .padding(top = Dimen.space_24, bottom = Dimen.space_8),
+            .padding(top = Dimen.space_24, bottom = Dimen.space_4),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

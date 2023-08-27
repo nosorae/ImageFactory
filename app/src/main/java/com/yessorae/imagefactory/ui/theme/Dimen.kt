@@ -1,5 +1,6 @@
 package com.yessorae.imagefactory.ui.theme
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
 
 object Dimen {
@@ -16,4 +17,11 @@ object Dimen {
 
     val image_radius = 4.dp
     val button_height = 64.dp
+
+    val carousel_padding_values = PaddingValues(
+        top = space_4,
+        bottom = space_12,
+        start = space_16,
+        end = space_16
+    )
 }
