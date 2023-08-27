@@ -29,13 +29,14 @@ fun OptionTitle(
 fun OptionTitleWithMore(
     modifier: Modifier,
     text: StringModel,
+    trailingText: StringModel,
     onClickMore: () -> Unit = {}
 ) {
     OptionTitle(
         modifier = modifier,
         text = text,
         trailer = {
-            MoreButton(text = ResString(R.string.common_see_more), onClick = onClickMore)
+            MoreButton(text = trailingText, onClick = onClickMore)
         }
     )
 }
@@ -78,12 +79,13 @@ fun OptionTitlePreview() {
     ColumnPreview {
         OptionTitle(
             modifier = Modifier,
-            text = TextString("이런 느낌이었으면 좋겠어요.")
+            text = TextString("이런 느낌이었으면 좋겠어요."),
         )
 
         OptionTitleWithMore(
             modifier = Modifier,
-            text = TextString("이런 느낌이었으면 좋겠어요.")
+            text = TextString("이런 느낌이었으면 좋겠어요."),
+            trailingText = TextString("더보기")
         )
     }
 }

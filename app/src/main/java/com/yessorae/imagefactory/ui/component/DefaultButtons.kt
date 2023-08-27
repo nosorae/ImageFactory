@@ -2,10 +2,10 @@ package com.yessorae.imagefactory.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +34,9 @@ fun ActionButton(modifier: Modifier = Modifier, text: String, onClick: () -> Uni
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(),
-        modifier = modifier.heightIn(min = Dimen.button_height)
+        shape = MaterialTheme.shapes.medium,
+        contentPadding = PaddingValues(horizontal = Dimen.space_16, vertical = Dimen.space_18),
+        modifier = modifier
     ) {
         Text(
             text = text,
@@ -52,7 +54,9 @@ fun ActionButtonWithAd(modifier: Modifier = Modifier, text: String, onClick: () 
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.White
         ),
-        modifier = modifier.heightIn(min = Dimen.button_height)
+        contentPadding = PaddingValues(horizontal = Dimen.space_16, vertical = Dimen.space_18),
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -75,7 +79,9 @@ fun OutlinedActionButton(modifier: Modifier = Modifier, text: String, onClick: (
     OutlinedButton(
         onClick = onClick,
         colors = ButtonDefaults.outlinedButtonColors(),
-        modifier = modifier.heightIn(min = Dimen.button_height)
+        contentPadding = PaddingValues(horizontal = Dimen.space_16, vertical = Dimen.space_18),
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier
     ) {
         Text(
             text = text,

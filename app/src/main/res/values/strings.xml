@@ -2,4 +2,7 @@
     <string name="app_name">ImageFactory</string>
     <string name="common_watch_ad">광고 시청하기</string>
     <string name="common_see_more">더보기</string>
+    <string name="common_add">추가</string>
+    <string name="common_input_prompt">프롬프트를 입력해주세요.</string>
+
 </resources>
