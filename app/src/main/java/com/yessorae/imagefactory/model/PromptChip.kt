@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.model
 
-import com.yessorae.imagefactory.ui.component.model.Chip
+import com.yessorae.imagefactory.ui.item.model.Chip
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 

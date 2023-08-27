@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SDModel
 import com.yessorae.imagefactory.model.mock
-import com.yessorae.imagefactory.ui.component.ModelCover
-import com.yessorae.imagefactory.ui.component.model.Cover
+import com.yessorae.imagefactory.ui.item.ModelCover
+import com.yessorae.imagefactory.ui.item.model.Cover
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 

@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.component
+package com.yessorae.imagefactory.ui.layout
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -18,7 +18,7 @@ import com.yessorae.imagefactory.ui.util.TextString
 
 
 @Composable
-fun OnOffOption(
+fun OnOffOptionLayout(
     modifier: Modifier,
     text: StringModel,
     checked: Boolean,
@@ -39,7 +39,7 @@ fun OnOffOptionPreview() {
     var checked by remember {
         mutableStateOf(true)
     }
-    OnOffOption(
+    OnOffOptionLayout(
         modifier = Modifier,
         text = TextString("프롬프트 자동 개선 활성화"),
         checked = checked,

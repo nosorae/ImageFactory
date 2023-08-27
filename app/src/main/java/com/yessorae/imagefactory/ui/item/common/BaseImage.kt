@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.component.common
+package com.yessorae.imagefactory.ui.item.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.ImageLoader
@@ -20,7 +19,6 @@ import coil.compose.SubcomposeAsyncImage
 import com.yessorae.common.Logger
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.theme.PrimaryBrush
-import com.yessorae.imagefactory.ui.theme.PrimaryGradient
 
 @Composable
 fun BaseImage(
