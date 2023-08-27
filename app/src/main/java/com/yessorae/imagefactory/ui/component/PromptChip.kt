@@ -7,20 +7,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.yessorae.imagefactory.ui.component.model.Chip
 import com.yessorae.imagefactory.ui.util.compose.BasePreview
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
-
-interface PromptChip {
-    val text: StringModel
-    val selected: Boolean
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromptChip(
     modifier: Modifier = Modifier,
-    model: PromptChip,
+    model: Chip,
     onClick: () -> Unit = {}
 ) {
     InputChip(
@@ -39,7 +35,7 @@ fun PromptChip(
 fun PromptChipPreview() {
     BasePreview {
         PromptChip(
-            model = object : PromptChip {
+            model = object : Chip {
                 override val text: StringModel
                     get() = TextString("PromptChipPreview")
                 override val selected: Boolean
@@ -47,7 +43,7 @@ fun PromptChipPreview() {
             }
         )
         PromptChip(
-            model = object : PromptChip {
+            model = object : Chip {
                 override val text: StringModel
                     get() = TextString("PromptChipPreview")
                 override val selected: Boolean

@@ -24,38 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
 import com.yessorae.common.Logger
+import com.yessorae.imagefactory.ui.component.model.Cover
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.MockData
 import com.yessorae.imagefactory.ui.util.compose.BasePreview
 import com.yessorae.imagefactory.ui.util.compose.Margin
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
-import okhttp3.HttpUrl
-import java.io.File
-import java.nio.ByteBuffer
-
-
-interface Cover {
-    /**
-     * from [coil.compose.requestOf] and [coil.request.ImageRequest.Builder.data]
-     * Set the data to load.
-     *
-     * The default supported data types are:
-     * - [String] (mapped to a [Uri])
-     * - [Uri] ("android.resource", "content", "file", "http", and "https" schemes only)
-     * - [HttpUrl]
-     * - [File]
-     * - [DrawableRes]
-     * - [Drawable]
-     * - [Bitmap]
-     * - [ByteArray]
-     * - [ByteBuffer]
-     */
-    val model: Any
-    val title: StringModel
-
-
-}
 
 @Composable
 fun ModelCover(
