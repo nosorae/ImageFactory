@@ -42,7 +42,7 @@ fun OptionTitleWithMore(
 }
 
 @Composable
-fun OptionTitle(
+private fun OptionTitle(
     modifier: Modifier,
     text: StringModel,
     trailer: @Composable () -> Unit = {}
