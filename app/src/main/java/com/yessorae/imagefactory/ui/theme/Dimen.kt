@@ -18,6 +18,8 @@ object Dimen {
     val image_radius = 4.dp
     val button_height = 64.dp
 
+    val cover_size = 88.dp
+
     val carousel_padding_values = PaddingValues(
         top = space_4,
         bottom = space_12,

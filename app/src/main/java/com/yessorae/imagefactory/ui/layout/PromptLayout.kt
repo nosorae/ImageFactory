@@ -3,7 +3,6 @@ package com.yessorae.imagefactory.ui.layout
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
@@ -18,7 +17,7 @@ import com.yessorae.imagefactory.model.PromptChipModel
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.component.PromptChip
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.BasePreview
+import com.yessorae.imagefactory.ui.util.compose.BasePreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
