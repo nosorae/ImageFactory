@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yessorae.imagefactory.model.PromptChip
+import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.item.PromptChip
-import com.yessorae.imagefactory.ui.item.model.Chip
+import com.yessorae.imagefactory.ui.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.UiConfig
@@ -25,8 +25,8 @@ import com.yessorae.imagefactory.ui.util.compose.UiConfig
 @Composable
 fun PromptOptionLayout(
     modifier: Modifier = Modifier,
-    prompts: List<Chip>,
-    onPromptClick: (Chip) -> Unit = {}
+    prompts: List<Option>,
+    onPromptClick: (Option) -> Unit = {}
 ) {
     val state = rememberLazyStaggeredGridState()
     LazyHorizontalStaggeredGrid(
@@ -54,7 +54,7 @@ fun PromptOptionLayoutPreview() {
     ColumnPreview {
         Box(modifier = Modifier.height(120.dp)) { // 높이 제한하지 않으면 크래시 발생
             PromptOptionLayout(
-                prompts = PromptChip.mock()
+                prompts = PromptOption.mock()
             )
         }
     }

@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.yessorae.imagefactory.model.SDModel
+import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.item.GridModelCover
 import com.yessorae.imagefactory.ui.item.model.Cover
@@ -46,7 +46,7 @@ fun FullModelsLayout(
 fun FullModelsLayoutPreview() {
     ThemePreview(modifier = Modifier.width(getScreenDp().width)) {
         FullModelsLayout(
-            models = SDModel.mock()
+            models = SDModelOption.mock()
         )
     }
 }

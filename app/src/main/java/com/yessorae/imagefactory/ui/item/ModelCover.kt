@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.yessorae.imagefactory.model.SDModel
+import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.item.common.SelectableImage
 import com.yessorae.imagefactory.ui.item.model.Cover
@@ -96,7 +96,7 @@ fun GridModelCover(
 fun ModelCoverPreview() {
     ColumnPreview {
         ModelCover(
-            model = SDModel.mock()[0]
+            model = SDModelOption.mock()[0]
         )
     }
 }

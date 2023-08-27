@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.yessorae.imagefactory.model.SDModel
+import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.item.ModelCover
 import com.yessorae.imagefactory.ui.item.model.Cover
@@ -45,7 +45,7 @@ fun ModelsLayoutPreview() {
     ColumnPreview {
         ModelsLayout(
             modifier = Modifier.wrapContentHeight(),
-            models = SDModel.mock()
+            models = SDModelOption.mock()
         )
     }
 }
