@@ -2,6 +2,7 @@ package com.yessorae.imagefactory.ui.layout
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -42,10 +43,9 @@ fun ModelsLayout(
 @Preview
 @Composable
 fun ModelsLayoutPreview() {
-    val height = getScreenDp().height
-    BasePreview(modifier= Modifier.height(height)) {
+    BasePreview {
         ModelsLayout(
-            modifier = Modifier.height(height),
+            modifier = Modifier.wrapContentHeight(),
             models = SDModel.mock()
         )
     }
