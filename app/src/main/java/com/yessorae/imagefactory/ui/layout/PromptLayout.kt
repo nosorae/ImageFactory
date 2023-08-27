@@ -13,12 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yessorae.imagefactory.model.ChipModel
+import com.yessorae.imagefactory.model.PromptChip
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.component.PromptChip
 import com.yessorae.imagefactory.ui.component.model.Chip
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.BasePreview
+import com.yessorae.imagefactory.ui.util.compose.UiConfig
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,7 +30,7 @@ fun PromptOptionLayout(
 ) {
     val state = rememberLazyStaggeredGridState()
     LazyHorizontalStaggeredGrid(
-        rows = StaggeredGridCells.Fixed(3),
+        rows = StaggeredGridCells.Fixed(UiConfig.PROMPT_CAROUSEL_ROW),
         modifier = modifier.fillMaxWidth(),
         state = state,
         contentPadding = Dimen.carousel_padding_values,
@@ -53,7 +54,7 @@ fun PromptOptionLayoutPreview() {
     BasePreview {
         Box(modifier = Modifier.height(120.dp)) { // 높이 제한하지 않으면 크래시 발생
             PromptOptionLayout(
-                prompts = ChipModel.mock()
+                prompts = PromptChip.mock()
             )
         }
     }

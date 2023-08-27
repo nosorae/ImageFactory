@@ -1,13 +1,8 @@
 package com.yessorae.imagefactory.ui.component
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,50 +57,6 @@ fun ModelCover(
                 Logger.recordException(error.result.throwable)
             },
             modifier = Modifier.size(Dimen.cover_size),
-            contentScale = ContentScale.Crop
-        )
-
-        Margin(margin = Dimen.space_4)
-
-        Text(
-            text = model.title.getValue(),
-            modifier = Modifier.fillMaxWidth(),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-fun GridModelCover(
-    modifier: Modifier = Modifier,
-    model: Cover,
-    onClick: () -> Unit = {}
-) {
-    val context = LocalContext.current
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable {
-                onClick()
-            }
-    ) {
-        SubcomposeAsyncImage(
-            model = model.model,
-            contentDescription = null,
-            imageLoader = ImageLoader.Builder(context)
-                .crossfade(true)
-                .build(),
-            loading = {
-                CircularProgressIndicator()
-            },
-            error = {
-                Image(imageVector = Icons.Outlined.Close, contentDescription = null)
-            },
-            onError = { error ->
-                Logger.recordException(error.result.throwable)
-            },
-            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
             contentScale = ContentScale.Crop
         )
 

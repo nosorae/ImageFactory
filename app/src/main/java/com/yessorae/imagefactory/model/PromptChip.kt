@@ -4,7 +4,7 @@ import com.yessorae.imagefactory.ui.component.model.Chip
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 
-data class ChipModel(
+data class PromptChip(
     override val text: StringModel,
     override val selected: Boolean
 ) : Chip {
@@ -12,7 +12,7 @@ data class ChipModel(
 }
 
 
-fun ChipModel.Companion.mock(): List<ChipModel> {
+fun PromptChip.Companion.mock(): List<PromptChip> {
     val words = listOf(
         "Apple", "Banana", "Cherry", "Dog", "Elephant", "Fox", "Grapes",
         "Horse", "Igloo", "Jazz", "Kite", "Lion", "Monkey", "Nest", "Owl", "Penguin",
@@ -20,7 +20,7 @@ fun ChipModel.Companion.mock(): List<ChipModel> {
     )
 
     return words.mapIndexed { index, word ->
-        ChipModel(text = TextString(word), selected = index % words.size == 0)
+        PromptChip(text = TextString(word), selected = index % words.size == 0)
     }
 }
 

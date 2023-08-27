@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.ui.theme.ImageFactoryTheme
 
 @Composable
-fun BasePreview(spacedBy: Dp = 0.dp, content: @Composable ColumnScope.() -> Unit) {
+fun BasePreview(modifier: Modifier = Modifier, spacedBy: Dp = 0.dp, content: @Composable ColumnScope.() -> Unit) {
     ImageFactoryTheme {
-        Surface {
+        Surface(modifier = modifier) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(spacedBy),
                 modifier = Modifier.verticalScroll(rememberScrollState())

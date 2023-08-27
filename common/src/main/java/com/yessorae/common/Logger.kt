@@ -40,10 +40,12 @@ object Logger {
     }
 
     fun recordException(message: String) {
+        presentation(message, true)
         // TODO Crashlytics, Analytics
     }
 
     fun recordException(error: Throwable) {
+        presentation(error.toString(), true)
         // TODO Crashlytics, Analytics
     }
 
