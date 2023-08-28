@@ -69,7 +69,7 @@ fun ZeroToOneSliderOption(
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
+    require(value in 0f..1f)
     Column(
         modifier = modifier
             .fillMaxWidth()
