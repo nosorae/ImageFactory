@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.ModelCover
-import com.yessorae.imagefactory.ui.components.item.model.Cover
+import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
@@ -21,8 +21,8 @@ import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 fun ModelsLayout(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
-    models: List<Cover>,
-    onClick: (Cover) -> Unit = {}
+    models: List<CoverOption>,
+    onClick: (CoverOption) -> Unit = {}
 ) {
     LazyRow(
         modifier = modifier,

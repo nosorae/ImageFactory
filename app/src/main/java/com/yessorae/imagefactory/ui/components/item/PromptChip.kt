@@ -24,7 +24,7 @@ fun PromptChip(
         selected = model.selected,
         onClick = onClick,
         label = {
-            Text(text = model.text.getValue())
+            Text(text = model.title.getValue())
         },
         shape = CircleShape
     )
@@ -36,7 +36,7 @@ fun PromptChipPreview() {
     ColumnPreview {
         PromptChip(
             model = object : Option {
-                override val text: StringModel
+                override val title: StringModel
                     get() = TextString("PromptChipPreview")
                 override val selected: Boolean
                     get() = false
@@ -44,7 +44,7 @@ fun PromptChipPreview() {
         )
         PromptChip(
             model = object : Option {
-                override val text: StringModel
+                override val title: StringModel
                     get() = TextString("PromptChipPreview")
                 override val selected: Boolean
                     get() = true

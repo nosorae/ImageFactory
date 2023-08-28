@@ -1,14 +1,11 @@
 package com.yessorae.imagefactory.ui.components.item
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SizeOption
 import com.yessorae.imagefactory.model.mock
@@ -29,7 +26,7 @@ fun RadioTextButton(
     ) {
         RadioButton(selected = model.selected, onClick = onClick)
         Margin(margin = Dimen.space_4)
-        Text(text = model.text.getValue())
+        Text(text = model.title.getValue())
     }
 }
 

@@ -9,7 +9,7 @@ import okhttp3.HttpUrl
 import java.io.File
 import java.nio.ByteBuffer
 
-interface Cover {
+interface CoverOption : Option {
     /**
      * from [coil.compose.requestOf] and [coil.request.ImageRequest.Builder.data]
      * Set the data to load.
@@ -25,7 +25,9 @@ interface Cover {
      * - [ByteArray]
      * - [ByteBuffer]
      */
-    val model: Any
-    val title: StringModel
-    val selected: Boolean
+    val image: Any
+    override val title: StringModel
+    override val selected: Boolean
 }
+
+

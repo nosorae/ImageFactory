@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.common.SelectableImage
-import com.yessorae.imagefactory.ui.components.item.model.Cover
+import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.Margin
@@ -25,7 +25,7 @@ import com.yessorae.imagefactory.ui.util.compose.Margin
 @Composable
 fun ModelCover(
     modifier: Modifier = Modifier,
-    model: Cover,
+    model: CoverOption,
     onClick: () -> Unit = {}
 ) {
     Column(
@@ -38,7 +38,7 @@ fun ModelCover(
     ) {
 
         SelectableImage(
-            model = model.model,
+            model = model.image,
             modifier = Modifier
                 .size(Dimen.cover_size),
             selected = model.selected
@@ -59,7 +59,7 @@ fun ModelCover(
 @Composable
 fun GridModelCover(
     modifier: Modifier = Modifier,
-    model: Cover,
+    model: CoverOption,
     onClick: () -> Unit = {}
 ) {
     Column(
@@ -72,7 +72,7 @@ fun GridModelCover(
     ) {
 
         SelectableImage(
-            model = model.model,
+            model = model.image,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),

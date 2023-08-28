@@ -1,19 +1,20 @@
 package com.yessorae.imagefactory.model
 
-import com.yessorae.imagefactory.ui.components.item.model.Cover
+import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.util.MockData
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 
 data class SDModelOption(
-    override val model: Any,
+    val id: String,
+    override val image: Any,
     override val title: StringModel,
     override val selected: Boolean
-) : Cover {
+) : CoverOption {
     companion object
 }
 
-fun SDModelOption.Companion.mock(): List<Cover> {
+fun SDModelOption.Companion.mock(): List<CoverOption> {
     val words = listOf(
         "Apple", "Banana", "Cherry", "Dog", "Elephant", "Fox", "Grapes",
         "Horse", "Igloo", "Jazz", "Kite", "Lion", "Monkey", "Nest", "Owl", "Penguin",
@@ -22,7 +23,8 @@ fun SDModelOption.Companion.mock(): List<Cover> {
 
     return words.mapIndexed { index, word ->
         SDModelOption(
-            model = MockData.MOCK_IMAGE_URL,
+            id = index.toString(),
+            image = MockData.MOCK_IMAGE_URL,
             title = TextString(word),
             selected = index == 0
         )
