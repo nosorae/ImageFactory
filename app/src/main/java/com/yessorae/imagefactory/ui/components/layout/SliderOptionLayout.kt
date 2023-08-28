@@ -22,7 +22,7 @@ import com.yessorae.imagefactory.ui.util.compose.ThemePreview
 import kotlin.math.roundToInt
 
 @Composable
-fun NaturalNumberSliderOption(
+fun NaturalNumberSliderOptionLayout(
     value: Int,
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -64,7 +64,7 @@ fun NaturalNumberSliderOption(
 }
 
 @Composable
-fun ZeroToOneSliderOption(
+fun ZeroToOneSliderOptionLayout(
     value: Float,
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
@@ -106,7 +106,7 @@ fun ZeroToOneSliderOptionPreview() {
         mutableStateOf(0.5f)
     }
     ThemePreview {
-        ZeroToOneSliderOption(
+        ZeroToOneSliderOptionLayout(
             value = value,
             onValueChange = {
                 value = it
@@ -125,7 +125,7 @@ fun IntegerSliderOptionPreview() {
         mutableStateOf(5)
     }
     ColumnPreview {
-        NaturalNumberSliderOption(
+        NaturalNumberSliderOptionLayout(
             value = value1,
             onValueChange = {
                 value1 = it
@@ -133,7 +133,7 @@ fun IntegerSliderOptionPreview() {
             valueRange = 0..10
         )
         Divider()
-        NaturalNumberSliderOption(
+        NaturalNumberSliderOptionLayout(
             value = value2,
             onValueChange = {
                 value2 = it
