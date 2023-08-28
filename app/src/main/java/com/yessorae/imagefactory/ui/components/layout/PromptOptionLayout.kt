@@ -21,6 +21,12 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.compose.UiConfig
 
+/**
+ * TODO
+ * 칩선택된 거 앞으로 보내기
+ * 커스텀 프롬프트 추가 버튼
+ * 커스텀 프롬프트 추가할 때 ,로 구분하면 한 번에 여러 개 입력 가능
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PromptOptionLayout(
