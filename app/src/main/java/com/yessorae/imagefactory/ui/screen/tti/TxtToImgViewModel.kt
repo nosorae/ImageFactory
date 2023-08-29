@@ -57,14 +57,3 @@ class TxtToImgViewModel @Inject constructor(
         )
     }
 }
-
-sealed class TxtToImageUiState {
-
-    object Input : TxtToImageUiState()
-    object Loading : TxtToImageUiState()
-    data class Success(
-        val response: TxtToImgDto
-    ) : TxtToImageUiState()
-
-    object Error : TxtToImageUiState()
-}
