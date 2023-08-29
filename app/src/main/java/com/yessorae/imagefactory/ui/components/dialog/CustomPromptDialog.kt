@@ -33,7 +33,7 @@ fun CustomPromptDialog(
                 placeholderText = ResString(R.string.common_input_prompt)
             )
 
-            Margin(margin =Dimen.dialog_content_button_padding)
+            Margin(margin = Dimen.dialog_content_button_padding)
 
             ActionButton(
                 modifier = Modifier.fillMaxWidth(),

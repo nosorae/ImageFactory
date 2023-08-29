@@ -15,7 +15,6 @@ data class PromptOption(
     companion object
 }
 
-
 fun PromptOption.Companion.mock(): List<PromptOption> {
     val words = listOf(
         "Apple", "Banana", "Cherry", "Dog", "Elephant", "Fox", "Grapes",

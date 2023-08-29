@@ -34,14 +34,14 @@ data class TxtToImgRequestModel(
     val loRaModelsOptions: List<LoRaModelOption> = listOf(),
     val upscale: UpscaleType = UpscaleType.None,
     val embeddingsModelOption: List<EmbeddingsModelOption> = listOf(),
-    val scheduler: List<SchedulerOption> = SchedulerOption.initialValues(),
+    val scheduler: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
     val multiLingual: Boolean by lazy {
         promptOptions.isMultiLingual() || negativePromptOptions.isMultiLingual()
     }
 
     fun asTxtToImgRequest(
-        toastEvent: (StringModel) -> Unit,
+        toastEvent: (StringModel) -> Unit
     ): TxtToImgRequest? {
         val modelId = sdModelOption.getSelectedOption()?.id ?: run {
             toastEvent(ResString(R.string.common_warning_select_model))

@@ -26,7 +26,7 @@ fun NaturalNumberSliderOptionLayout(
     value: Int,
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    valueRange: IntRange,
+    valueRange: IntRange
 ) {
     require(valueRange.first >= 0) { "first should be >= 0" }
     require(valueRange.last >= 0) { "last should be >= 0" }
@@ -60,14 +60,13 @@ fun NaturalNumberSliderOptionLayout(
             Text(text = "${valueRange.last}", style = MaterialTheme.typography.labelSmall)
         }
     }
-
 }
 
 @Composable
 fun ZeroToOneSliderOptionLayout(
     value: Float,
     onValueChange: (Float) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     require(value in 0f..1f)
     Column(

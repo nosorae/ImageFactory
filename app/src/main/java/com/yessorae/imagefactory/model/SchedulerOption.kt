@@ -60,5 +60,4 @@ fun SchedulerOption.Companion.initialValues(): List<SchedulerOption> {
             selected = index == 0
         )
     }
-
 }

@@ -36,7 +36,6 @@ fun ModelCover(
                 onClick()
             }
     ) {
-
         SelectableImage(
             model = model.image,
             modifier = Modifier
@@ -70,7 +69,6 @@ fun GridModelCover(
                 onClick()
             }
     ) {
-
         SelectableImage(
             model = model.image,
             modifier = Modifier

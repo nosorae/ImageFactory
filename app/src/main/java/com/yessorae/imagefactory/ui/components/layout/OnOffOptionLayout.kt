@@ -16,7 +16,6 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 
-
 @Composable
 fun OnOffOptionLayout(
     modifier: Modifier,

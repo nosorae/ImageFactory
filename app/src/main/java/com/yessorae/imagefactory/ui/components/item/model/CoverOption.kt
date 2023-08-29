@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.annotation.DrawableRes
-import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.ui.util.StringModel
 import okhttp3.HttpUrl
 import java.io.File

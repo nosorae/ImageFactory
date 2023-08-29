@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.components.item.model.Option
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +36,8 @@ fun PromptChipPreview() {
     ColumnPreview {
         PromptChip(
             model = object : Option {
+                override val id: String
+                    get() = "0"
                 override val title: StringModel
                     get() = TextString("PromptChipPreview")
                 override val selected: Boolean
@@ -44,6 +46,8 @@ fun PromptChipPreview() {
         )
         PromptChip(
             model = object : Option {
+                override val id: String
+                    get() = "0"
                 override val title: StringModel
                     get() = TextString("PromptChipPreview")
                 override val selected: Boolean

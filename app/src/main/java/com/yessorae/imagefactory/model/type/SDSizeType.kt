@@ -18,5 +18,5 @@ enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
         title = TextString("3:2"),
         width = 768,
         height = 512
-    ),
+    )
 }

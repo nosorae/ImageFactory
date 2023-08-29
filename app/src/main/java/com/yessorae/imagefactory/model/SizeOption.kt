@@ -6,9 +6,10 @@ import com.yessorae.imagefactory.ui.util.StringModel
 
 data class SizeOption(
     val sizeType: SDSizeType,
-    override val title: StringModel,
     override val selected: Boolean
 ) : Option {
+    override val title: StringModel = sizeType.title
+    override val id: String = sizeType.name
     companion object
 }
 
@@ -16,7 +17,6 @@ fun SizeOption.Companion.mock(): List<Option> {
     return SDSizeType.values().mapIndexed { index, sdSizeType ->
         SizeOption(
             sizeType = sdSizeType,
-            title = sdSizeType.title,
             selected = index == 0
         )
     }

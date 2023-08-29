@@ -1,7 +1,6 @@
 package com.yessorae.imagefactory.ui.util.compose
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.yessorae.common.Logger
 import com.yessorae.imagefactory.ui.util.StringModel
-import java.time.Duration
 import java.util.Locale
 
 @Composable
@@ -44,7 +42,7 @@ fun getSettingsLocale(): Locale {
     val config = android.content.res.Configuration()
     val default = Locale.getDefault()
     Settings.System.getConfiguration(context.contentResolver, config)
-    return try{
+    return try {
         if (config.locales.size() == 0) {
             Locale.getDefault()
         } else {

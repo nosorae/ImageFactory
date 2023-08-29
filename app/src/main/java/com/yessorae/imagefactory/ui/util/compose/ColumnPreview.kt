@@ -30,7 +30,7 @@ fun ColumnPreview(modifier: Modifier = Modifier, spacedBy: Dp = 0.dp, content: @
 fun ThemePreview(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     ImageFactoryTheme {
         Surface(modifier = modifier) {
-                content()
+            content()
         }
     }
 }

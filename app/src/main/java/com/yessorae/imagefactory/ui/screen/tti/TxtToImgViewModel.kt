@@ -55,7 +55,6 @@ class TxtToImgViewModel @Inject constructor(
             embeddingsModel = null,
             scheduler = "UniPCMultistepScheduler"
         )
-
     }
 }
 
@@ -69,5 +68,3 @@ sealed class TxtToImageUiState {
 
     object Error : TxtToImageUiState()
 }
-
-

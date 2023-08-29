@@ -44,7 +44,7 @@ fun PromptOptionLayout(
         horizontalItemSpacing = Dimen.space_4
     ) {
         itemsIndexed(
-            items = prompts,
+            items = prompts
         ) { _, item ->
             PromptChip(
                 model = item,

@@ -16,7 +16,6 @@ import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
-
 @Composable
 fun ModelsLayout(
     modifier: Modifier = Modifier,
@@ -28,7 +27,7 @@ fun ModelsLayout(
         modifier = modifier,
         state = state,
         contentPadding = Dimen.carousel_padding_values,
-        horizontalArrangement = Arrangement.spacedBy(Dimen.space_4),
+        horizontalArrangement = Arrangement.spacedBy(Dimen.space_4)
     ) {
         itemsIndexed(items = models) { _, item ->
             ModelCover(

@@ -47,5 +47,4 @@ fun RadioTextButtonPreview() {
             model = SizeOption.mock()[2]
         )
     }
-
 }

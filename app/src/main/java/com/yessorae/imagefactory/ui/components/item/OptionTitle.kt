@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
 @Composable
 fun OptionTitle(
@@ -77,7 +77,7 @@ fun OptionTitlePreview() {
     ColumnPreview {
         OptionTitle(
             modifier = Modifier,
-            text = TextString("이런 느낌이었으면 좋겠어요."),
+            text = TextString("이런 느낌이었으면 좋겠어요.")
         )
 
         OptionTitleWithMore(

@@ -1,7 +1,6 @@
 package com.yessorae.imagefactory
 
 import com.yessorae.imagefactory.ui.util.isMultiLanguage
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
