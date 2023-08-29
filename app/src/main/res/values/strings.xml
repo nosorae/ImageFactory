@@ -4,5 +4,6 @@
     <string name="common_see_more">더보기</string>
     <string name="common_add">추가</string>
     <string name="common_input_prompt">프롬프트를 입력해주세요. , 로 구분해서 입력하면 동시에 여러 개를 입력할 수 있어요.</string>
-
+    <string name="common_warning_select_model">모델을 선택해주세요!</string>
+    <string name="common_warning_select_scheduler">스케줄러를 선택해주세요!</string>
 </resources>

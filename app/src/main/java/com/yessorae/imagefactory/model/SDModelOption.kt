@@ -6,7 +6,7 @@ import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 
 data class SDModelOption(
-    val id: String,
+    override val id: String,
     override val image: Any,
     override val title: StringModel,
     override val selected: Boolean

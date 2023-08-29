@@ -1,15 +1,17 @@
 package com.yessorae.imagefactory.model
 
+import com.yessorae.common.Constants
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 import com.yessorae.imagefactory.ui.util.isMultiLanguage
 
 data class PromptOption(
-    val id: Int,
-    override val title: StringModel, // todo string으로 변경?
+    val dbId: Int = Constants.NONE_ID,
+    override val title: StringModel,
     override val selected: Boolean
 ) : Option {
+    override val id: String = dbId.toString()
     companion object
 }
 
@@ -22,7 +24,7 @@ fun PromptOption.Companion.mock(): List<PromptOption> {
     )
 
     return words.mapIndexed { index, word ->
-        PromptOption(id = index, title = TextString(word), selected = index % words.size == 0)
+        PromptOption(dbId = index, title = TextString(word), selected = index % words.size == 0)
     }
 }
 

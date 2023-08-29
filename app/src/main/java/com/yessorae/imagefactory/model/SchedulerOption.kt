@@ -24,7 +24,7 @@ import com.yessorae.imagefactory.ui.util.TextString
  * ScoreSdeVeScheduler
  */
 data class SchedulerOption(
-    val id: String,
+    override val id: String,
     override val title: StringModel,
     override val selected: Boolean
 ) : Option {

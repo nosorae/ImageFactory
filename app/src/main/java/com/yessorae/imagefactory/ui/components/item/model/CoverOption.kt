@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.annotation.DrawableRes
+import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.ui.util.StringModel
 import okhttp3.HttpUrl
 import java.io.File
@@ -26,8 +27,7 @@ interface CoverOption : Option {
      * - [ByteBuffer]
      */
     val image: Any
+    override val id: String
     override val title: StringModel
     override val selected: Boolean
 }
-
-
