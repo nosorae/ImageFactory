@@ -1,5 +1,6 @@
 package com.yessorae.imagefactory.model.type
 
+import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 
@@ -18,5 +19,18 @@ enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
         title = TextString("3:2"),
         width = 768,
         height = 512
-    )
+    );
+    companion object{
+        val defaultOptions: List<Option> = SDSizeType.values().mapIndexed { index, type ->
+            object : Option {
+                override val id: String = type.name
+                override val title: StringModel = type.title
+                override val selected: Boolean = index == 0
+            }
+        }
+    }
+}
+
+fun Option.toSDSizeType(): SDSizeType {
+    return SDSizeType.valueOf(this.id)
 }

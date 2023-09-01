@@ -1,6 +1,8 @@
 package com.yessorae.imagefactory.ui.theme
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 object Dimen {
@@ -43,4 +45,8 @@ object Dimen {
         start = space_16,
         end = space_16
     )
+
+    val title_padding_modifier = Modifier
+        .padding(horizontal = Dimen.space_16)
+        .padding(top = Dimen.space_24, bottom = Dimen.space_4)
 }

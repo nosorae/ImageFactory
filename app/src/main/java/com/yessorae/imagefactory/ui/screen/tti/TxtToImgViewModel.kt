@@ -36,23 +36,23 @@ class TxtToImgViewModel @Inject constructor(
 
     fun generateImage() = scope.launch {
         val dreamBoothRequest = TxtToImgRequest(
-            modelId = "midjourney",
             prompt = "sunset, beach, ocean",
             negativePrompt = "human, person, people",
+            enhancePrompt = Constants.ARG_YES,
+            guidanceScale = 7.5,
+            samples = 1,
             width = 512,
             height = 512,
-            samples = 1,
+            modelId = "midjourney",
+            loraModel = null,
+            loraStrength = null,
+            embeddingsModel = null,
             numInferenceSteps = 25,
             safetyChecker = Constants.ARG_YES,
-            enhancePrompt = Constants.ARG_YES,
             seed = null,
-            guidanceScale = 7.5,
-            loraStrength = null,
-            loraModel = null,
             multiLingual = Constants.ARG_NO,
             upscale = "1",
             clipSkip = 4,
-            embeddingsModel = null,
             scheduler = "UniPCMultistepScheduler"
         )
     }

@@ -17,21 +17,25 @@ import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
 @Composable
 fun OptionTitle(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: StringModel
 ) {
-    OptionTitle(modifier = modifier, text = text, trailer = {})
+    OptionTitle(modifier = modifier
+        .padding(horizontal = Dimen.space_16)
+        .padding(top = Dimen.space_24, bottom = Dimen.space_4), text = text, trailer = {})
 }
 
 @Composable
 fun OptionTitleWithMore(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: StringModel,
     trailingText: StringModel,
     onClickMore: () -> Unit = {}
 ) {
     OptionTitle(
-        modifier = modifier,
+        modifier = modifier
+            .padding(start = Dimen.space_16)
+            .padding(top = Dimen.space_24, bottom = Dimen.space_4),
         text = text,
         trailer = {
             MoreButton(text = trailingText, onClick = onClickMore)
@@ -40,15 +44,13 @@ fun OptionTitleWithMore(
 }
 
 @Composable
-private fun OptionTitle(
+fun OptionTitle(
     modifier: Modifier,
     text: StringModel,
     trailer: @Composable () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
-            .padding(horizontal = Dimen.space_16)
-            .padding(top = Dimen.space_24, bottom = Dimen.space_4),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

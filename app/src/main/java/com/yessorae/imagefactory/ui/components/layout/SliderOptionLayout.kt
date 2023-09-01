@@ -35,11 +35,6 @@ fun NaturalNumberSliderOptionLayout(
             .fillMaxWidth()
             .padding(top = Dimen.space_4, bottom = Dimen.space_12)
     ) {
-        Text(
-            text = "$value",
-            modifier = Modifier.padding(start = Dimen.space_16)
-        )
-
         Slider(
             value = value.toFloat(),
             onValueChange = {
@@ -74,10 +69,6 @@ fun ZeroToOneSliderOptionLayout(
             .fillMaxWidth()
             .padding(top = Dimen.space_4, bottom = Dimen.space_12)
     ) {
-        Text(
-            text = ((value * 10).roundToInt() / 10f).toString(),
-            modifier = Modifier.padding(start = Dimen.space_16)
-        )
         Slider(
             value = value,
             onValueChange = { onValueChange(it) },

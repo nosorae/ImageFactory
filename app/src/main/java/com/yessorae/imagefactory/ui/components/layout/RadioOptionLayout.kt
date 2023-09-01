@@ -17,7 +17,7 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
 @Composable
-fun OneOptionLayout(
+fun RadioOptionLayout(
     state: ScrollState = rememberScrollState(),
     options: List<Option>,
     onClick: (Option) -> Unit = {}
@@ -42,6 +42,6 @@ fun OneOptionLayout(
 @Composable
 fun OneOptionLayoutPreview() {
     ColumnPreview {
-        OneOptionLayout(options = SizeOption.mock())
+        RadioOptionLayout(options = SizeOption.mock())
     }
 }

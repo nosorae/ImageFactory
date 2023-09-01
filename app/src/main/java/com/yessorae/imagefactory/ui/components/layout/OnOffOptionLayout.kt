@@ -2,6 +2,7 @@ package com.yessorae.imagefactory.ui.components.layout
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
+import kotlin.math.roundToInt
 
 @Composable
 fun OnOffOptionLayout(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: StringModel,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit = {}
@@ -27,7 +29,11 @@ fun OnOffOptionLayout(
         modifier = modifier.padding(horizontal = Dimen.space_16, vertical = Dimen.space_8),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = text.getValue(), modifier = Modifier.weight(1f))
+        Text(
+            text = text.getValue(),
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.weight(1f)
+        )
         Switch(checked = checked, onCheckedChange = onCheckedChange)
     }
 }
@@ -46,4 +52,8 @@ fun OnOffOptionPreview() {
             checked = it
         }
     )
+}
+
+fun Float.roundToOneDecimalPlace(): Float {
+    return (this * 10).roundToInt() / 10f
 }

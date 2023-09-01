@@ -14,6 +14,8 @@ import com.yessorae.imagefactory.model.toLoRaStrengthPrompt
 import com.yessorae.imagefactory.model.toPrompt
 import com.yessorae.imagefactory.model.type.SDSizeType
 import com.yessorae.imagefactory.model.type.UpscaleType
+import com.yessorae.imagefactory.model.type.toSDSizeType
+import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.StringModel
@@ -23,9 +25,9 @@ data class TxtToImgRequestModel(
     val promptOptions: List<PromptOption> = listOf(),
     val negativePromptOptions: List<PromptOption> = listOf(),
     val sdModelOption: List<SDModelOption> = listOf(),
-    val size: SDSizeType = SDSizeType.Square,
+    val sizeOption: List<Option> = SDSizeType.defaultOptions,
     val samples: Int = 1,
-    val numInferenceSteps: Int = 1,
+    val stepCount: Int = 1,
     val safetyChecker: Boolean = false,
     val enhancePrompt: Boolean = true,
     val seed: Long? = null,
@@ -47,6 +49,10 @@ data class TxtToImgRequestModel(
             toastEvent(ResString(R.string.common_warning_select_model))
             return null
         }
+        val size = sizeOption.getSelectedOption()?.toSDSizeType() ?: run {
+            toastEvent(ResString(R.string.common_warning_select_size))
+            return null
+        }
         val scheduler = scheduler.getSelectedOption()?.id ?: run {
             toastEvent(ResString(R.string.common_warning_select_scheduler))
             return null
@@ -59,7 +65,7 @@ data class TxtToImgRequestModel(
             width = size.width,
             height = size.height,
             samples = samples,
-            numInferenceSteps = numInferenceSteps,
+            numInferenceSteps = stepCount,
             safetyChecker = safetyChecker.yesOrNo(),
             enhancePrompt = enhancePrompt.yesOrNo(),
             seed = seed?.let { "$it" },
