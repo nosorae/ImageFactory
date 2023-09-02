@@ -26,4 +26,6 @@
     <string name="common_section_title_scheduler">스케쥴러 선택</string>
     <string name="common_button_generate_image">이미지 생성</string>
 
+    <string name="common_error_not_fount_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
+
 </resources>

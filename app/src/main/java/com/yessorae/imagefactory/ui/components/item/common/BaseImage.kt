@@ -5,25 +5,36 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
 import com.yessorae.common.Logger
+import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
+import com.yessorae.imagefactory.ui.theme.Gray200
+import com.yessorae.imagefactory.ui.theme.Gray400
 import com.yessorae.imagefactory.ui.theme.PrimaryBrush
 
 @Composable
 fun BaseImage(
     model: Any,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     val context = LocalContext.current
     SubcomposeAsyncImage(
@@ -33,10 +44,23 @@ fun BaseImage(
             .crossfade(true)
             .build(),
         loading = {
-            CircularProgressIndicator() // todo replace
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(modifier = Modifier.size(size = 24.dp)) // todo replace
+            }
         },
         error = {
-            Image(imageVector = Icons.Outlined.Close, contentDescription = null) // todo replace
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(Dimen.space_2)
+                    .background(color = Gray400, shape = MaterialTheme.shapes.medium),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.common_error_not_fount_image_your_country),
+                    textAlign = TextAlign.Center
+                )
+            }
         },
         onError = { error ->
             Logger.recordException(error.result.throwable)
@@ -71,11 +95,13 @@ fun SelectableImage(
 
         if (selected) {
             Box(
-                modifier = Modifier.fillMaxSize().background(
-                    brush = PrimaryBrush,
-                    shape = MaterialTheme.shapes.medium,
-                    alpha = 0.5f
-                )
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = PrimaryBrush,
+                        shape = MaterialTheme.shapes.medium,
+                        alpha = 0.5f
+                    )
             )
         }
     }

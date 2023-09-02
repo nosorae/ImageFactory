@@ -25,17 +25,17 @@ data class TxtToImgRequestModel(
     val promptOptions: List<PromptOption> = listOf(),
     val negativePromptOptions: List<PromptOption> = listOf(),
     val sdModelOption: List<SDModelOption> = listOf(),
-    val sizeOption: List<Option> = SDSizeType.defaultOptions,
-    val samples: Int = 1,
+    val enhancePrompt: Boolean = true,
+    val loRaModelsOptions: List<LoRaModelOption> = listOf(),
+    val embeddingsModelOption: List<EmbeddingsModelOption> = listOf(),
     val stepCount: Int = 1,
     val safetyChecker: Boolean = false,
-    val enhancePrompt: Boolean = true,
+    val sizeOption: List<Option> = SDSizeType.defaultOptions,
     val seed: Long? = null,
     // Scale for classifier-free guidance (minimum: 1; maximum: 20)
     val guidanceScale: Int = 10, // todo 적정값 찾기
-    val loRaModelsOptions: List<LoRaModelOption> = listOf(),
     val upscale: UpscaleType = UpscaleType.None,
-    val embeddingsModelOption: List<EmbeddingsModelOption> = listOf(),
+    val samples: Int = 1,
     val scheduler: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
     val multiLingual: Boolean by lazy {

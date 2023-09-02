@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Constants
 import com.yessorae.common.Logger
 import com.yessorae.data.model.request.TxtToImgRequest
-import com.yessorae.data.model.response.TxtToImgDto
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,13 +12,15 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
 class TxtToImgViewModel @Inject constructor(
-    private val txtToImgRepository: TxtToImgRepository
+    private val txtToImgRepository: TxtToImgRepository,
+    private val publicModelMapper: PublicModelMapper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TxtToImgScreenState())
@@ -33,6 +34,23 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     val scope = viewModelScope + ceh + Dispatchers.IO
+
+    init {
+        getPublicModels()
+    }
+
+    fun getPublicModels() = scope.launch {
+        val models = txtToImgRepository.getPublicModels()
+        _uiState.update {
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    sdModelOption = publicModelMapper.mapSDModelOption(dto = models),
+                    loRaModelsOptions = publicModelMapper.mapLoRaModelOption(dto = models),
+                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models)
+                )
+            )
+        }
+    }
 
     fun generateImage() = scope.launch {
         val dreamBoothRequest = TxtToImgRequest(
