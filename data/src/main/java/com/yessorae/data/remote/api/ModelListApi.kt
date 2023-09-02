@@ -1,8 +1,8 @@
-package com.yessorae.data.api
+package com.yessorae.data.remote.api
 
 import com.yessorae.data.BuildConfig
-import com.yessorae.data.model.request.KeyRequest
-import com.yessorae.data.model.response.PublicModelDto
+import com.yessorae.data.remote.model.request.KeyRequest
+import com.yessorae.data.remote.model.response.PublicModelDto
 import com.yessorae.data.util.DataConstants
 import retrofit2.Response
 import retrofit2.http.Body

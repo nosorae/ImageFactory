@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.tti.model
 
-import com.yessorae.data.model.request.TxtToImgRequest
+import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Constants
 import com.yessorae.common.Logger
-import com.yessorae.data.model.request.TxtToImgRequest
+import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ class TxtToImgViewModel @Inject constructor(
         getPublicModels()
     }
 
-    fun getPublicModels() = scope.launch {
+    private fun getPublicModels() = scope.launch {
         val models = txtToImgRepository.getPublicModels()
         _uiState.update {
             uiState.value.copy(

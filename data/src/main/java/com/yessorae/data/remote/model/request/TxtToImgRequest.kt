@@ -1,4 +1,4 @@
-package com.yessorae.data.model.request
+package com.yessorae.data.remote.model.request
 
 import com.google.gson.annotations.SerializedName
 import com.yessorae.common.Constants

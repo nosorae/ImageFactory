@@ -1,3 +1,3 @@
-package com.yessorae.data.model.response
+package com.yessorae.data.remote.model.response
 
 class PublicModelDto : ArrayList<PublicModelItem>()

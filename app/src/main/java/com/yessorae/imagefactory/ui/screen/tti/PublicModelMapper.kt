@@ -2,8 +2,8 @@ package com.yessorae.imagefactory.ui.screen.tti
 
 import com.yessorae.common.Logger
 import com.yessorae.common.replacePubDomain
-import com.yessorae.data.model.response.PublicModelDto
-import com.yessorae.data.model.response.PublicModelItem
+import com.yessorae.data.remote.model.response.PublicModelDto
+import com.yessorae.data.remote.model.response.PublicModelItem
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.SDModelOption
