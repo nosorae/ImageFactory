@@ -1,5 +1,6 @@
 package com.yessorae.data.di
 
+import com.yessorae.data.api.ModelListApi
 import com.yessorae.data.api.TxtToImgApi
 import dagger.Module
 import dagger.Provides
@@ -13,5 +14,10 @@ object ApiModule {
     @Provides
     fun provideTxtToImgApi(retrofit: Retrofit): TxtToImgApi {
         return retrofit.create(TxtToImgApi::class.java)
+    }
+
+    @Provides
+    fun provideModelListApi(retrofit: Retrofit): ModelListApi {
+        return retrofit.create(ModelListApi::class.java)
     }
 }

@@ -2,7 +2,7 @@ package com.yessorae.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class TxtToImgResponse(
+data class TxtToImgDto(
     @SerializedName("status") val status: String,
     @SerializedName("generationTime") val generationTime: Double,
     @SerializedName("id") val id: Int,

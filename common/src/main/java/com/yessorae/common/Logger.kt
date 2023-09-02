@@ -39,6 +39,16 @@ object Logger {
         log(TEMP_TAG, message, error)
     }
 
+    fun recordException(message: String) {
+        presentation(message, true)
+        // TODO Crashlytics, Analytics
+    }
+
+    fun recordException(error: Throwable) {
+        presentation(error.toString(), true)
+        // TODO Crashlytics, Analytics
+    }
+
     private fun full(message: String, error: Boolean = false) {
         log(FULL_TAG, message, error)
     }

@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">ImageFactory</string>
+    <string name="common_watch_ad">광고 시청하기</string>
+    <string name="common_button_see_more">더보기</string>
+    <string name="common_random">랜덤</string>
+    <string name="common_add">추가</string>가
+    <string name="common_input_prompt">프롬프트를 입력해주세요. , 로 구분해서 입력하면 동시에 여러 개를 입력할 수 있어요.</string>
+    <string name="common_warning_select_model">모델을 선택해주세요!</string>
+    <string name="common_warning_select_size">이미지 비율을 선택해주세요!</string>
+    <string name="common_warning_select_scheduler">스케줄러를 선택해주세요!</string>
+    
+    <string name="common_section_title_positive_prompt">긍정 프롬프트</string>
+    <string name="common_section_title_negative_prompt">부정 프롬프트</string>
+    <string name="common_section_button_custom_prompt">직접 입력하기</string>
+    <string name="common_section_title_prompt_enhancement">프롬프트 자동 개선</string>
+    <string name="common_section_title_prompt_strength">프롬프트 강도 · %s</string>
+    <string name="common_section_title_size_type">이미지 비율</string>
+    <string name="common_section_title_model">모델 선택</string>
+    <string name="common_section_title_lora">로라 선택 (중복 선택 가능)</string>
+    <string name="common_section_title_lora_strength">%s 로라 강도 · %s</string>
+    <string name="common_section_title_embeddings">임베딩 모델 선택</string>
+    <string name="common_section_title_step_count">스텝 수 · %s</string>
+    <string name="common_section_title_seed">시드</string>
+    <string name="common_section_title_nsfw">후방주의 사진 활성화</string>
+    <string name="common_section_title_upscale">업스케일</string>
+    <string name="common_section_title_scheduler">스케쥴러 선택</string>
+    <string name="common_button_generate_image">이미지 생성</string>
+
+    <string name="common_error_not_fount_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
+
 </resources>

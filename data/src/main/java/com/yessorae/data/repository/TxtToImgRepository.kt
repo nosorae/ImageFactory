@@ -1,19 +1,26 @@
 package com.yessorae.data.repository
 
+import com.yessorae.data.api.ModelListApi
 import com.yessorae.data.api.TxtToImgApi
 import com.yessorae.data.model.request.TxtToImgRequest
-import com.yessorae.data.model.response.TxtToImgResponse
+import com.yessorae.data.model.response.PublicModelDto
+import com.yessorae.data.model.response.TxtToImgDto
 import com.yessorae.data.util.handleResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class TxtToImgRepository @Inject constructor(
-    private val txtToImgApi: TxtToImgApi
+    private val txtToImgApi: TxtToImgApi,
+    private val modelListApi: ModelListApi
 ) {
     suspend fun generateImage(
         request: TxtToImgRequest
-    ): TxtToImgResponse {
+    ): TxtToImgDto {
         return txtToImgApi.generateImage(request).handleResponse()
+    }
+
+    suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {
+        return modelListApi.getPublicModels().handleResponse()
     }
 }
