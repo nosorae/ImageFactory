@@ -32,5 +32,5 @@ fun List<PromptOption>.isMultiLingual(): Boolean {
 }
 
 fun List<PromptOption>.toPrompt(): String {
-    return this.joinToString { it.title.get() }
+    return this.filter { it.selected }.joinToString { it.title.get() }
 }

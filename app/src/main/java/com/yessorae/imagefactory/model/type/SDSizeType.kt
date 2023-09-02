@@ -20,6 +20,7 @@ enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
         width = 768,
         height = 512
     );
+
     companion object {
         val defaultOptions: List<Option> = SDSizeType.values().mapIndexed { index, type ->
             object : Option {
@@ -33,4 +34,14 @@ enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
 
 fun Option.toSDSizeType(): SDSizeType {
     return SDSizeType.valueOf(this.id)
+}
+
+fun SDSizeType.toOptionList(): List<Option> {
+    return SDSizeType.values().mapIndexed { _, type ->
+        object : Option {
+            override val id: String = type.name
+            override val title: StringModel = type.title
+            override val selected: Boolean = type.name == this@toOptionList.name
+        }
+    }
 }

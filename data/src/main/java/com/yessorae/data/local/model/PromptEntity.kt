@@ -16,7 +16,7 @@ data class PromptEntity(
     @ColumnInfo(name = DBConstants.COLPOSITIVE)
     val positive: Boolean,
     @ColumnInfo(name = DBConstants.COL_SELECT_COUNT)
-    val selectCount: Int,
+    val selectCount: Int = 0,
     @ColumnInfo(name = DBConstants.COL_CREATED_AT)
     val createdAt: LocalDateTime,
     @ColumnInfo(name = DBConstants.COL_UPDATED_AT)

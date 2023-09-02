@@ -1,6 +1,7 @@
 package com.yessorae.imagefactory.ui.util.compose
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -15,10 +16,8 @@ import java.util.Locale
 @Composable
 fun getActivity() = LocalContext.current as ComponentActivity
 
-@Composable
-fun showToast(stringModel: StringModel, duration: Int = Toast.LENGTH_SHORT) {
-    val context = LocalContext.current
-    Toast.makeText(context, stringModel.getValue(), duration).show()
+fun Context.showToast(stringModel: StringModel, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, stringModel.get(this), duration).show()
 }
 
 @Composable

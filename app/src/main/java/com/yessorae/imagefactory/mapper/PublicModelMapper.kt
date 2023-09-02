@@ -53,20 +53,30 @@ class PublicModelMapper @Inject constructor() {
     }
 
     private fun isSDModel(dto: PublicModelItem): Boolean {
-        return dto.description.contains("stable", ignoreCase = true) ||
-            dto.description.contains("diffusion", ignoreCase = true)
+        return isLoRaModel(dto).not() && isEmbeddingModel(dto).not() && isControlNetModel(dto).not() &&
+                (dto.description.contains("realistic", ignoreCase = true) ||
+                        dto.modelId.contains("realistic", ignoreCase = true) ||
+                        dto.modelName.contains("realistic", ignoreCase = true))
+//        dto.description.contains("stable", ignoreCase = true) ||
+//            dto.description.contains("diffusion", ignoreCase = true) &&
+
     }
 
     private fun isLoRaModel(dto: PublicModelItem): Boolean {
-        return dto.description.contains("lora", ignoreCase = true)
+        return dto.description.contains("lora", ignoreCase = true) ||
+                dto.modelId.contains("lora", ignoreCase = true) ||
+                dto.modelName.contains("lora", ignoreCase = true)
     }
 
     private fun isEmbeddingModel(dto: PublicModelItem): Boolean {
-        return dto.description.contains("embedding", ignoreCase = true)
+        return dto.description.contains("embedding", ignoreCase = true) ||
+                dto.modelId.contains("embedding", ignoreCase = true) ||
+                dto.modelName.contains("embedding", ignoreCase = true)
     }
 
     private fun isControlNetModel(dto: PublicModelItem): Boolean {
         return dto.description.contains("control", ignoreCase = true) ||
-            dto.modelId.contains("net", ignoreCase = true)
+                dto.modelId.contains("control", ignoreCase = true) ||
+                dto.modelName.contains("control", ignoreCase = true)
     }
 }

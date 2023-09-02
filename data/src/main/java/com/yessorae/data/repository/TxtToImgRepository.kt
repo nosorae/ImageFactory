@@ -1,10 +1,13 @@
 package com.yessorae.data.repository
 
+import androidx.paging.PagingSource
 import com.yessorae.data.local.dao.PromptDao
 import com.yessorae.data.local.model.PromptEntity
 import com.yessorae.data.remote.api.ModelListApi
 import com.yessorae.data.remote.api.TxtToImgApi
+import com.yessorae.data.remote.model.request.FetchQueuedImageRequest
 import com.yessorae.data.remote.model.request.TxtToImgRequest
+import com.yessorae.data.remote.model.response.FetchQueuedImageDto
 import com.yessorae.data.remote.model.response.PublicModelDto
 import com.yessorae.data.remote.model.response.TxtToImgDto
 import com.yessorae.data.util.handleResponse
@@ -24,6 +27,16 @@ class TxtToImgRepository @Inject constructor(
         return txtToImgApi.generateImage(request).handleResponse()
     }
 
+    suspend fun fetchQueuedImage(
+        requestId: String
+    ): FetchQueuedImageDto {
+        return txtToImgApi.fetchQueuedImage(
+            FetchQueuedImageRequest(
+                requestId = requestId
+            )
+        ).handleResponse()
+    }
+
     suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {
         return modelListApi.getPublicModels().handleResponse()
     }
@@ -40,4 +53,7 @@ class TxtToImgRepository @Inject constructor(
         )
     }
 
+    suspend fun insertPrompt(prompts: PromptEntity) {
+        promptDao.insert(prompts)
+    }
 }

@@ -15,6 +15,7 @@ import com.yessorae.imagefactory.model.toPrompt
 import com.yessorae.imagefactory.model.type.SDSizeType
 import com.yessorae.imagefactory.model.type.UpscaleType
 import com.yessorae.imagefactory.model.type.toSDSizeType
+import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
 import com.yessorae.imagefactory.ui.util.ResString
@@ -34,9 +35,9 @@ data class TxtToImgRequestModel(
     val seed: Long? = null,
     // Scale for classifier-free guidance (minimum: 1; maximum: 20)
     val guidanceScale: Int = 10, // todo 적정값 찾기
-    val upscale: UpscaleType = UpscaleType.None,
+    val upscaleOption: List<Option> = UpscaleType.defaultOptions,
     val samples: Int = 1,
-    val scheduler: List<SchedulerOption> = SchedulerOption.initialValues()
+    val schedulerOption: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
     val multiLingual: Boolean by lazy {
         positivePromptOptions.isMultiLingual() || negativePromptOptions.isMultiLingual()
@@ -53,7 +54,7 @@ data class TxtToImgRequestModel(
             toastEvent(ResString(R.string.common_warning_select_size))
             return null
         }
-        val scheduler = scheduler.getSelectedOption()?.id ?: run {
+        val scheduler = schedulerOption.getSelectedOption()?.id ?: run {
             toastEvent(ResString(R.string.common_warning_select_scheduler))
             return null
         }
@@ -73,7 +74,8 @@ data class TxtToImgRequestModel(
             loraStrength = loRaModelsOptions.toLoRaStrengthPrompt(),
             loraModel = loRaModelsOptions.toLoRaModelPrompt(),
             multiLingual = multiLingual.yesOrNo(),
-            upscale = upscale.value,
+            upscale = upscaleOption.getSelectedOption()?.toUpscaleType()?.value
+                ?: UpscaleType.None.value,
             embeddingsModel = embeddingsModelOption.getSelectedOption()?.id,
             scheduler = scheduler
         )

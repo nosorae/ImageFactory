@@ -1,9 +1,25 @@
 package com.yessorae.imagefactory.ui.screen.tti
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
@@ -11,10 +27,11 @@ import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.SchedulerOption
-import com.yessorae.imagefactory.model.type.SDSizeType
-import com.yessorae.imagefactory.model.type.UpscaleType
+import com.yessorae.imagefactory.ui.components.dialog.CustomPromptDialog
+import com.yessorae.imagefactory.ui.components.item.ActionButton
 import com.yessorae.imagefactory.ui.components.item.OptionTitle
 import com.yessorae.imagefactory.ui.components.item.OptionTitleWithMore
+import com.yessorae.imagefactory.ui.components.item.common.BaseImage
 import com.yessorae.imagefactory.ui.components.layout.ModelsLayout
 import com.yessorae.imagefactory.ui.components.layout.NaturalNumberSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.OnOffOptionLayout
@@ -22,9 +39,17 @@ import com.yessorae.imagefactory.ui.components.layout.PromptOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.RadioOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.ZeroToOneSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.roundToOneDecimalPlace
+import com.yessorae.imagefactory.ui.screen.tti.model.NegativePromptOptionAdditionDialog
+import com.yessorae.imagefactory.ui.screen.tti.model.PositivePromptAdditionDialog
+import com.yessorae.imagefactory.ui.screen.tti.model.SeedChangeDialog
+import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgRequestModel
+import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.ui.util.compose.showToast
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun TxtToImgScreen(
@@ -33,255 +58,355 @@ fun TxtToImgScreen(
     val uiState by viewModel.uiState.collectAsState()
     val requestModel = uiState.request
 
-    LazyColumn {
-        item {
-            OptionTitleWithMore(
-                text = ResString(R.string.common_section_title_positive_prompt),
-                trailingText = ResString(R.string.common_section_button_custom_prompt),
-                onClickMore = {
-                    viewModel.onClickAddPositivePrompt()
-                }
-            )
-        }
-        item {
-            PromptOptionLayout(
-                prompts = requestModel.positivePromptOptions,
-                onPromptClick = { option ->
-                    viewModel.onSelectPositivePrompt(option as PromptOption)
-                }
-            )
-        }
+    val dialogState by viewModel.dialogEvent.collectAsState()
 
-        item {
-            OptionTitleWithMore(
-                text = ResString(R.string.common_section_title_negative_prompt),
-                trailingText = ResString(R.string.common_section_button_custom_prompt),
-                onClickMore = {
-                    viewModel.onClickAddNegativePrompt()
-                }
-            )
-        }
-        item {
-            PromptOptionLayout(
-                prompts = requestModel.negativePromptOptions,
-                onPromptClick = { option ->
-                    viewModel.onSelectNegativePrompt(option as PromptOption)
-                }
-            )
-        }
+    val context = LocalContext.current
 
-        item {
-            OnOffOptionLayout(
-                text = ResString(R.string.common_section_title_prompt_enhancement),
-                checked = requestModel.enhancePrompt,
-                onCheckedChange = { enabled ->
-                    viewModel.onChangeEnhancePrompt(
-                        enabled = enabled
-                    )
-                }
-            )
+    LaunchedEffect(key1 = Unit) {
+        launch {
+            viewModel.toast.collectLatest { message ->
+                context.showToast(stringModel = message)
+            }
         }
+    }
 
-        // prompt strength
-        item(
-            contentType = "OptionTitle"
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = Dimen.button_height)
         ) {
-            OptionTitle(
-                text = ResString(
-                    R.string.common_section_title_prompt_strength,
-                    requestModel.guidanceScale.toString()
+            item {
+                OptionTitleWithMore(
+                    text = ResString(R.string.common_section_title_positive_prompt),
+                    trailingText = ResString(R.string.common_section_button_custom_prompt),
+                    onClickMore = {
+                        viewModel.onClickAddPositivePrompt()
+                    }
                 )
-            )
-        }
-        item {
-            NaturalNumberSliderOptionLayout(
-                value = requestModel.guidanceScale,
-                onValueChange = { strength ->
-                    viewModel.onChangePromptStrength(
-                        strength = strength
-                    )
-                },
-                valueRange = 1..20
-            )
-        }
-
-        // model
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitleWithMore(
-                text = ResString(R.string.common_section_title_model),
-                trailingText = ResString(R.string.common_button_see_more)
-            )
-        }
-        item {
-            ModelsLayout(
-                models = requestModel.sdModelOption,
-                onClick = { option ->
-                    viewModel.onSelectSDModel(
-                        option = option as SDModelOption
-                    )
-                }
-            )
-        }
-
-        // loRa
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitleWithMore(
-                text = ResString(R.string.common_section_title_lora),
-                trailingText = ResString(R.string.common_button_see_more)
-            )
-        }
-        item {
-            ModelsLayout(
-                models = requestModel.loRaModelsOptions,
-                onClick = { option ->
-                    viewModel.onSelectLoRaModel(
-                        option = option as LoRaModelOption
-                    )
-                }
-            )
-        }
-        requestModel.loRaModelsOptions
-            .filter { option -> option.selected }
-            .forEach { option ->
-                item {
-                    OptionTitle(
-                        text = ResString(
-                            R.string.common_section_title_lora_strength,
-                            option.title.getValue(),
-                            option.strength.roundToOneDecimalPlace().toString()
-                        )
-                    )
-                }
-                item {
-                    ZeroToOneSliderOptionLayout(
-                        value = option.strength,
-                        onValueChange = { strength ->
-                            viewModel.onChangeLoRaModelStrength(
-                                option = option,
-                                strength = strength
-                            )
-                        }
-                    )
-                }
+            }
+            item {
+                PromptOptionLayout(
+                    prompts = requestModel.positivePromptOptions,
+                    onPromptClick = { option ->
+                        viewModel.onSelectPositivePrompt(option as PromptOption)
+                    }
+                )
             }
 
-        // embeddings
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitleWithMore(
-                text = ResString(R.string.common_section_title_embeddings),
-                trailingText = ResString(R.string.common_button_see_more)
-            )
-        }
-        item {
-            ModelsLayout(
-                models = requestModel.embeddingsModelOption,
-                onClick = { option ->
-                    viewModel.onSelectEmbeddingsModel(
-                        option = option as EmbeddingsModelOption
-                    )
-                }
-            )
-        }
-
-        // size type
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitle(
-                text = ResString(R.string.common_section_title_size_type)
-            )
-        }
-        item {
-            RadioOptionLayout(
-                options = SDSizeType.defaultOptions,
-                onClick = { option ->
-                    viewModel.onSelectSizeType(
-                        sizeType = option
-                    )
-                }
-            )
-        }
-
-        // step count
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitle(
-                text = ResString(
-                    R.string.common_section_title_step_count,
-                    requestModel.stepCount.toString()
+            item {
+                OptionTitleWithMore(
+                    text = ResString(R.string.common_section_title_negative_prompt),
+                    trailingText = ResString(R.string.common_section_button_custom_prompt),
+                    onClickMore = {
+                        viewModel.onClickAddNegativePrompt()
+                    }
                 )
-            )
-        }
-        item {
-            NaturalNumberSliderOptionLayout(
-                value = requestModel.stepCount,
-                onValueChange = { stepCount ->
-                    viewModel.onChangeStepCount(stepCount)
-                },
-                valueRange = 1..50
-            )
-        }
+            }
+            item {
+                PromptOptionLayout(
+                    prompts = requestModel.negativePromptOptions,
+                    onPromptClick = { option ->
+                        viewModel.onSelectNegativePrompt(option as PromptOption)
+                    }
+                )
+            }
 
-        // upscale
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitle(
-                text = ResString(R.string.common_section_title_upscale)
-            )
-        }
-        item {
-            RadioOptionLayout(
-                options = UpscaleType.defaultOptions,
-                onClick = { option ->
-                    viewModel.onChangeUpscale(
-                        upscale = option
+            item {
+                OnOffOptionLayout(
+                    text = ResString(R.string.common_section_title_prompt_enhancement),
+                    checked = requestModel.enhancePrompt,
+                    onCheckedChange = { enabled ->
+                        viewModel.onChangeEnhancePrompt(
+                            enabled = enabled
+                        )
+                    }
+                )
+            }
+
+            // prompt strength
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitle(
+                    text = ResString(
+                        R.string.common_section_title_prompt_strength,
+                        requestModel.guidanceScale.toString()
                     )
-                }
-            )
-        }
+                )
+            }
+            item {
+                NaturalNumberSliderOptionLayout(
+                    value = requestModel.guidanceScale,
+                    onValueChange = { guidanceScale ->
+                        viewModel.onChangePromptStrength(
+                            guidanceScale = guidanceScale
+                        )
+                    },
+                    valueRange = 1..20
+                )
+            }
 
-        // seed
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitleWithMore(
-                text = ResString(R.string.common_section_title_seed),
-                trailingText = if (requestModel.seed == null) {
-                    ResString(R.string.common_random)
-                } else {
-                    TextString(requestModel.seed.toString())
-                },
-                onClickMore = {
-                    viewModel.onClickSeed(requestModel.seed)
-                }
-            )
-        }
+            // model
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitleWithMore(
+                    text = ResString(R.string.common_section_title_model),
+                    trailingText = ResString(R.string.common_button_see_more)
+                )
+            }
+            item {
+                ModelsLayout(
+                    models = requestModel.sdModelOption,
+                    onClick = { option ->
+                        viewModel.onSelectSDModel(
+                            option = option as SDModelOption
+                        )
+                    }
+                )
+            }
 
-        // scheduler
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitle(
-                text = ResString(R.string.common_section_title_scheduler)
-            )
-        }
-        item {
-            RadioOptionLayout(
-                options = requestModel.scheduler,
-                onClick = { option ->
-                    viewModel.onChangeScheduler(
-                        scheduler = (option as SchedulerOption)
+            // loRa
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitleWithMore(
+                    text = ResString(R.string.common_section_title_lora),
+                    trailingText = ResString(R.string.common_button_see_more)
+                )
+            }
+            item {
+                ModelsLayout(
+                    models = requestModel.loRaModelsOptions,
+                    onClick = { option ->
+                        viewModel.onSelectLoRaModel(
+                            option = option as LoRaModelOption
+                        )
+                    }
+                )
+            }
+            requestModel.loRaModelsOptions
+                .filter { option -> option.selected }
+                .forEach { option ->
+                    item {
+                        OptionTitle(
+                            text = ResString(
+                                R.string.common_section_title_lora_strength,
+                                option.title.getValue(),
+                                option.strength.roundToOneDecimalPlace().toString()
+                            )
+                        )
+                    }
+                    item {
+                        ZeroToOneSliderOptionLayout(
+                            value = option.strength,
+                            onValueChange = { strength ->
+                                viewModel.onChangeLoRaModelStrength(
+                                    option = option,
+                                    strength = strength
+                                )
+                            }
+                        )
+                    }
+                }
+
+            // embeddings
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitleWithMore(
+                    text = ResString(R.string.common_section_title_embeddings),
+                    trailingText = ResString(R.string.common_button_see_more)
+                )
+            }
+            item {
+                ModelsLayout(
+                    models = requestModel.embeddingsModelOption,
+                    onClick = { option ->
+                        viewModel.onSelectEmbeddingsModel(
+                            option = option as EmbeddingsModelOption
+                        )
+                    }
+                )
+            }
+
+            // size type
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitle(
+                    text = ResString(R.string.common_section_title_size_type)
+                )
+            }
+            item {
+                RadioOptionLayout(
+                    options = requestModel.sizeOption,
+                    onClick = { option ->
+                        viewModel.onSelectSizeType(
+                            option = option
+                        )
+                    }
+                )
+            }
+
+            // step count
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitle(
+                    text = ResString(
+                        R.string.common_section_title_step_count,
+                        requestModel.stepCount.toString()
                     )
-                }
+                )
+            }
+            item {
+                NaturalNumberSliderOptionLayout(
+                    value = requestModel.stepCount,
+                    onValueChange = { stepCount ->
+                        viewModel.onChangeStepCount(stepCount)
+                    },
+                    valueRange = 1..50
+                )
+            }
+
+            // upscale
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitle(
+                    text = ResString(R.string.common_section_title_upscale)
+                )
+            }
+            item {
+                RadioOptionLayout(
+                    options = requestModel.upscaleOption,
+                    onClick = { option ->
+                        viewModel.onChangeUpscale(
+                            upscale = option
+                        )
+                    }
+                )
+            }
+
+            // seed
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitleWithMore(
+                    text = ResString(R.string.common_section_title_seed),
+                    trailingText = if (requestModel.seed == null) {
+                        ResString(R.string.common_random)
+                    } else {
+                        TextString(requestModel.seed.toString())
+                    },
+                    onClickMore = {
+                        viewModel.onClickChangeSeed(requestModel.seed)
+                    }
+                )
+            }
+
+            // scheduler
+            item(
+                contentType = "OptionTitle"
+            ) {
+                OptionTitle(
+                    text = ResString(R.string.common_section_title_scheduler)
+                )
+            }
+            item {
+                RadioOptionLayout(
+                    options = requestModel.schedulerOption,
+                    onClick = { option ->
+                        viewModel.onChangeScheduler(
+                            scheduler = (option as SchedulerOption)
+                        )
+                    }
+                )
+            }
+        }
+
+        ActionButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = Dimen.side_padding),
+            text = stringResource(R.string.common_button_generate_image)
+        ) {
+            viewModel.generateImage()
+        }
+    }
+
+
+    TxtToImgDialog(
+        dialogState = dialogState,
+        onAddPositivePrompt = { prompt ->
+            viewModel.onAddPositivePrompt(prompt = prompt)
+        },
+        onAddNegativePrompt = { prompt ->
+            viewModel.onAddNegativePrompt(prompt = prompt)
+        },
+        onSeedChange = { seed ->
+            viewModel.onChangeSeed(seed = seed)
+        },
+        onCancelDialog = {
+            viewModel.onCancelDialog()
+        }
+    )
+
+    uiState.result?.let { model ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            BaseImage(model = model, modifier = Modifier.fillMaxSize())
+            IconButton(
+                onClick = { viewModel.temp() },
+                modifier = Modifier.align(Alignment.TopEnd)
+            ) {
+                Icon(imageVector = Icons.Outlined.Close, contentDescription = null)
+            }
+        }
+    }
+
+    if (uiState.loading) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(Dimen.medium_icon_size
+                    )
             )
+        }
+    }
+}
+
+@Composable
+fun TxtToImgDialog(
+    dialogState: TxtToImgDialogState,
+    onAddPositivePrompt: (String) -> Unit,
+    onAddNegativePrompt: (String) -> Unit,
+    onSeedChange: (Long?) -> Unit,
+    onCancelDialog: () -> Unit
+) {
+    when (dialogState) {
+        is PositivePromptAdditionDialog -> {
+            CustomPromptDialog(
+                onDismissRequest = onCancelDialog,
+                onClickAddButton = onAddPositivePrompt
+            )
+        }
+
+        is NegativePromptOptionAdditionDialog -> {
+            CustomPromptDialog(
+                onDismissRequest = onCancelDialog,
+                onClickAddButton = onAddNegativePrompt
+            )
+        }
+
+        is SeedChangeDialog -> {
+
+        }
+
+        else -> {
+            // do nothing
         }
     }
 }

@@ -47,7 +47,7 @@ fun BaseImage(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(Dimen.space_2)
+                    .size(Dimen.small_icon_size)
                     .background(color = Gray400, shape = MaterialTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {

@@ -12,9 +12,9 @@ data class LoRaModelOption(
 ) : CoverOption
 
 fun List<LoRaModelOption>.toLoRaModelPrompt(): String {
-    return this.joinToString { it.id }
+    return this.filter { it.selected }.joinToString { it.id }
 }
 
 fun List<LoRaModelOption>.toLoRaStrengthPrompt(): String {
-    return this.joinToString { it.strength.toString() }
+    return this.filter { it.selected }.joinToString { it.strength.toString() }
 }
