@@ -14,4 +14,9 @@ interface PromptDao : BaseDao<PromptEntity> {
         SELECT * FROM ${DBConstants.TABLE_PROMPT} ORDER BY ${DBConstants.COL_UPDATED_AT} DESC
     """)
     fun getPromptsOrderedByUpdatedAt(): List<PromptEntity>
+
+    @Query("""
+        SELECT * FROM ${DBConstants.TABLE_PROMPT} ORDER BY ${DBConstants.COL_CREATED_AT} DESC
+    """)
+    fun getPromptsOrderedByCreatedAt(): List<PromptEntity>
 }
