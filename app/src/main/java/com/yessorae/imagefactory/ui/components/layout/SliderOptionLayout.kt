@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,15 +31,21 @@ fun NaturalNumberSliderOptionLayout(
 ) {
     require(valueRange.first >= 0) { "first should be >= 0" }
     require(valueRange.last >= 0) { "last should be >= 0" }
+    var number by remember {
+        mutableStateOf(value)
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = Dimen.space_4, bottom = Dimen.space_12)
     ) {
         Slider(
-            value = value.toFloat(),
+            value = number.toFloat(),
             onValueChange = {
-                onValueChange(it.roundToInt())
+                number = it.roundToInt()
+            },
+            onValueChangeFinished = {
+                onValueChange(number)
             },
             valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
             steps = valueRange.last - 1,

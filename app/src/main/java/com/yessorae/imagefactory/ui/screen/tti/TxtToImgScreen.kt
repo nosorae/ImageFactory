@@ -6,12 +6,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yessorae.imagefactory.R
+import com.yessorae.imagefactory.model.EmbeddingsModelOption
+import com.yessorae.imagefactory.model.LoRaModelOption
+import com.yessorae.imagefactory.model.PromptOption
+import com.yessorae.imagefactory.model.SDModelOption
+import com.yessorae.imagefactory.model.SchedulerOption
 import com.yessorae.imagefactory.model.type.SDSizeType
+import com.yessorae.imagefactory.model.type.UpscaleType
 import com.yessorae.imagefactory.ui.components.item.OptionTitle
 import com.yessorae.imagefactory.ui.components.item.OptionTitleWithMore
 import com.yessorae.imagefactory.ui.components.layout.ModelsLayout
 import com.yessorae.imagefactory.ui.components.layout.NaturalNumberSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.OnOffOptionLayout
+import com.yessorae.imagefactory.ui.components.layout.PromptOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.RadioOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.ZeroToOneSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.roundToOneDecimalPlace
@@ -24,27 +31,25 @@ fun TxtToImgScreen(
     viewModel: TxtToImgViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val requestModel = uiState.request
 
-    SelectionScreen(
-        requestModel = uiState.request
-    )
-}
-
-@Composable
-fun SelectionScreen(
-    requestModel: TxtToImgRequestModel
-) {
     LazyColumn {
         item {
             OptionTitleWithMore(
                 text = ResString(R.string.common_section_title_positive_prompt),
                 trailingText = ResString(R.string.common_section_button_custom_prompt),
                 onClickMore = {
-                    // todo
+                    viewModel.onClickAddPositivePrompt()
                 }
             )
         }
         item {
+            PromptOptionLayout(
+                prompts = requestModel.positivePromptOptions,
+                onPromptClick = { option ->
+                    viewModel.onSelectPositivePrompt(option as PromptOption)
+                }
+            )
         }
 
         item {
@@ -52,19 +57,27 @@ fun SelectionScreen(
                 text = ResString(R.string.common_section_title_negative_prompt),
                 trailingText = ResString(R.string.common_section_button_custom_prompt),
                 onClickMore = {
-                    // todo
+                    viewModel.onClickAddNegativePrompt()
                 }
             )
         }
         item {
+            PromptOptionLayout(
+                prompts = requestModel.negativePromptOptions,
+                onPromptClick = { option ->
+                    viewModel.onSelectNegativePrompt(option as PromptOption)
+                }
+            )
         }
 
         item {
             OnOffOptionLayout(
                 text = ResString(R.string.common_section_title_prompt_enhancement),
                 checked = requestModel.enhancePrompt,
-                onCheckedChange = {
-                    // todo
+                onCheckedChange = { enabled ->
+                    viewModel.onChangeEnhancePrompt(
+                        enabled = enabled
+                    )
                 }
             )
         }
@@ -83,27 +96,12 @@ fun SelectionScreen(
         item {
             NaturalNumberSliderOptionLayout(
                 value = requestModel.guidanceScale,
-                onValueChange = {
-                    // todo
+                onValueChange = { strength ->
+                    viewModel.onChangePromptStrength(
+                        strength = strength
+                    )
                 },
                 valueRange = 1..20
-            )
-        }
-
-        // size type
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitle(
-                text = ResString(R.string.common_section_title_size_type)
-            )
-        }
-        item {
-            RadioOptionLayout(
-                options = SDSizeType.defaultOptions,
-                onClick = {
-                    // todo
-                }
             )
         }
 
@@ -119,8 +117,10 @@ fun SelectionScreen(
         item {
             ModelsLayout(
                 models = requestModel.sdModelOption,
-                onClick = {
-                    // todo
+                onClick = { option ->
+                    viewModel.onSelectSDModel(
+                        option = option as SDModelOption
+                    )
                 }
             )
         }
@@ -137,28 +137,33 @@ fun SelectionScreen(
         item {
             ModelsLayout(
                 models = requestModel.loRaModelsOptions,
-                onClick = {
-                    // todo
+                onClick = { option ->
+                    viewModel.onSelectLoRaModel(
+                        option = option as LoRaModelOption
+                    )
                 }
             )
         }
         requestModel.loRaModelsOptions
-            .filter { it.selected }
-            .forEach {
+            .filter { option -> option.selected }
+            .forEach { option ->
                 item {
                     OptionTitle(
                         text = ResString(
                             R.string.common_section_title_lora_strength,
-                            it.title.getValue(),
-                            it.strength.roundToOneDecimalPlace().toString()
+                            option.title.getValue(),
+                            option.strength.roundToOneDecimalPlace().toString()
                         )
                     )
                 }
                 item {
                     ZeroToOneSliderOptionLayout(
-                        value = it.strength,
-                        onValueChange = {
-                            // todo
+                        value = option.strength,
+                        onValueChange = { strength ->
+                            viewModel.onChangeLoRaModelStrength(
+                                option = option,
+                                strength = strength
+                            )
                         }
                     )
                 }
@@ -176,8 +181,29 @@ fun SelectionScreen(
         item {
             ModelsLayout(
                 models = requestModel.embeddingsModelOption,
-                onClick = {
-                    // todo
+                onClick = { option ->
+                    viewModel.onSelectEmbeddingsModel(
+                        option = option as EmbeddingsModelOption
+                    )
+                }
+            )
+        }
+
+        // size type
+        item(
+            contentType = "OptionTitle"
+        ) {
+            OptionTitle(
+                text = ResString(R.string.common_section_title_size_type)
+            )
+        }
+        item {
+            RadioOptionLayout(
+                options = SDSizeType.defaultOptions,
+                onClick = { option ->
+                    viewModel.onSelectSizeType(
+                        sizeType = option
+                    )
                 }
             )
         }
@@ -196,10 +222,29 @@ fun SelectionScreen(
         item {
             NaturalNumberSliderOptionLayout(
                 value = requestModel.stepCount,
-                onValueChange = {
-                    // todo
+                onValueChange = { stepCount ->
+                    viewModel.onChangeStepCount(stepCount)
                 },
                 valueRange = 1..50
+            )
+        }
+
+        // upscale
+        item(
+            contentType = "OptionTitle"
+        ) {
+            OptionTitle(
+                text = ResString(R.string.common_section_title_upscale)
+            )
+        }
+        item {
+            RadioOptionLayout(
+                options = UpscaleType.defaultOptions,
+                onClick = { option ->
+                    viewModel.onChangeUpscale(
+                        upscale = option
+                    )
+                }
             )
         }
 
@@ -213,19 +258,11 @@ fun SelectionScreen(
                     ResString(R.string.common_random)
                 } else {
                     TextString(requestModel.seed.toString())
+                },
+                onClickMore = {
+                    viewModel.onClickSeed(requestModel.seed)
                 }
             )
-        }
-
-        // upscale
-        item(
-            contentType = "OptionTitle"
-        ) {
-            OptionTitle(
-                text = ResString(R.string.common_section_title_upscale)
-            )
-        }
-        item {
         }
 
         // scheduler
@@ -239,10 +276,19 @@ fun SelectionScreen(
         item {
             RadioOptionLayout(
                 options = requestModel.scheduler,
-                onClick = {
-                    // todo
+                onClick = { option ->
+                    viewModel.onChangeScheduler(
+                        scheduler = (option as SchedulerOption)
+                    )
                 }
             )
         }
     }
+}
+
+@Composable
+fun SelectionScreen(
+    requestModel: TxtToImgRequestModel
+) {
+
 }

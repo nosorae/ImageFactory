@@ -28,4 +28,6 @@
 
     <string name="common_error_not_fount_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
 
+    <string name="common_n_value_upscale">%s배 업스케일</string>
+
 </resources>

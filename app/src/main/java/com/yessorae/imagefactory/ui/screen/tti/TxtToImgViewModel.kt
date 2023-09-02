@@ -8,6 +8,14 @@ import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
+import com.yessorae.imagefactory.model.EmbeddingsModelOption
+import com.yessorae.imagefactory.model.LoRaModelOption
+import com.yessorae.imagefactory.model.PromptOption
+import com.yessorae.imagefactory.model.SDModelOption
+import com.yessorae.imagefactory.model.SchedulerOption
+import com.yessorae.imagefactory.model.type.SDSizeType
+import com.yessorae.imagefactory.model.type.UpscaleType
+import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -45,6 +53,94 @@ class TxtToImgViewModel @Inject constructor(
         getNegativePrompts()
     }
 
+    /** change value **/
+    fun onSelectPositivePrompt(option: PromptOption) {
+
+    }
+
+    fun onSelectNegativePrompt(option: PromptOption) {
+
+    }
+
+    fun onChangeEnhancePrompt(enabled: Boolean) {
+
+    }
+
+    fun onChangePromptStrength(strength: Int) {
+
+    }
+
+    fun onSelectSDModel(option: SDModelOption) {
+
+    }
+
+    fun onSelectLoRaModel(option: LoRaModelOption) {
+
+    }
+
+    fun onChangeLoRaModelStrength(option: LoRaModelOption, strength: Float) {
+
+    }
+
+    fun onSelectEmbeddingsModel(option: EmbeddingsModelOption) {
+
+    }
+
+    fun onSelectSizeType(sizeType: Option) {
+
+
+    }
+
+    fun onChangeStepCount(stepCount: Int) {
+
+    }
+
+    fun onChangeSeed(seed: Int) {
+
+    }
+
+    fun onChangeScheduler(scheduler: SchedulerOption) {
+
+    }
+
+    fun onChangeUpscale(upscale: Option) {
+
+    }
+
+    /** click event **/
+    fun onClickAddPositivePrompt() {
+
+    }
+
+    fun onClickAddNegativePrompt() {
+
+    }
+
+    fun onClickMorePositivePrompt() {
+
+    }
+
+    fun onClickMoreNegativePrompt() {
+
+    }
+
+    fun onClickMoreSDModel() {
+
+    }
+
+    fun onClickMoreLoRaModel() {
+
+    }
+
+    fun onClickMoreEmbeddingsModel() {
+
+    }
+
+    fun onClickSeed(currentSeed: Long?) {
+
+    }
+
+    /** load **/
     private fun getPublicModels() = scope.launch {
         val models = txtToImgRepository.getPublicModels()
         _uiState.update {
