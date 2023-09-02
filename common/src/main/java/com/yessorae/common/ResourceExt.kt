@@ -23,7 +23,6 @@ fun String.replaceDomain(newDomain: String = "cdn2.stablediffusionapi.com"): Str
     }
 }
 
-
 fun String.replacePubDomain(newDomain: String = "cdn2.stablediffusionapi.com"): String {
     if (!this.contains("//pub-")) {
         return this
@@ -49,4 +48,3 @@ fun String.replacePubDomain(newDomain: String = "cdn2.stablediffusionapi.com"): 
         this
     }
 }
-

@@ -20,9 +20,13 @@ fun OptionTitle(
     modifier: Modifier = Modifier,
     text: StringModel
 ) {
-    OptionTitle(modifier = modifier
-        .padding(horizontal = Dimen.space_16)
-        .padding(top = Dimen.space_24, bottom = Dimen.space_4), text = text, trailer = {})
+    OptionTitle(
+        modifier = modifier
+            .padding(horizontal = Dimen.space_16)
+            .padding(top = Dimen.space_24, bottom = Dimen.space_4),
+        text = text,
+        trailer = {}
+    )
 }
 
 @Composable

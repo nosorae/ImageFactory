@@ -1,7 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.tti
 
 import com.yessorae.common.Logger
-import com.yessorae.common.replaceDomain
 import com.yessorae.common.replacePubDomain
 import com.yessorae.data.model.response.PublicModelDto
 import com.yessorae.data.model.response.PublicModelItem
@@ -54,8 +53,8 @@ class PublicModelMapper @Inject constructor() {
     }
 
     private fun isSDModel(dto: PublicModelItem): Boolean {
-        return dto.description.contains("stable", ignoreCase = true)
-                || dto.description.contains("diffusion", ignoreCase = true)
+        return dto.description.contains("stable", ignoreCase = true) ||
+            dto.description.contains("diffusion", ignoreCase = true)
     }
 
     private fun isLoRaModel(dto: PublicModelItem): Boolean {
@@ -67,8 +66,7 @@ class PublicModelMapper @Inject constructor() {
     }
 
     private fun isControlNetModel(dto: PublicModelItem): Boolean {
-        return dto.description.contains("control", ignoreCase = true)
-                || dto.modelId.contains("net", ignoreCase = true)
+        return dto.description.contains("control", ignoreCase = true) ||
+            dto.modelId.contains("net", ignoreCase = true)
     }
-
 }

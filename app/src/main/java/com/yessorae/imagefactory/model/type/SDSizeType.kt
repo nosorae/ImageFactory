@@ -20,7 +20,7 @@ enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
         width = 768,
         height = 512
     );
-    companion object{
+    companion object {
         val defaultOptions: List<Option> = SDSizeType.values().mapIndexed { index, type ->
             object : Option {
                 override val id: String = type.name

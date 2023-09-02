@@ -1,19 +1,15 @@
 package com.yessorae.imagefactory.ui.components.item.common
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,14 +23,13 @@ import coil.compose.SubcomposeAsyncImage
 import com.yessorae.common.Logger
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.theme.Gray200
 import com.yessorae.imagefactory.ui.theme.Gray400
 import com.yessorae.imagefactory.ui.theme.PrimaryBrush
 
 @Composable
 fun BaseImage(
     model: Any,
-    modifier: Modifier,
+    modifier: Modifier
 ) {
     val context = LocalContext.current
     SubcomposeAsyncImage(

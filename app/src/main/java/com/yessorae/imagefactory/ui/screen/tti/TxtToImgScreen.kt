@@ -28,7 +28,6 @@ fun TxtToImgScreen(
     SelectionScreen(
         requestModel = uiState.request
     )
-
 }
 
 @Composable
@@ -46,7 +45,6 @@ fun SelectionScreen(
             )
         }
         item {
-
         }
 
         item {
@@ -59,7 +57,6 @@ fun SelectionScreen(
             )
         }
         item {
-
         }
 
         item {
@@ -106,10 +103,9 @@ fun SelectionScreen(
                 options = SDSizeType.defaultOptions,
                 onClick = {
                     // todo
-                },
+                }
             )
         }
-
 
         // model
         item(
@@ -230,7 +226,6 @@ fun SelectionScreen(
             )
         }
         item {
-
         }
 
         // scheduler
