@@ -1,18 +1,22 @@
 package com.yessorae.data.repository
 
+import com.yessorae.data.local.dao.PromptDao
+import com.yessorae.data.local.model.PromptEntity
 import com.yessorae.data.remote.api.ModelListApi
 import com.yessorae.data.remote.api.TxtToImgApi
 import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.data.remote.model.response.PublicModelDto
 import com.yessorae.data.remote.model.response.TxtToImgDto
 import com.yessorae.data.util.handleResponse
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class TxtToImgRepository @Inject constructor(
     private val txtToImgApi: TxtToImgApi,
-    private val modelListApi: ModelListApi
+    private val modelListApi: ModelListApi,
+    private val promptDao: PromptDao
 ) {
     suspend fun generateImage(
         request: TxtToImgRequest
@@ -23,4 +27,17 @@ class TxtToImgRepository @Inject constructor(
     suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {
         return modelListApi.getPublicModels().handleResponse()
     }
+
+    suspend fun getPositivePrompts(): List<PromptEntity> {
+        return promptDao.getPromptsOrderedByCreatedAt(
+            isPositive = true
+        )
+    }
+
+    suspend fun getNegativePrompts(): List<PromptEntity> {
+        return promptDao.getPromptsOrderedByCreatedAt(
+            isPositive = false
+        )
+    }
+
 }

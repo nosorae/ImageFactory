@@ -22,7 +22,7 @@ import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.yesOrNo
 
 data class TxtToImgRequestModel(
-    val promptOptions: List<PromptOption> = listOf(),
+    val positivePromptOptions: List<PromptOption> = listOf(),
     val negativePromptOptions: List<PromptOption> = listOf(),
     val sdModelOption: List<SDModelOption> = listOf(),
     val enhancePrompt: Boolean = true,
@@ -39,7 +39,7 @@ data class TxtToImgRequestModel(
     val scheduler: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
     val multiLingual: Boolean by lazy {
-        promptOptions.isMultiLingual() || negativePromptOptions.isMultiLingual()
+        positivePromptOptions.isMultiLingual() || negativePromptOptions.isMultiLingual()
     }
 
     fun asTxtToImgRequest(
@@ -60,7 +60,7 @@ data class TxtToImgRequestModel(
 
         return TxtToImgRequest(
             modelId = modelId,
-            prompt = promptOptions.toPrompt(),
+            prompt = positivePromptOptions.toPrompt(),
             negativePrompt = negativePromptOptions.toPrompt(),
             width = size.width,
             height = size.height,

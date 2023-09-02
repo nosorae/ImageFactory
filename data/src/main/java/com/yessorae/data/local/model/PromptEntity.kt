@@ -13,6 +13,8 @@ data class PromptEntity(
     var promptId: Int = 0,
     @ColumnInfo(name = DBConstants.COL_PROMPT)
     val prompt: String,
+    @ColumnInfo(name = DBConstants.COLPOSITIVE)
+    val positive: Boolean,
     @ColumnInfo(name = DBConstants.COL_SELECT_COUNT)
     val selectCount: Int,
     @ColumnInfo(name = DBConstants.COL_CREATED_AT)

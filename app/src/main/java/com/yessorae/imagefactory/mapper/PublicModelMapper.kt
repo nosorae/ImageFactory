@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.screen.tti
+package com.yessorae.imagefactory.mapper
 
 import com.yessorae.common.Logger
 import com.yessorae.common.replacePubDomain

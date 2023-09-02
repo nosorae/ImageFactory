@@ -6,12 +6,15 @@ import com.yessorae.common.Constants
 import com.yessorae.common.Logger
 import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
+import com.yessorae.imagefactory.mapper.PromptMapper
+import com.yessorae.imagefactory.mapper.PublicModelMapper
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -20,23 +23,26 @@ import javax.inject.Inject
 @HiltViewModel
 class TxtToImgViewModel @Inject constructor(
     private val txtToImgRepository: TxtToImgRepository,
-    private val publicModelMapper: PublicModelMapper
+    private val publicModelMapper: PublicModelMapper,
+    private val promptMapper: PromptMapper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TxtToImgScreenState())
     val uiState = _uiState.asStateFlow()
 
-    val ceh = CoroutineExceptionHandler { _, throwable ->
+    private val ceh = CoroutineExceptionHandler { _, throwable ->
         Logger.presentation(
             message = throwable.toString(),
             error = true
         )
     }
 
-    val scope = viewModelScope + ceh + Dispatchers.IO
+    private val scope = viewModelScope + ceh + Dispatchers.IO
 
     init {
         getPublicModels()
+        getPositivePrompts()
+        getNegativePrompts()
     }
 
     private fun getPublicModels() = scope.launch {
@@ -47,6 +53,28 @@ class TxtToImgViewModel @Inject constructor(
                     sdModelOption = publicModelMapper.mapSDModelOption(dto = models),
                     loRaModelsOptions = publicModelMapper.mapLoRaModelOption(dto = models),
                     embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models)
+                )
+            )
+        }
+    }
+
+    private fun getPositivePrompts() = scope.launch {
+        val positive = txtToImgRepository.getPositivePrompts()
+        _uiState.update {
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    positivePromptOptions = promptMapper.map(dto = positive)
+                )
+            )
+        }
+    }
+
+    private fun getNegativePrompts() = scope.launch {
+        val negative = txtToImgRepository.getNegativePrompts()
+        _uiState.update {
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    negativePromptOptions = promptMapper.map(dto = negative)
                 )
             )
         }
