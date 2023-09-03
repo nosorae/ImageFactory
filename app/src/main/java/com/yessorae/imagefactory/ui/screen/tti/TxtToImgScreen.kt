@@ -81,7 +81,7 @@ fun TxtToImgScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = Dimen.button_height)
+            contentPadding = PaddingValues(bottom = Dimen.lazy_col_bottom_padding)
         ) {
             item {
                 OptionTitleWithMore(
@@ -347,7 +347,8 @@ fun TxtToImgScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = Dimen.side_padding),
+                .padding(horizontal = Dimen.side_padding)
+                .padding(bottom = Dimen.space_16),
             text = stringResource(R.string.common_button_generate_image)
         ) {
             viewModel.generateImage()

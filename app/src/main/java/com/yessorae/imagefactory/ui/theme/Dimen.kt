@@ -34,6 +34,8 @@ object Dimen {
 
     val bottom_sheet_top_padding = 56.dp
 
+    val lazy_col_bottom_padding = 82.dp
+
     val carousel_padding_values = PaddingValues(
         top = space_4,
         bottom = space_12,
