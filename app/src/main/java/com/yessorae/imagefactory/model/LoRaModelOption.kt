@@ -8,7 +8,8 @@ data class LoRaModelOption(
     override val id: String,
     override val image: Any,
     override val title: StringModel,
-    override val selected: Boolean
+    override val selected: Boolean,
+    val generationCount: Long?
 ) : CoverOption
 
 fun List<LoRaModelOption>.toLoRaModelPrompt(): String {

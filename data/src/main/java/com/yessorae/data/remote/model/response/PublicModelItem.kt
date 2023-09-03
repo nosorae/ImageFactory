@@ -11,6 +11,14 @@ data class PublicModelItem(
     val createdAt: Any?, // null
     @SerializedName("instance_prompt")
     val instancePrompt: String?, // mdjrny-v4 style
+    @SerializedName("api_calls")
+    val apiCalls: String?, // "1690106"
+    @SerializedName("model_category")
+    val modelCategory: String, // stable_diffusion
+    @SerializedName("is_nsfw")
+    val isNsfw: String, // yes || no
+    @SerializedName("featured")
+    val featured: String, // yes || no
     @SerializedName("model_name")
     val modelName: String, // MidJourney V4
     @SerializedName("description")

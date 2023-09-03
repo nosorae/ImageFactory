@@ -9,7 +9,9 @@ data class SDModelOption(
     override val id: String,
     override val image: Any,
     override val title: StringModel,
-    override val selected: Boolean
+    override val selected: Boolean,
+    val generationCount: Long?,
+    val isSdxl: Boolean = false
 ) : CoverOption {
     companion object
 }
@@ -26,7 +28,8 @@ fun SDModelOption.Companion.mock(): List<CoverOption> {
             id = index.toString(),
             image = MockData.MOCK_IMAGE_URL,
             title = TextString(word),
-            selected = index == 0
+            selected = index == 0,
+            generationCount = index * 1000L
         )
     }
 }
