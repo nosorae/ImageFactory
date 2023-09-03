@@ -18,8 +18,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -406,6 +408,7 @@ fun TxtToImgScreen(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TxtToImgDialog(
     dialogState: TxtToImgDialogState,
@@ -420,8 +423,10 @@ fun TxtToImgDialog(
     onSeedChange: (Long?) -> Unit,
     onCancelDialog: () -> Unit
 ) {
+
     when (dialogState) {
         is PositivePromptAdditionDialog -> {
+
             InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = onAddPositivePrompt
