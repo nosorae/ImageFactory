@@ -43,7 +43,7 @@ fun PromptOptionLayout(
     val state = rememberLazyStaggeredGridState()
 
     LazyHorizontalStaggeredGrid(
-        rows = StaggeredGridCells.Fixed(UiConfig.PROMPT_CAROUSEL_ROW),
+        rows = StaggeredGridCells.Adaptive(24.dp),
         modifier = modifier.height(120.dp).fillMaxWidth(),
         state = state,
         contentPadding = Dimen.carousel_padding_values,
