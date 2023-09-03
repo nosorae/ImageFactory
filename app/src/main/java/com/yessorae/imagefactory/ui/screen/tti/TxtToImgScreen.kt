@@ -9,10 +9,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -59,6 +67,7 @@ import com.yessorae.imagefactory.ui.util.compose.showToast
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TxtToImgScreen(
     viewModel: TxtToImgViewModel = viewModel()
@@ -70,6 +79,8 @@ fun TxtToImgScreen(
 
     val context = LocalContext.current
 
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     LaunchedEffect(key1 = Unit) {
         launch {
             viewModel.toast.collectLatest { message ->
@@ -78,9 +89,52 @@ fun TxtToImgScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.common_title_txt_to_img),
+                    )
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            // todo
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
+                    }
+
+                    IconButton(
+                        onClick = {
+                            // todo
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
+        },
+        bottomBar = {
+            ActionButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimen.side_padding)
+                    .padding(bottom = Dimen.space_16),
+                text = stringResource(R.string.common_button_generate_image)
+            ) {
+                viewModel.generateImage()
+            }
+        },
+    ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding()),
             contentPadding = PaddingValues(bottom = Dimen.lazy_col_bottom_padding)
         ) {
             item {
@@ -342,18 +396,8 @@ fun TxtToImgScreen(
                 )
             }
         }
-
-        ActionButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = Dimen.side_padding)
-                .padding(bottom = Dimen.space_16),
-            text = stringResource(R.string.common_button_generate_image)
-        ) {
-            viewModel.generateImage()
-        }
     }
+
 
 
     TxtToImgDialog(
