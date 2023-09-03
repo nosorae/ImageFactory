@@ -32,6 +32,8 @@ object Dimen {
     val dialog_content_padding = 8.dp
     val dialog_content_button_padding = 20.dp
 
+    val bottom_sheet_top_padding = 56.dp
+
     val carousel_padding_values = PaddingValues(
         top = space_4,
         bottom = space_12,

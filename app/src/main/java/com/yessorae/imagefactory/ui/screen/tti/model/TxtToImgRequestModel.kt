@@ -43,6 +43,18 @@ data class TxtToImgRequestModel(
         positivePromptOptions.isMultiLingual() || negativePromptOptions.isMultiLingual()
     }
 
+    val previewSDModels by lazy {
+        sdModelOption.filterIndexed { index, sdModelOption ->  sdModelOption.selected && index < PREVIEW_COUNT }
+    }
+
+    val previewLoRas by lazy {
+        loRaModelsOptions.filterIndexed { index, sdModelOption ->  sdModelOption.selected || index < PREVIEW_COUNT }
+    }
+
+    val previewEmbeddings by lazy {
+        embeddingsModelOption.filterIndexed { index, sdModelOption ->  sdModelOption.selected || index < PREVIEW_COUNT }
+    }
+
     fun asTxtToImgRequest(
         toastEvent: (StringModel) -> Unit
     ): TxtToImgRequest? {
@@ -79,5 +91,9 @@ data class TxtToImgRequestModel(
             embeddingsModel = embeddingsModelOption.getSelectedOption()?.id,
             scheduler = scheduler
         )
+    }
+
+    companion object {
+        const val PREVIEW_COUNT = 10
     }
 }

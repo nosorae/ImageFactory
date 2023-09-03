@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
@@ -27,7 +29,8 @@ import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.SchedulerOption
-import com.yessorae.imagefactory.ui.components.dialog.CustomPromptDialog
+import com.yessorae.imagefactory.ui.components.dialog.FullModelOptionBottomSheet
+import com.yessorae.imagefactory.ui.components.dialog.InputDialog
 import com.yessorae.imagefactory.ui.components.item.ActionButton
 import com.yessorae.imagefactory.ui.components.item.OptionTitle
 import com.yessorae.imagefactory.ui.components.item.OptionTitleWithMore
@@ -39,6 +42,9 @@ import com.yessorae.imagefactory.ui.components.layout.PromptOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.RadioOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.ZeroToOneSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.roundToOneDecimalPlace
+import com.yessorae.imagefactory.ui.screen.tti.model.MoreEmbeddingsBottomSheet
+import com.yessorae.imagefactory.ui.screen.tti.model.MoreLoRaModelBottomSheet
+import com.yessorae.imagefactory.ui.screen.tti.model.MoreSDModelBottomSheet
 import com.yessorae.imagefactory.ui.screen.tti.model.NegativePromptOptionAdditionDialog
 import com.yessorae.imagefactory.ui.screen.tti.model.PositivePromptAdditionDialog
 import com.yessorae.imagefactory.ui.screen.tti.model.SeedChangeDialog
@@ -152,12 +158,15 @@ fun TxtToImgScreen(
             ) {
                 OptionTitleWithMore(
                     text = ResString(R.string.common_section_title_model),
-                    trailingText = ResString(R.string.common_button_see_more)
+                    trailingText = ResString(R.string.common_button_see_more),
+                    onClickMore = {
+                        viewModel.onClickMoreSDModel()
+                    }
                 )
             }
             item {
                 ModelsLayout(
-                    models = requestModel.sdModelOption,
+                    models = requestModel.previewSDModels,
                     onClick = { option ->
                         viewModel.onSelectSDModel(
                             option = option as SDModelOption
@@ -172,12 +181,15 @@ fun TxtToImgScreen(
             ) {
                 OptionTitleWithMore(
                     text = ResString(R.string.common_section_title_lora),
-                    trailingText = ResString(R.string.common_button_see_more)
+                    trailingText = ResString(R.string.common_button_see_more),
+                    onClickMore = {
+                        viewModel.onClickMoreLoRaModel()
+                    }
                 )
             }
             item {
                 ModelsLayout(
-                    models = requestModel.loRaModelsOptions,
+                    models = requestModel.previewLoRas,
                     onClick = { option ->
                         viewModel.onSelectLoRaModel(
                             option = option as LoRaModelOption
@@ -216,12 +228,15 @@ fun TxtToImgScreen(
             ) {
                 OptionTitleWithMore(
                     text = ResString(R.string.common_section_title_embeddings),
-                    trailingText = ResString(R.string.common_button_see_more)
+                    trailingText = ResString(R.string.common_button_see_more),
+                    onClickMore = {
+                        viewModel.onClickMoreEmbeddingsModel()
+                    }
                 )
             }
             item {
                 ModelsLayout(
-                    models = requestModel.embeddingsModelOption,
+                    models = requestModel.previewEmbeddings,
                     onClick = { option ->
                         viewModel.onSelectEmbeddingsModel(
                             option = option as EmbeddingsModelOption
@@ -340,6 +355,9 @@ fun TxtToImgScreen(
 
     TxtToImgDialog(
         dialogState = dialogState,
+        sdModels = requestModel.sdModelOption,
+        loRaModels = requestModel.loRaModelsOptions,
+        embeddingsModels = requestModel.embeddingsModelOption,
         onAddPositivePrompt = { prompt ->
             viewModel.onAddPositivePrompt(prompt = prompt)
         },
@@ -348,6 +366,15 @@ fun TxtToImgScreen(
         },
         onSeedChange = { seed ->
             viewModel.onChangeSeed(seed = seed)
+        },
+        onSelectSDModel = { option ->
+            viewModel.onSelectSDModel(option = option)
+        },
+        onSelectLoRaModel = { option ->
+            viewModel.onSelectLoRaModel(option = option)
+        },
+        onSelectEmbeddingsModelOption = { option ->
+            viewModel.onSelectEmbeddingsModel(option = option)
         },
         onCancelDialog = {
             viewModel.onCancelDialog()
@@ -371,7 +398,8 @@ fun TxtToImgScreen(
             CircularProgressIndicator(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .size(Dimen.medium_icon_size
+                    .size(
+                        Dimen.medium_icon_size
                     )
             )
         }
@@ -381,28 +409,82 @@ fun TxtToImgScreen(
 @Composable
 fun TxtToImgDialog(
     dialogState: TxtToImgDialogState,
+    sdModels: List<SDModelOption>,
+    loRaModels: List<LoRaModelOption>,
+    embeddingsModels: List<EmbeddingsModelOption>,
     onAddPositivePrompt: (String) -> Unit,
     onAddNegativePrompt: (String) -> Unit,
+    onSelectSDModel: (SDModelOption) -> Unit,
+    onSelectLoRaModel: (LoRaModelOption) -> Unit,
+    onSelectEmbeddingsModelOption: (EmbeddingsModelOption) -> Unit,
     onSeedChange: (Long?) -> Unit,
     onCancelDialog: () -> Unit
 ) {
     when (dialogState) {
         is PositivePromptAdditionDialog -> {
-            CustomPromptDialog(
+            InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = onAddPositivePrompt
             )
         }
 
         is NegativePromptOptionAdditionDialog -> {
-            CustomPromptDialog(
+            InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = onAddNegativePrompt
             )
         }
 
-        is SeedChangeDialog -> {
+        is MoreSDModelBottomSheet -> {
+            FullModelOptionBottomSheet(
+                title = ResString(R.string.common_section_title_model),
+                options = sdModels,
+                onCancelDialog = {
+                    onCancelDialog()
+                },
+                onSelectModelOption = {
+                    onSelectSDModel(it as SDModelOption)
+                }
+            )
+        }
 
+        is MoreLoRaModelBottomSheet -> {
+            FullModelOptionBottomSheet(
+                title = ResString(R.string.common_section_title_model),
+                options = loRaModels,
+                onCancelDialog = {
+                    onCancelDialog()
+                },
+                onSelectModelOption = {
+                    onSelectLoRaModel(it as LoRaModelOption)
+                }
+            )
+        }
+
+        is MoreEmbeddingsBottomSheet -> {
+            FullModelOptionBottomSheet(
+                title = ResString(R.string.common_section_title_lora),
+                options = embeddingsModels,
+                onCancelDialog = {
+                    onCancelDialog()
+                },
+                onSelectModelOption = {
+                    onSelectEmbeddingsModelOption(it as EmbeddingsModelOption)
+                }
+            )
+        }
+
+        is SeedChangeDialog -> {
+            InputDialog(
+                onDismissRequest = onCancelDialog,
+                onClickAddButton = {
+                    onSeedChange(it.toLongOrNull())
+                },
+                placeholderText = ResString(R.string.common_section_title_embeddings),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                )
+            )
         }
 
         else -> {

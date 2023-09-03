@@ -1,6 +1,7 @@
 package com.yessorae.imagefactory.ui.components.item
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -24,11 +25,12 @@ import com.yessorae.imagefactory.ui.util.TextString
 import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
 
 @Composable
-fun CustomPrompt(
+fun ImageFactoryTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     placeholderText: StringModel,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     TextField(
@@ -51,7 +53,8 @@ fun CustomPrompt(
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Transparent,
             unfocusedIndicatorColor = Transparent
-        )
+        ),
+        keyboardOptions = keyboardOptions
     )
 }
 
@@ -62,7 +65,7 @@ fun CustomPromptPreview() {
         mutableStateOf("")
     }
     ColumnPreview {
-        CustomPrompt(
+        ImageFactoryTextField(
             value = value,
             onValueChange = { value = it },
             placeholderText = TextString("Placeholder"),

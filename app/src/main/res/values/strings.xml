@@ -21,6 +21,7 @@
     <string name="common_section_title_embeddings">임베딩 모델 선택</string>
     <string name="common_section_title_step_count">스텝 수 · %s</string>
     <string name="common_section_title_seed">시드</string>
+    <string name="common_section_placeholder_input_seed">시드입력 (숫자로 입력하세요)</string>
     <string name="common_section_title_nsfw">후방주의 사진 활성화</string>
     <string name="common_section_title_upscale">업스케일</string>
     <string name="common_section_title_scheduler">스케쥴러 선택</string>
@@ -29,6 +30,8 @@
     <string name="common_error_not_fount_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
 
     <string name="common_n_value_upscale">%s배 업스케일</string>
+
+    <string name="common_placeholder_search">검색어 입력</string>
 
 
 </resources>

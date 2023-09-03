@@ -18,6 +18,9 @@ import com.yessorae.imagefactory.model.type.toOptionList
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
+import com.yessorae.imagefactory.ui.screen.tti.model.MoreEmbeddingsBottomSheet
+import com.yessorae.imagefactory.ui.screen.tti.model.MoreLoRaModelBottomSheet
+import com.yessorae.imagefactory.ui.screen.tti.model.MoreSDModelBottomSheet
 import com.yessorae.imagefactory.ui.screen.tti.model.NegativePromptOptionAdditionDialog
 import com.yessorae.imagefactory.ui.screen.tti.model.None
 import com.yessorae.imagefactory.ui.screen.tti.model.PositivePromptAdditionDialog
@@ -355,7 +358,6 @@ class TxtToImgViewModel @Inject constructor(
         _dialogEvent.emit(NegativePromptOptionAdditionDialog)
     }
 
-    //
     fun onClickMorePositivePrompt() = scope.launch {
 
     }
@@ -365,15 +367,27 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     fun onClickMoreSDModel() = scope.launch {
-
+        _dialogEvent.emit(
+            MoreSDModelBottomSheet(
+                options = uiState.value.request.sdModelOption,
+            )
+        )
     }
 
     fun onClickMoreLoRaModel() = scope.launch {
-
+        _dialogEvent.emit(
+            MoreLoRaModelBottomSheet(
+                options = uiState.value.request.loRaModelsOptions,
+            )
+        )
     }
 
     fun onClickMoreEmbeddingsModel() = scope.launch {
-
+        _dialogEvent.emit(
+            MoreEmbeddingsBottomSheet(
+                options = uiState.value.request.embeddingsModelOption,
+            )
+        )
     }
 
     fun onClickChangeSeed(currentSeed: Long?) = sharedEventScope.launch {
