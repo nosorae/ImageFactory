@@ -44,7 +44,7 @@ data class TxtToImgRequestModel(
     }
 
     val previewSDModels by lazy {
-        sdModelOption.filterIndexed { index, sdModelOption ->  sdModelOption.selected && index < PREVIEW_COUNT }
+        sdModelOption.filterIndexed { index, sdModelOption ->  sdModelOption.selected || index < PREVIEW_COUNT }
     }
 
     val previewLoRas by lazy {
