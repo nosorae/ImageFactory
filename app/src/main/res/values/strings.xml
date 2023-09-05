@@ -1,4 +1,5 @@
 <resources>
+    <!-- 접두어 common, {화면}_{위치}_{기능|의미} -->
     <string name="app_name">ImageFactory</string>
     <string name="common_watch_ad">광고 시청하기</string>
     <string name="common_button_see_more">더보기</string>
@@ -33,6 +34,15 @@
     <string name="common_n_value_upscale">%s배 업스케일</string>
 
     <string name="common_placeholder_search">검색어 입력</string>
+
+    <string name="common_state_generate_image">이미지 생성중</string>
+    <string name="common_state_load_image">이미지 로딩중</string>
+
+    <string name="common_state_load_image_failed">이미지 로딩 실패.\n개발자에게 문의해주세요 🙏</string>
+
+    <string name="result_dialog_option_retry">재시도</string>
+    <string name="result_dialog_option_save">저장</string>
+    <string name="result_dialog_option_upscale">화질 개선</string>
 
 
 </resources>

@@ -61,6 +61,7 @@ import com.yessorae.imagefactory.ui.screen.tti.model.PositivePromptAdditionDialo
 import com.yessorae.imagefactory.ui.screen.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgRequestModel
+import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.TextString
@@ -91,7 +92,8 @@ fun TxtToImgScreen(
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
@@ -424,22 +426,19 @@ fun TxtToImgScreen(
         onSelectEmbeddingsModelOption = { option ->
             viewModel.onSelectEmbeddingsModel(option = option)
         },
+        onClickRetry = {
+            // todo
+        },
+        onClickSave = {
+            // todo
+        },
+        onClickUpscale = {
+            // todo
+        },
         onCancelDialog = {
             viewModel.onCancelDialog()
         }
     )
-
-    uiState.result?.let { model ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            BaseImage(model = model, modifier = Modifier.fillMaxSize())
-            IconButton(
-                onClick = { viewModel.temp() },
-                modifier = Modifier.align(Alignment.TopEnd)
-            ) {
-                Icon(imageVector = Icons.Outlined.Close, contentDescription = null)
-            }
-        }
-    }
 
     if (uiState.loading) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -454,7 +453,6 @@ fun TxtToImgScreen(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TxtToImgDialog(
     dialogState: TxtToImgDialogState,
@@ -467,6 +465,9 @@ fun TxtToImgDialog(
     onSelectLoRaModel: (LoRaModelOption) -> Unit,
     onSelectEmbeddingsModelOption: (EmbeddingsModelOption) -> Unit,
     onSeedChange: (Long?) -> Unit,
+    onClickRetry: (TxtToImgResultDialog) -> Unit,
+    onClickSave: (TxtToImgResultDialog) -> Unit,
+    onClickUpscale: (TxtToImgResultDialog) -> Unit,
     onCancelDialog: () -> Unit
 ) {
 
@@ -535,6 +536,24 @@ fun TxtToImgDialog(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 )
+            )
+        }
+
+        is TxtToImgResultDialog -> {
+            ResultDialogScreen(
+                dialog = dialogState,
+                onClickRetry = {
+                    onClickRetry(dialogState)
+                },
+                onClickSave = {
+                    onClickSave(dialogState)
+                },
+                onClickUpscale = {
+                    onClickUpscale(dialogState)
+                },
+                onClickCancel = {
+                    onCancelDialog()
+                }
             )
         }
 

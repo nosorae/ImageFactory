@@ -41,3 +41,9 @@ data class SeedChangeDialog(
     val seedText: StringModel =
         currentSeed?.let { TextString(it.toString()) } ?: ResString(R.string.common_random)
 }
+
+data class TxtToImgResultDialog(
+    val request: TxtToImgRequestModel,
+    val result: TxtToImgResultModel? = null,
+    val ratio: Float,
+) : TxtToImgDialogState()

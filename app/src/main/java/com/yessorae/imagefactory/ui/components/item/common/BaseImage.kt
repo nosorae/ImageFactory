@@ -32,6 +32,9 @@ fun BaseImage(
     modifier: Modifier
 ) {
     val context = LocalContext.current
+    // AsyncImage로 전환
+    // Subcomposition is less performant than regular composition
+    // so this composable may not be suitable for parts of your UI where high performance is critical (e.g. lists).
     SubcomposeAsyncImage(
         model = model,
         contentDescription = null,
