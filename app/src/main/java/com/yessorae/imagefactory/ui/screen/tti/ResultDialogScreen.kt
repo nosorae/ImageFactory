@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
@@ -69,9 +71,11 @@ fun ResultDialogScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .clickable {
-                // do nothing
-            }
+            .clickable(
+                onClick = {},
+                indication = null,
+                interactionSource = MutableInteractionSource()
+            )
             .background(color = MaterialTheme.colorScheme.background)
     ) {
 
@@ -137,7 +141,8 @@ fun ResultDialogScreen(
                                 Color.DarkGray,
                             )
                         )
-                    ),
+                    )
+                    .padding(bottom = Dimen.space_24),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
@@ -158,17 +163,34 @@ fun ResultDialogScreen(
                     onClick = onClickUpscale
                 )
             }
-
-            Margin(margin = Dimen.dialog_bottom_padding)
         }
 
-        IconButton(
-            onClick = onClickCancel,
+        Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = Dimen.space_16)
+                .fillMaxWidth()
+                .height(Dimen.top_app_bar_height)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.DarkGray,
+                            Color.Transparent,
+                        )
+                    )
+                ),
         ) {
-            Icon(imageVector = Icons.Default.Close, contentDescription = null)
+            IconButton(
+                onClick = onClickCancel,
+                modifier = Modifier
+                    .padding(top = Dimen.space_16)
+                    .align(Alignment.TopEnd)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                )
+            }
         }
+
     }
 }

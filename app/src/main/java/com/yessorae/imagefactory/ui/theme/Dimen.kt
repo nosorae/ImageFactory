@@ -22,6 +22,8 @@ object Dimen {
     val image_radius = 4.dp
     val button_height = 64.dp
 
+    val top_app_bar_height = 56.dp
+
     val cover_size = 88.dp
 
     val dialog_width = 312.dp
