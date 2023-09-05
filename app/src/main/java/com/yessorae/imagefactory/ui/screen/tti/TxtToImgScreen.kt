@@ -45,6 +45,7 @@ import com.yessorae.imagefactory.ui.components.item.ActionButton
 import com.yessorae.imagefactory.ui.components.item.OptionTitle
 import com.yessorae.imagefactory.ui.components.item.OptionTitleWithMore
 import com.yessorae.imagefactory.ui.components.item.common.BaseImage
+import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.ModelsLayout
 import com.yessorae.imagefactory.ui.components.layout.NaturalNumberSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.OnOffOptionLayout
@@ -442,7 +443,7 @@ fun TxtToImgScreen(
 
     if (uiState.loading) {
         Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(
+            LoadingLayout(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .size(
