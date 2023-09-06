@@ -38,6 +38,7 @@
 
     <string name="common_state_generate_image">이미지 생성중</string>
     <string name="common_state_load_image">이미지 로딩중</string>
+    <string name="common_state_download_image">이미지 다운로드중…</string>
 
     <string name="common_state_load_image_failed">이미지 로딩 실패.\n개발자에게 문의해주세요 🙏</string>
 
