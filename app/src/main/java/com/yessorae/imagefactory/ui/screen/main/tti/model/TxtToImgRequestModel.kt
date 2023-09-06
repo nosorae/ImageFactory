@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.screen.tti.model
+package com.yessorae.imagefactory.ui.screen.main.tti.model
 
 import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.imagefactory.R

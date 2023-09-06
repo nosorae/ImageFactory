@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.screen.tti
+package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,16 +19,16 @@ import com.yessorae.imagefactory.model.type.toOptionList
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
-import com.yessorae.imagefactory.ui.screen.tti.model.MoreEmbeddingsBottomSheet
-import com.yessorae.imagefactory.ui.screen.tti.model.MoreLoRaModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.tti.model.MoreSDModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.tti.model.NegativePromptOptionAdditionDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.None
-import com.yessorae.imagefactory.ui.screen.tti.model.PositivePromptAdditionDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.SeedChangeDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgDialogState
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgResultDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgScreenState
+import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreEmbeddingsBottomSheet
+import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreLoRaModelBottomSheet
+import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreSDModelBottomSheet
+import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAdditionDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.None
+import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -420,10 +420,12 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     fun generateImage() = scope.launch {
-        showLoading(show = true)
-        uiState.value.request.asTxtToImgRequest(toastEvent = { message ->
-            showToast(message = message)
-        })?.let { request ->
+        uiState.value.request.asTxtToImgRequest(
+            toastEvent = { message ->
+                showToast(message = message)
+            }
+        )?.let { request ->
+            showLoading(show = true)
             val response = txtToImgRepository.generateImage(request = request)
             when (response.status) {
                 "success" -> {

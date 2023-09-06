@@ -83,7 +83,14 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
+    // isCoreLibraryDesugaringEnabled = true
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+    // for Navigation
+    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    // for BottomNavigation Composable
+    implementation("androidx.compose.material:material:1.3.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

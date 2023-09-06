@@ -1,7 +1,7 @@
 package com.yessorae.imagefactory.mapper
 
 import com.yessorae.data.remote.model.response.TxtToImgDto
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgResultModel
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultModel
 import javax.inject.Inject
 
 class TxtToImgResultMapper @Inject constructor() {

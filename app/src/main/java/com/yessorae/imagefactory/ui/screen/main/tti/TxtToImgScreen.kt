@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.screen.tti
+package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,8 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,13 +23,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
@@ -53,15 +50,15 @@ import com.yessorae.imagefactory.ui.components.layout.PromptOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.RadioOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.ZeroToOneSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.roundToOneDecimalPlace
-import com.yessorae.imagefactory.ui.screen.tti.model.MoreEmbeddingsBottomSheet
-import com.yessorae.imagefactory.ui.screen.tti.model.MoreLoRaModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.tti.model.MoreSDModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.tti.model.NegativePromptOptionAdditionDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.PositivePromptAdditionDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.SeedChangeDialog
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgDialogState
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgRequestModel
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgResultDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreEmbeddingsBottomSheet
+import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreLoRaModelBottomSheet
+import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreSDModelBottomSheet
+import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAdditionDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestModel
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.TextString
@@ -72,7 +69,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TxtToImgScreen(
-    viewModel: TxtToImgViewModel = viewModel()
+    viewModel: TxtToImgViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val requestModel = uiState.request
@@ -119,7 +116,11 @@ fun TxtToImgScreen(
                         Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    scrolledContainerColor = MaterialTheme.colorScheme.background
+                )
             )
         },
         bottomBar = {

@@ -17,7 +17,8 @@ fun BaseDialog(
         properties = DialogProperties(
             dismissOnClickOutside = dismissOnClickOutside,
             dismissOnBackPress = dismissOnBackPress,
-            usePlatformDefaultWidth = fullScreen.not()
+            usePlatformDefaultWidth = fullScreen.not(),
+            decorFitsSystemWindows = fullScreen.not()
         )
     ) {
         content()

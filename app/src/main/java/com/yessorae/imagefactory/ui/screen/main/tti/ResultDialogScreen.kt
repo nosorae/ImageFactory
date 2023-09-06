@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.screen.tti
+package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -44,7 +44,7 @@ import com.yessorae.imagefactory.ui.components.item.IconWithText
 import com.yessorae.imagefactory.ui.components.item.common.BaseDialog
 import com.yessorae.imagefactory.ui.components.layout.ImageLoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
-import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgResultDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.Margin
 

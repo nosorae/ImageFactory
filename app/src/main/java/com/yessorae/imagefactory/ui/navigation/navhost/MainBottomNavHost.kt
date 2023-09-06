@@ -1,0 +1,48 @@
+package com.yessorae.imagefactory.ui.navigation.navhost
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.yessorae.imagefactory.ui.navigation.destination.InpaintingBottomTabDestination
+import com.yessorae.imagefactory.ui.navigation.destination.MainBottomTabDestination
+import com.yessorae.imagefactory.ui.navigation.destination.ProfileBottomTabDestination
+import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgBottomTabDestination
+import com.yessorae.imagefactory.ui.screen.main.tti.TxtToImgScreen
+import com.yessorae.imagefactory.ui.util.ReadyScreen
+
+@Composable
+fun MainBottomNavHost(
+    navController: NavHostController,
+    startDestination: MainBottomTabDestination = TxtToImgBottomTabDestination,
+    modifier: Modifier,
+    onNavOutEvent: (route: String) -> Unit
+) {
+    NavHost(
+        navController = navController,
+        modifier = modifier.fillMaxSize(),
+        startDestination = startDestination.route,
+    ) {
+        composable(
+            route = TxtToImgBottomTabDestination.route
+        ) {
+            TxtToImgScreen()
+        }
+
+        composable(
+            route = InpaintingBottomTabDestination.route
+        ) {
+            ReadyScreen(InpaintingBottomTabDestination.route)
+        }
+
+        composable(
+            route = ProfileBottomTabDestination.route
+        ) {
+            ReadyScreen(ProfileBottomTabDestination.route)
+        }
+    }
+
+}
+

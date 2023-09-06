@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.yessorae.imagefactory.ui.screen.tti.TxtToImgScreen
+import com.yessorae.imagefactory.ui.screen.ImageFactoryAppScreen
+import com.yessorae.imagefactory.ui.screen.main.tti.TxtToImgScreen
 import com.yessorae.imagefactory.ui.theme.ImageFactoryTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,15 +17,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ImageFactoryTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    TxtToImgScreen()
-                }
-            }
+            ImageFactoryAppScreen()
         }
     }
 }
