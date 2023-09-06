@@ -41,6 +41,9 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.item.IconWithText
+import com.yessorae.imagefactory.ui.components.item.common.BaseDialog
+import com.yessorae.imagefactory.ui.components.layout.ImageLoadingLayout
+import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
 import com.yessorae.imagefactory.ui.screen.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.Margin
@@ -63,134 +66,137 @@ fun ResultDialogScreen(
             .data(imageUrl)
             .build()
     )
-
-    BackHandler {
-        onClickCancel()
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(
-                onClick = {},
-                indication = null,
-                interactionSource = MutableInteractionSource()
-            )
-            .background(color = MaterialTheme.colorScheme.background)
+    BaseDialog(
+        onDismissRequest = onClickCancel,
+        dismissOnClickOutside = false,
+        fullScreen = true
     ) {
-
-        AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(imageUrl)
-                .build(),
-            contentDescription = null,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .blur(
-                    radiusX = 10.dp,
-                    radiusY = 10.dp,
-                    edgeTreatment = BlurredEdgeTreatment.Unbounded
-                ),
-            contentScale = ContentScale.Crop
-        )
+                .background(color = MaterialTheme.colorScheme.background)
+        ) {
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            Column(
+            AsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(imageUrl)
+                    .build(),
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterState,
-                    contentDescription = null,
+                    .fillMaxSize()
+                    .blur(
+                        radiusX = 10.dp,
+                        radiusY = 10.dp,
+                        edgeTreatment = BlurredEdgeTreatment.Unbounded
+                    ),
+                contentScale = ContentScale.Crop
+            )
+
+            Column(modifier = Modifier.fillMaxSize()) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = Dimen.space_16)
-                        .aspectRatio(dialog.ratio)
-                        .clip(MaterialTheme.shapes.medium)
-                )
-                Margin(margin = Dimen.space_8)
-                if (dialog.result == null) {
-                    Text(text = stringResource(id = R.string.common_state_generate_image))
-                } else {
-                    when (painterState.state) {
-                        is AsyncImagePainter.State.Loading -> {
-                            Text(text = stringResource(id = R.string.common_state_load_image))
-                        }
+                        .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = Dimen.space_16)
+                            .aspectRatio(dialog.ratio)
+                            .clip(MaterialTheme.shapes.medium),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ImageLoadingLayout(modifier = Modifier.fillMaxSize())
+                        Image(
+                            painter = painterState,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    Margin(margin = Dimen.space_8)
+                    if (dialog.result == null) {
+                        Text(text = stringResource(id = R.string.common_state_generate_image))
+                    } else {
+                        when (painterState.state) {
+                            is AsyncImagePainter.State.Loading -> {
+                                Text(text = stringResource(id = R.string.common_state_load_image))
+                            }
 
-                        is AsyncImagePainter.State.Error -> {
-                            Text(text = stringResource(id = R.string.common_state_load_image_failed))
-                        }
+                            is AsyncImagePainter.State.Error -> {
+                                Text(text = stringResource(id = R.string.common_state_load_image_failed))
+                            }
 
-                        else -> {
-                            // do nothing
+                            else -> {
+                                // do nothing
+                            }
                         }
                     }
                 }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    Color.DarkGray,
+                                )
+                            )
+                        )
+                        .padding(bottom = Dimen.space_24),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+
+                    IconWithText(
+                        imageVector = Icons.Default.Replay,
+                        text = stringResource(id = R.string.result_dialog_option_retry),
+                        onClick = onClickRetry
+                    )
+                    IconWithText(
+                        imageVector = Icons.Default.SaveAlt,
+                        text = stringResource(id = R.string.result_dialog_option_save),
+                        onClick = onClickSave
+                    )
+                    IconWithText(
+                        imageVector = Icons.Default.AutoAwesome,
+                        text = stringResource(id = R.string.result_dialog_option_upscale),
+                        onClick = onClickUpscale
+                    )
+                }
             }
 
-            Row(
+            Box(
                 modifier = Modifier
+                    .align(Alignment.TopEnd)
                     .fillMaxWidth()
+                    .height(Dimen.top_app_bar_height)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.Transparent,
                                 Color.DarkGray,
+                                Color.Transparent,
                             )
                         )
-                    )
-                    .padding(bottom = Dimen.space_24),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround
+                    ),
             ) {
-
-                IconWithText(
-                    imageVector = Icons.Default.Replay,
-                    text = stringResource(id = R.string.result_dialog_option_retry),
-                    onClick = onClickRetry
-                )
-                IconWithText(
-                    imageVector = Icons.Default.SaveAlt,
-                    text = stringResource(id = R.string.result_dialog_option_save),
-                    onClick = onClickSave
-                )
-                IconWithText(
-                    imageVector = Icons.Default.AutoAwesome,
-                    text = stringResource(id = R.string.result_dialog_option_upscale),
-                    onClick = onClickUpscale
-                )
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .fillMaxWidth()
-                .height(Dimen.top_app_bar_height)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.DarkGray,
-                            Color.Transparent,
-                        )
+                IconButton(
+                    onClick = onClickCancel,
+                    modifier = Modifier
+                        .padding(top = Dimen.space_16)
+                        .align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null,
                     )
-                ),
-        ) {
-            IconButton(
-                onClick = onClickCancel,
-                modifier = Modifier
-                    .padding(top = Dimen.space_16)
-                    .align(Alignment.TopEnd)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                )
+                }
             }
-        }
 
+        }
     }
+
 }

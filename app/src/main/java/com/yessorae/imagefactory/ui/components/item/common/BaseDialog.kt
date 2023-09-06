@@ -9,13 +9,15 @@ fun BaseDialog(
     onDismissRequest: () -> Unit,
     dismissOnClickOutside: Boolean = true,
     dismissOnBackPress: Boolean = true,
+    fullScreen: Boolean = false,
     content: @Composable () -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
             dismissOnClickOutside = dismissOnClickOutside,
-            dismissOnBackPress = dismissOnBackPress
+            dismissOnBackPress = dismissOnBackPress,
+            usePlatformDefaultWidth = fullScreen.not()
         )
     ) {
         content()
