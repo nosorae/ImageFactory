@@ -155,7 +155,7 @@ fun TxtToImgScreen(
                     .padding(bottom = Dimen.space_16),
                 text = stringResource(R.string.common_button_generate_image)
             ) {
-                viewModel.generateImage()
+                viewModel.onClickGenerateImage()
             }
         },
     ) { paddingValues ->
@@ -451,14 +451,14 @@ fun TxtToImgScreen(
         onSelectEmbeddingsModelOption = { option ->
             viewModel.onSelectEmbeddingsModel(option = option)
         },
-        onClickRetry = {
-            // todo
+        onClickRetry = { data ->
+            viewModel.onClickRetry(data)
         },
         onClickSave = { data ->
             viewModel.onClickSaveResultImage(data)
         },
         onClickUpscale = {
-            // todo
+
         },
         onCancelDialog = {
             viewModel.onCancelDialog()

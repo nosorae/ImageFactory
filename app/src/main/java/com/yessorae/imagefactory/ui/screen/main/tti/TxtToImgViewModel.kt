@@ -373,6 +373,14 @@ class TxtToImgViewModel @Inject constructor(
         _dialogEvent.emit(SeedChangeDialog(currentSeed = currentSeed))
     }
 
+    fun onClickGenerateImage() {
+        generateImage()
+    }
+
+    fun onClickRetry(data: TxtToImgResultDialog) {
+        generateImage()
+    }
+
     fun onClickSaveResultImage(data: TxtToImgResultDialog) = sharedEventScope.launch {
         data.result?.outputUrls?.forEach { url ->
             _saveImageEvent.emit(url)
@@ -466,7 +474,7 @@ class TxtToImgViewModel @Inject constructor(
         }
     }
 
-    fun generateImage() = scope.launch {
+    private fun generateImage() = scope.launch {
         uiState.value.request.asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
