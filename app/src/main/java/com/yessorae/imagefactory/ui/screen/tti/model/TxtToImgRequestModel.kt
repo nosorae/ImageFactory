@@ -39,7 +39,7 @@ data class TxtToImgRequestModel(
     val samples: Int = 1,
     val schedulerOption: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
-    val multiLingual: Boolean by lazy {
+    private val multiLingual: Boolean by lazy {
         positivePromptOptions.isMultiLingual() || negativePromptOptions.isMultiLingual()
     }
 
@@ -58,6 +58,10 @@ data class TxtToImgRequestModel(
     fun asTxtToImgRequest(
         toastEvent: (StringModel) -> Unit
     ): TxtToImgRequest? {
+        if (positivePromptOptions.count { it.selected } == 0) {
+            toastEvent(ResString(R.string.common_warning_input_prompt))
+            return null
+        }
         val modelId = sdModelOption.getSelectedOption()?.id ?: run {
             toastEvent(ResString(R.string.common_warning_select_model))
             return null
