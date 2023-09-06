@@ -2,12 +2,14 @@ package com.yessorae.imagefactory.ui.util
 
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
 import com.yessorae.common.Logger
 import com.yessorae.imagefactory.R
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -83,6 +85,21 @@ private fun Bitmap.toMultiPartBody(name: String): MultipartBody.Part {
     val byteArray = byteArrayOutputStream.toByteArray()
     val requestFile = byteArray.toRequestBody("image/png".toMediaTypeOrNull())
     return MultipartBody.Part.createFormData(name, "image.png", requestFile) // todo check name
+}
+
+fun createGalleryIntent(): Intent {
+    return Intent(
+        Intent.ACTION_GET_CONTENT,
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    ).apply {
+        type = "image/*"
+        action = Intent.ACTION_GET_CONTENT
+        putExtra(
+            Intent.EXTRA_MIME_TYPES,
+            arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp")
+        )
+        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+    }
 }
 
 
