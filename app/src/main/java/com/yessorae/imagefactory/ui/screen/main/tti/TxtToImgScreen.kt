@@ -60,8 +60,10 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.TextString
-import com.yessorae.imagefactory.ui.util.compose.showToast
+import com.yessorae.imagefactory.ui.util.getSettingsLocale
+import com.yessorae.imagefactory.ui.util.showToast
 import com.yessorae.imagefactory.ui.util.downloadImageByUrl
+import com.yessorae.imagefactory.ui.util.redirectToWebBrowser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -97,6 +99,17 @@ fun TxtToImgScreen(
                 }
             }
         }
+
+        launch {
+            viewModel.redirectToWebBrowserEvent.collectLatest { link ->
+                context.redirectToWebBrowser(
+                    link = link,
+                    onActivityNotFoundException = {
+                        viewModel.onFailRedirectToWebBrowser()
+                    }
+                )
+            }
+        }
     }
 
     Scaffold(
@@ -111,17 +124,17 @@ fun TxtToImgScreen(
                     )
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            // todo
-                        }
-                    ) {
-                        Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
-                    }
+//                    IconButton(
+//                        onClick = {
+//                            // todo
+//                        }
+//                    ) {
+//                        Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
+//                    }
 
                     IconButton(
                         onClick = {
-                            // todo
+                            viewModel.onClickHelp(context.getSettingsLocale())
                         }
                     ) {
                         Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)

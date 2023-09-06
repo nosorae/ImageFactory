@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util.compose
+package com.yessorae.imagefactory.ui.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -10,7 +10,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.yessorae.common.Logger
-import com.yessorae.imagefactory.ui.util.StringModel
 import java.util.Locale
 
 @Composable
@@ -20,12 +19,10 @@ fun Context.showToast(stringModel: StringModel, duration: Int = Toast.LENGTH_SHO
     Toast.makeText(this, stringModel.get(this), duration).show()
 }
 
-@Composable
-fun redirectToWebBrowser(link: String, onActivityNotFoundException: () -> Unit) {
-    val context = LocalContext.current
+fun Context.redirectToWebBrowser(link: String, onActivityNotFoundException: () -> Unit) {
     Intent(Intent.ACTION_VIEW, Uri.parse(link)).also { intent ->
         try {
-            context.startActivity(intent)
+            this.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             onActivityNotFoundException()
             Logger.recordException(e)
@@ -35,12 +32,10 @@ fun redirectToWebBrowser(link: String, onActivityNotFoundException: () -> Unit) 
     }
 }
 
-@Composable
-fun getSettingsLocale(): Locale {
-    val context = LocalContext.current
+fun Context.getSettingsLocale(): Locale {
     val config = android.content.res.Configuration()
     val default = Locale.getDefault()
-    Settings.System.getConfiguration(context.contentResolver, config)
+    Settings.System.getConfiguration(this.contentResolver, config)
     return try {
         if (config.locales.size() == 0) {
             Locale.getDefault()

@@ -2,6 +2,8 @@ package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yessorae.common.GaConstants
+import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
 import com.yessorae.data.remote.model.request.TxtToImgRequest
@@ -29,6 +31,7 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
+import com.yessorae.imagefactory.ui.util.HelpLink
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
@@ -44,6 +47,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,11 +64,14 @@ class TxtToImgViewModel @Inject constructor(
     private val _dialogEvent = MutableStateFlow<TxtToImgDialogState>(None)
     val dialogEvent = _dialogEvent.asStateFlow()
 
-    protected val _toast = MutableSharedFlow<StringModel>()
+    private val _toast = MutableSharedFlow<StringModel>()
     val toast: SharedFlow<StringModel> = _toast.asSharedFlow()
 
     private val _saveImageEvent = MutableSharedFlow<String>()
     val saveImageEvent = _saveImageEvent.asSharedFlow()
+
+    private val _redirectToWebBrowserEvent = MutableSharedFlow<String>()
+    val redirectToWebBrowserEvent = _redirectToWebBrowserEvent.asSharedFlow()
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         Logger.presentation(
@@ -374,6 +381,20 @@ class TxtToImgViewModel @Inject constructor(
         }
     }
 
+    fun onClickHelp(languageCode: Locale) = viewModelScope.launch {
+        GaEventManager.event(
+            event = GaConstants.EVENT_CLICK_HELP,
+            GaConstants.PARAM_LANGUAGE to languageCode.language
+        )
+        _redirectToWebBrowserEvent.emit(
+            if (languageCode.language.contains("ko")) {
+                HelpLink.KOREAN_HELP_LINK
+            } else {
+                HelpLink.GLOBAL_HELP_LINK
+            }
+        )
+    }
+
     /** complete event **/
     fun onSaveComplete() = sharedEventScope.launch {
         _toast.emit(ResString(R.string.common_state_complete_save_image))
@@ -382,6 +403,10 @@ class TxtToImgViewModel @Inject constructor(
     fun onSaveFailed(error: Throwable) = sharedEventScope.launch {
         _toast.emit(ResString(R.string.common_error_not_download_image_your_country))
         Logger.recordException(error = error)
+    }
+
+    fun onFailRedirectToWebBrowser() = sharedEventScope.launch {
+        _toast.emit(ResString(R.string.common_state_error_redirect_web_browser))
     }
 
     /** dialog event **/
