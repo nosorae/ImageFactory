@@ -2,11 +2,11 @@ package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yessorae.common.Constants
 import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
 import com.yessorae.data.remote.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
+import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
@@ -29,6 +29,7 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
+import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.StringModel
 import com.yessorae.imagefactory.ui.util.TextString
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -61,6 +62,9 @@ class TxtToImgViewModel @Inject constructor(
 
     protected val _toast = MutableSharedFlow<StringModel>()
     val toast: SharedFlow<StringModel> = _toast.asSharedFlow()
+
+    private val _saveImageEvent = MutableSharedFlow<String>()
+    val saveImageEvent = _saveImageEvent.asSharedFlow()
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         Logger.presentation(
@@ -360,6 +364,24 @@ class TxtToImgViewModel @Inject constructor(
 
     fun onClickChangeSeed(currentSeed: Long?) = sharedEventScope.launch {
         _dialogEvent.emit(SeedChangeDialog(currentSeed = currentSeed))
+    }
+
+    fun onClickSaveResultImage(data: TxtToImgResultDialog) = sharedEventScope.launch {
+        data.result?.outputUrls?.forEach { url ->
+            _saveImageEvent.emit(url)
+        } ?: run {
+            _toast.emit(ResString(R.string.common_state_still_load_image))
+        }
+    }
+
+    /** complete event **/
+    fun onSaveComplete() = sharedEventScope.launch {
+        _toast.emit(ResString(R.string.common_state_complete_save_image))
+    }
+
+    fun onSaveFailed(error: Throwable) = sharedEventScope.launch {
+        _toast.emit(ResString(R.string.common_error_not_download_image_your_country))
+        Logger.recordException(error = error)
     }
 
     /** dialog event **/

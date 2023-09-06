@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
@@ -41,7 +40,6 @@ import com.yessorae.imagefactory.ui.components.dialog.InputDialog
 import com.yessorae.imagefactory.ui.components.item.ActionButton
 import com.yessorae.imagefactory.ui.components.item.OptionTitle
 import com.yessorae.imagefactory.ui.components.item.OptionTitleWithMore
-import com.yessorae.imagefactory.ui.components.item.common.BaseImage
 import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.ModelsLayout
 import com.yessorae.imagefactory.ui.components.layout.NaturalNumberSliderOptionLayout
@@ -63,6 +61,8 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.ResString
 import com.yessorae.imagefactory.ui.util.TextString
 import com.yessorae.imagefactory.ui.util.compose.showToast
+import com.yessorae.imagefactory.ui.util.downloadImageByUrl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -84,6 +84,17 @@ fun TxtToImgScreen(
         launch {
             viewModel.toast.collectLatest { message ->
                 context.showToast(stringModel = message)
+            }
+        }
+
+        launch(Dispatchers.IO) {
+            viewModel.saveImageEvent.collectLatest { url ->
+                try {
+                    context.downloadImageByUrl(url = url)
+                    viewModel.onSaveComplete()
+                } catch (e: Exception) {
+                    viewModel.onSaveFailed(error = e)
+                }
             }
         }
     }
@@ -430,8 +441,8 @@ fun TxtToImgScreen(
         onClickRetry = {
             // todo
         },
-        onClickSave = {
-            // todo
+        onClickSave = { data ->
+            viewModel.onClickSaveResultImage(data)
         },
         onClickUpscale = {
             // todo

@@ -30,7 +30,9 @@
     <string name="common_section_title_scheduler">스케쥴러 선택</string>
     <string name="common_button_generate_image">이미지 생성</string>
 
-    <string name="common_error_not_fount_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
+    <string name="common_error_not_watch_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
+    <string name="common_error_not_download_image_your_country">해당 국가에선 저장할 수 없는 이미지입니다</string>
+
 
     <string name="common_n_value_upscale">%s배 업스케일</string>
 
@@ -38,7 +40,9 @@
 
     <string name="common_state_generate_image">이미지 생성중</string>
     <string name="common_state_load_image">이미지 로딩중</string>
+    <string name="common_state_still_load_image">아직 이미지를 불러오는 중입니다</string>
     <string name="common_state_download_image">이미지 다운로드중…</string>
+    <string name="common_state_complete_save_image">이미지 저장 완료</string>
 
     <string name="common_state_load_image_failed">이미지 로딩 실패.\n개발자에게 문의해주세요 🙏</string>
 
