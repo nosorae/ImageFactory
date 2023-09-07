@@ -11,8 +11,8 @@ import com.yessorae.imagefactory.model.SizeOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
-import com.yessorae.imagefactory.ui.util.compose.Margin
+import com.yessorae.imagefactory.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.Margin
 
 @Composable
 fun RadioTextButton(

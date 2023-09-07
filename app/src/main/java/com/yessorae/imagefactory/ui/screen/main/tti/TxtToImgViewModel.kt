@@ -33,10 +33,10 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
-import com.yessorae.imagefactory.ui.util.HelpLink
-import com.yessorae.imagefactory.ui.util.ResString
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.HelpLink
+import com.yessorae.imagefactory.util.ResString
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

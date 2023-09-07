@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.Margin
+import com.yessorae.imagefactory.util.compose.Margin
 
 @Composable
 fun IconWithText(

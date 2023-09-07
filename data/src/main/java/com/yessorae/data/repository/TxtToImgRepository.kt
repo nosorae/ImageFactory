@@ -59,7 +59,6 @@ class TxtToImgRepository @Inject constructor(
         )
     }
 
-    @OptIn(FlowPreview::class)
     suspend fun upscaleImage(
         bitmap: Bitmap,
         path: String,

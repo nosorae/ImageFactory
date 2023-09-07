@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util
+package com.yessorae.imagefactory.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context

@@ -24,7 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.yessorae.imagefactory.ui.navigation.navhost.MainBottomNavHost
 import com.yessorae.imagefactory.ui.navigation.destination.MainDestination
 import com.yessorae.imagefactory.ui.theme.Gray200
-import com.yessorae.imagefactory.ui.util.navigateSingleTopTo
+import com.yessorae.imagefactory.util.navigateSingleTopTo
 
 @Composable
 fun MainScreen(

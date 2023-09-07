@@ -2,7 +2,7 @@ package com.yessorae.imagefactory.mapper
 
 import com.yessorae.data.local.model.PromptEntity
 import com.yessorae.imagefactory.model.PromptOption
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.TextString
 import java.time.LocalDateTime
 import javax.inject.Inject
 

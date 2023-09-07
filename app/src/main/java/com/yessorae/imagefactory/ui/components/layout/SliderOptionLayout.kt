@@ -18,8 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
-import com.yessorae.imagefactory.ui.util.compose.ThemePreview
+import com.yessorae.imagefactory.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.ThemePreview
 import kotlin.math.roundToInt
 
 @Composable

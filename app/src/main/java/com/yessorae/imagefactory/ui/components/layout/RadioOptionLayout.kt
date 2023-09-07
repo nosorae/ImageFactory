@@ -14,7 +14,7 @@ import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.RadioTextButton
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.ColumnPreview
 
 @Composable
 fun RadioOptionLayout(

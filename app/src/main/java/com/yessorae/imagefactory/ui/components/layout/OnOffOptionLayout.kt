@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
 import kotlin.math.roundToInt
 
 @Composable

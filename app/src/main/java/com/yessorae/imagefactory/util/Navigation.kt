@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util
+package com.yessorae.imagefactory.util
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController

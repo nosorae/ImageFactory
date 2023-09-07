@@ -1,8 +1,8 @@
 package com.yessorae.imagefactory.ui.navigation.destination
 
 import com.yessorae.imagefactory.R
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
 
 object MainDestination : Destination {
     override val route: String = "main"

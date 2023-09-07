@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util
+package com.yessorae.imagefactory.util
 
 object MockData {
     const val MOCK_IMAGE_URL = "https://static.inven.co.kr/column/2022/05/18/news/i8248379906.jpg"

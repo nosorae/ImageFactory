@@ -11,7 +11,7 @@ import com.yessorae.imagefactory.ui.navigation.destination.MainBottomTabDestinat
 import com.yessorae.imagefactory.ui.navigation.destination.ProfileBottomTabDestination
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgBottomTabDestination
 import com.yessorae.imagefactory.ui.screen.main.tti.TxtToImgScreen
-import com.yessorae.imagefactory.ui.util.compose.ReadyScreen
+import com.yessorae.imagefactory.util.compose.ReadyScreen
 
 @Composable
 fun MainBottomNavHost(

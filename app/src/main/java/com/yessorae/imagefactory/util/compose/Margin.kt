@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util.compose
+package com.yessorae.imagefactory.util.compose
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope

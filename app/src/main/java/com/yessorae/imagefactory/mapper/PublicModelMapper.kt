@@ -8,7 +8,7 @@ import com.yessorae.data.remote.stablediffusion.model.response.PublicModelItem
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.TextString
 import javax.inject.Inject
 
 class PublicModelMapper @Inject constructor() {

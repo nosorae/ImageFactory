@@ -54,7 +54,7 @@ import com.yessorae.imagefactory.ui.components.layout.ImageLoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.Margin
+import com.yessorae.imagefactory.util.compose.Margin
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

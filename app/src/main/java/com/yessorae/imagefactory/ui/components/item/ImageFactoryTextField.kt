@@ -20,9 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.ui.theme.Gray300
 import com.yessorae.imagefactory.ui.theme.Transparent
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
+import com.yessorae.imagefactory.util.compose.ColumnPreview
 
 @Composable
 fun ImageFactoryTextField(

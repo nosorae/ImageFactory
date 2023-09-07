@@ -5,9 +5,9 @@ import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.ui.util.ResString
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.ResString
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
 
 sealed class TxtToImgDialogState
 

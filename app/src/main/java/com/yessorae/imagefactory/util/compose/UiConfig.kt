@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util.compose
+package com.yessorae.imagefactory.util.compose
 
 object UiConfig {
     const val PROMPT_CAROUSEL_ROW = 3

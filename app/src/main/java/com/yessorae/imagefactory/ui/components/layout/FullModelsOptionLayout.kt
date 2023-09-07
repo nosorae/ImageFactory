@@ -15,9 +15,9 @@ import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.GridModelCover
 import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ThemePreview
-import com.yessorae.imagefactory.ui.util.compose.UiConfig
-import com.yessorae.imagefactory.ui.util.compose.getScreenDp
+import com.yessorae.imagefactory.util.compose.ThemePreview
+import com.yessorae.imagefactory.util.compose.UiConfig
+import com.yessorae.imagefactory.util.compose.getScreenDp
 
 @Composable
 fun FullModelsLayout(

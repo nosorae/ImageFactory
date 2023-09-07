@@ -1,9 +1,9 @@
 package com.yessorae.imagefactory.model
 
 import com.yessorae.imagefactory.ui.components.item.model.CoverOption
-import com.yessorae.imagefactory.ui.util.MockData
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.MockData
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
 
 data class SDModelOption(
     override val id: String,

@@ -2,9 +2,9 @@ package com.yessorae.imagefactory.model
 
 import com.yessorae.common.Constants
 import com.yessorae.imagefactory.ui.components.item.model.Option
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
-import com.yessorae.imagefactory.ui.util.isMultiLanguage
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
+import com.yessorae.imagefactory.util.isMultiLanguage
 
 data class PromptOption(
     val dbId: Int = Constants.NONE_ID,

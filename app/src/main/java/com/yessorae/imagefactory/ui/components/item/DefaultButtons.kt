@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.ColumnPreview
 
 @Composable
 fun ActionButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {

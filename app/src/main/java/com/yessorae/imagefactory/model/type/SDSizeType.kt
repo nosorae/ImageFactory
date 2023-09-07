@@ -1,8 +1,8 @@
 package com.yessorae.imagefactory.model.type
 
 import com.yessorae.imagefactory.ui.components.item.model.Option
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
 
 enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
     Square(

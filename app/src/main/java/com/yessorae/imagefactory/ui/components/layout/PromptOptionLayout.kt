@@ -24,8 +24,8 @@ import com.yessorae.imagefactory.ui.components.item.PromptChip
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.theme.Transparent
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
-import com.yessorae.imagefactory.ui.util.compose.UiConfig
+import com.yessorae.imagefactory.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.UiConfig
 
 /**
  * TODO

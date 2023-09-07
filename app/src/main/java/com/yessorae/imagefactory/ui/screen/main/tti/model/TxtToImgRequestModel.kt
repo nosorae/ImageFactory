@@ -18,9 +18,9 @@ import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
-import com.yessorae.imagefactory.ui.util.ResString
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.yesOrNo
+import com.yessorae.imagefactory.util.ResString
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.yesOrNo
 
 data class TxtToImgRequestModel(
     val positivePromptOptions: List<PromptOption> = listOf(),

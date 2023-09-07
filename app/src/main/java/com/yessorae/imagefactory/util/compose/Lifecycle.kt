@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.util
+package com.yessorae.imagefactory.util.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
