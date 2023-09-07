@@ -37,6 +37,12 @@ class TxtToImgRepository @Inject constructor(
         ).handleResponse()
     }
 
+    suspend fun upscaleImage(
+
+    ) {
+        // todo url 필요해서 파베 연결이 먼저
+    }
+
     suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {
         return modelListApi.getPublicModels().handleResponse()
     }

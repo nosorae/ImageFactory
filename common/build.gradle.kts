@@ -1,7 +1,9 @@
 plugins {
+
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -35,6 +37,14 @@ android {
 
 dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

@@ -6,6 +6,8 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.google.gms.google-services")
+
 }
 
 val properties = Properties()
@@ -93,6 +95,15 @@ dependencies {
     implementation("androidx.compose.material:material:1.3.1")
 
     implementation("androidx.exifinterface:exifinterface:1.3.6")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
