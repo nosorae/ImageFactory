@@ -1,4 +1,4 @@
-package com.yessorae.data.remote.model.request
+package com.yessorae.data.remote.stablediffusion.model.request
 
 import com.google.gson.annotations.SerializedName
 

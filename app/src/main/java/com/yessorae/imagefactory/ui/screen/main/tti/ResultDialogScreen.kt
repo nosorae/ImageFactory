@@ -1,5 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
+import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +25,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
@@ -35,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toBitmap
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -47,11 +55,13 @@ import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.util.compose.Margin
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun ResultDialogScreen(
     dialog: TxtToImgResultDialog,
-    onClickUpscale: () -> Unit,
+    onClickUpscale: (Bitmap?) -> Unit,
     onClickRetry: () -> Unit,
     onClickSave: () -> Unit,
     onClickCancel: () -> Unit
@@ -66,6 +76,22 @@ fun ResultDialogScreen(
             .data(imageUrl)
             .build()
     )
+
+    var bitmap: Bitmap? by remember {
+        mutableStateOf(null)
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        launch {
+            snapshotFlow {
+                painterState.state
+            }.collectLatest { state ->
+                if (state is AsyncImagePainter.State.Success) {
+                    bitmap = state.result.drawable.toBitmap()
+                }
+            }
+        }
+    }
     BaseDialog(
         onDismissRequest = onClickCancel,
         dismissOnClickOutside = false,
@@ -164,7 +190,9 @@ fun ResultDialogScreen(
                     IconWithText(
                         imageVector = Icons.Default.AutoAwesome,
                         text = stringResource(id = R.string.result_dialog_option_upscale),
-                        onClick = onClickUpscale
+                        onClick = {
+                            onClickUpscale(bitmap)
+                        }
                     )
                 }
             }

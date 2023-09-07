@@ -1,7 +1,7 @@
 package com.yessorae.data.di
 
-import com.yessorae.data.remote.api.ModelListApi
-import com.yessorae.data.remote.api.TxtToImgApi
+import com.yessorae.data.remote.stablediffusion.api.ModelListApi
+import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

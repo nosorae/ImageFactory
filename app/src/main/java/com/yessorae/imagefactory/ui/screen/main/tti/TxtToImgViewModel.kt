@@ -1,12 +1,14 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
+import android.graphics.Bitmap
+import androidx.compose.runtime.referentialEqualityPolicy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
-import com.yessorae.data.remote.model.request.TxtToImgRequest
+import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
@@ -48,6 +50,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.util.Locale
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -386,6 +389,16 @@ class TxtToImgViewModel @Inject constructor(
             _saveImageEvent.emit(url)
         } ?: run {
             _toast.emit(ResString(R.string.common_state_still_load_image))
+        }
+    }
+
+    fun onClickUpscale(resultBitmap: Bitmap?) = scope.launch {
+        resultBitmap?.let { bitmap ->
+            txtToImgRepository.upscaleImage(
+                bitmap = bitmap,
+                path = "stable-diffusion-tti-public",
+                name = UUID.randomUUID().toString()
+            )
         }
     }
 

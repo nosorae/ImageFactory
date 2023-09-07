@@ -6,6 +6,8 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val properties = Properties()
@@ -18,7 +20,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.yessorae.imagefactory"
+        applicationId = "com.yessorae.ImageFactoryApplication"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -94,9 +96,10 @@ dependencies {
 
     implementation("androidx.exifinterface:exifinterface:1.3.6")
 
-
-
-
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     //---
     testImplementation("junit:junit:4.13.2")

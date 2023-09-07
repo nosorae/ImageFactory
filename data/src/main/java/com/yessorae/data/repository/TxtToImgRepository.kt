@@ -1,17 +1,26 @@
 package com.yessorae.data.repository
 
+import android.graphics.Bitmap
 import androidx.paging.PagingSource
+import com.yessorae.common.Logger
 import com.yessorae.data.local.dao.PromptDao
 import com.yessorae.data.local.model.PromptEntity
-import com.yessorae.data.remote.api.ModelListApi
-import com.yessorae.data.remote.api.TxtToImgApi
-import com.yessorae.data.remote.model.request.FetchQueuedImageRequest
-import com.yessorae.data.remote.model.request.TxtToImgRequest
-import com.yessorae.data.remote.model.response.FetchQueuedImageDto
-import com.yessorae.data.remote.model.response.PublicModelDto
-import com.yessorae.data.remote.model.response.TxtToImgDto
+import com.yessorae.data.remote.firebase.FireStorageService
+import com.yessorae.data.remote.firebase.model.ImageUploadResponse
+import com.yessorae.data.remote.stablediffusion.api.ModelListApi
+import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
+import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequest
+import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequest
+import com.yessorae.data.remote.stablediffusion.model.response.FetchQueuedImageDto
+import com.yessorae.data.remote.stablediffusion.model.response.PublicModelDto
+import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.util.handleResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +28,8 @@ import javax.inject.Singleton
 class TxtToImgRepository @Inject constructor(
     private val txtToImgApi: TxtToImgApi,
     private val modelListApi: ModelListApi,
-    private val promptDao: PromptDao
+    private val promptDao: PromptDao,
+    private val firebaseStorageService: FireStorageService
 ) {
     suspend fun generateImage(
         request: TxtToImgRequest
@@ -37,10 +47,31 @@ class TxtToImgRepository @Inject constructor(
         ).handleResponse()
     }
 
-    suspend fun upscaleImage(
+    suspend fun uploadImage(
+        bitmap: Bitmap,
+        path: String,
+        name: String
+    ): Flow<ImageUploadResponse> {
+        return firebaseStorageService.uploadImage(
+            bitmap = bitmap,
+            path = path,
+            name = name
+        )
+    }
 
+    @OptIn(FlowPreview::class)
+    suspend fun upscaleImage(
+        bitmap: Bitmap,
+        path: String,
+        name: String
     ) {
-        // todo url 필요해서 파베 연결이 먼저
+        uploadImage(
+            bitmap = bitmap,
+            path = path,
+            name = name
+        ).collectLatest {
+            Logger.data("${it.uri}")
+        }
     }
 
     suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {

@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.mapper
 
-import com.yessorae.data.remote.model.response.TxtToImgDto
+import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultModel
 import javax.inject.Inject
 

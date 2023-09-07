@@ -1,5 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -457,8 +458,8 @@ fun TxtToImgScreen(
         onClickSave = { data ->
             viewModel.onClickSaveResultImage(data)
         },
-        onClickUpscale = {
-
+        onClickUpscale = { bitmap ->
+            viewModel.onClickUpscale(resultBitmap = bitmap)
         },
         onCancelDialog = {
             viewModel.onCancelDialog()
@@ -492,7 +493,7 @@ fun TxtToImgDialog(
     onSeedChange: (Long?) -> Unit,
     onClickRetry: (TxtToImgResultDialog) -> Unit,
     onClickSave: (TxtToImgResultDialog) -> Unit,
-    onClickUpscale: (TxtToImgResultDialog) -> Unit,
+    onClickUpscale: (Bitmap?) -> Unit,
     onCancelDialog: () -> Unit
 ) {
 
@@ -573,8 +574,8 @@ fun TxtToImgDialog(
                 onClickSave = {
                     onClickSave(dialogState)
                 },
-                onClickUpscale = {
-                    onClickUpscale(dialogState)
+                onClickUpscale = { bitmap ->
+                    onClickUpscale(bitmap)
                 },
                 onClickCancel = {
                     onCancelDialog()
