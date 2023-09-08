@@ -57,7 +57,6 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAddition
 import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.TextString
@@ -72,7 +71,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TxtToImgScreen(
-    viewModel: TxtToImgViewModel = hiltViewModel()
+    viewModel: TxtToImgViewModel = hiltViewModel(),
+    onNavOutEvent: (route: String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val requestModel = uiState.request
@@ -90,17 +90,6 @@ fun TxtToImgScreen(
             }
         }
 
-        launch(Dispatchers.IO) {
-            viewModel.saveImageEvent.collectLatest { url ->
-                try {
-                    context.downloadImageByUrl(url = url)
-                    viewModel.onSaveComplete()
-                } catch (e: Exception) {
-                    viewModel.onSaveFailed(error = e)
-                }
-            }
-        }
-
         launch {
             viewModel.redirectToWebBrowserEvent.collectLatest { link ->
                 context.redirectToWebBrowser(
@@ -109,6 +98,12 @@ fun TxtToImgScreen(
                         viewModel.onFailRedirectToWebBrowser()
                     }
                 )
+            }
+        }
+
+        launch {
+            viewModel.navigationEvent.collectLatest { route ->
+                onNavOutEvent(route)
             }
         }
     }
@@ -434,7 +429,6 @@ fun TxtToImgScreen(
         sdModels = requestModel.sdModelOption,
         loRaModels = requestModel.loRaModelsOptions,
         embeddingsModels = requestModel.embeddingsModelOption,
-        loading = uiState.loading,
         onAddPositivePrompt = { prompt ->
             viewModel.onAddPositivePrompt(prompt = prompt)
         },
@@ -452,15 +446,6 @@ fun TxtToImgScreen(
         },
         onSelectEmbeddingsModelOption = { option ->
             viewModel.onSelectEmbeddingsModel(option = option)
-        },
-        onClickRetry = { data, loading ->
-            viewModel.onClickRetry(data, loading)
-        },
-        onClickSave = { data ->
-            viewModel.onClickSaveResultImage(data)
-        },
-        onClickUpscale = { bitmap ->
-            viewModel.onClickUpscale(resultBitmap = bitmap)
         },
         onCancelDialog = {
             viewModel.onCancelDialog()
@@ -486,16 +471,12 @@ fun TxtToImgDialog(
     sdModels: List<SDModelOption>,
     loRaModels: List<LoRaModelOption>,
     embeddingsModels: List<EmbeddingsModelOption>,
-    loading: Boolean,
     onAddPositivePrompt: (String) -> Unit,
     onAddNegativePrompt: (String) -> Unit,
     onSelectSDModel: (SDModelOption) -> Unit,
     onSelectLoRaModel: (LoRaModelOption) -> Unit,
     onSelectEmbeddingsModelOption: (EmbeddingsModelOption) -> Unit,
     onSeedChange: (Long?) -> Unit,
-    onClickRetry: (TxtToImgOptionState, Boolean) -> Unit,
-    onClickSave: (String?) -> Unit,
-    onClickUpscale: (Bitmap?) -> Unit,
     onCancelDialog: () -> Unit
 ) {
 
@@ -564,25 +545,6 @@ fun TxtToImgDialog(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 )
-            )
-        }
-
-        is TxtToImgResultDialog -> {
-            ResultDialogScreen(
-                dialog = dialogState,
-                loading = loading,
-                onClickRetry = { option ->
-                    onClickRetry(option, loading)
-                },
-                onClickSave = { imageUrl ->
-                    onClickSave(imageUrl)
-                },
-                onClickUpscale = { bitmap ->
-                    onClickUpscale(bitmap)
-                },
-                onClickCancel = {
-                    onCancelDialog()
-                }
             )
         }
 

@@ -7,10 +7,7 @@ import com.yessorae.common.FireStorageConstants
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
-import com.yessorae.common.replaceDomain
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
-import com.yessorae.data.util.StableDiffusionConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
@@ -25,6 +22,7 @@ import com.yessorae.imagefactory.model.type.toOptionList
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
+import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreEmbeddingsBottomSheet
 import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreLoRaModelBottomSheet
 import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreSDModelBottomSheet
@@ -35,16 +33,13 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultModel
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
-import com.yessorae.imagefactory.util.TextString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -80,6 +75,9 @@ class TxtToImgViewModel @Inject constructor(
 
     private val _redirectToWebBrowserEvent = MutableSharedFlow<String>()
     val redirectToWebBrowserEvent = _redirectToWebBrowserEvent.asSharedFlow()
+
+    private val _navigationEvent = MutableSharedFlow<String>()
+    val navigationEvent: SharedFlow<String> = _navigationEvent.asSharedFlow()
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         Logger.presentation(
@@ -385,52 +383,6 @@ class TxtToImgViewModel @Inject constructor(
         generateImage()
     }
 
-    fun onClickRetry(data: TxtToImgOptionState, loading: Boolean) = sharedEventScope.launch {
-        if (loading.not()) {
-            generateImage(requestOptionModel = data)
-        } else {
-            _toast.emit(ResString(R.string.common_state_still_load_image))
-
-        }
-        Logger.presentation(message = "onClickRetry : $data", error = true)
-
-    }
-
-    fun onClickSaveResultImage(data: String?) = sharedEventScope.launch {
-        Logger.presentation(message = "onClickSaveResultImage : $data", error = true)
-        data?.let { url ->
-            _saveImageEvent.emit(url)
-        } ?: run {
-            _toast.emit(ResString(R.string.common_state_still_load_image))
-        }
-    }
-
-    fun onClickUpscale(resultBitmap: Bitmap?) = scope.launch {
-        Logger.presentation("onClickUpscale start")
-        showLoading(show = true)
-        resultBitmap?.let { bitmap ->
-            val response = txtToImgRepository.upscaleImage(
-                bitmap = bitmap,
-                path = FireStorageConstants.STABLE_DIFFUSION_TTI,
-                name = UUID.randomUUID().toString(),
-                scale = 4,
-                faceEnhance = true
-            )
-
-            if (dialogEvent.value is TxtToImgResultDialog) {
-                _dialogEvent.emit(
-                    (dialogEvent.value as TxtToImgResultDialog).copy(
-                        upscaleResult = upscaleResultModelMapper.map(dto = response)
-                    )
-                )
-            }
-
-            showLoading(show = false)
-
-            Logger.presentation("onClickUpscale $response")
-        }
-    }
-
     fun onClickHelp(languageCode: Locale) = viewModelScope.launch {
         GaEventManager.event(
             event = GaConstants.EVENT_CLICK_HELP,
@@ -446,14 +398,6 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     /** complete event **/
-    fun onSaveComplete() = sharedEventScope.launch {
-        _toast.emit(ResString(R.string.common_state_complete_save_image))
-    }
-
-    fun onSaveFailed(error: Throwable) = sharedEventScope.launch {
-        _toast.emit(ResString(R.string.common_error_not_download_image_your_country))
-        Logger.recordException(error = error)
-    }
 
     fun onFailRedirectToWebBrowser() = sharedEventScope.launch {
         _toast.emit(ResString(R.string.common_state_error_redirect_web_browser))
@@ -517,85 +461,15 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun generateImage(requestOptionModel: TxtToImgOptionState? = null) = scope.launch {
-
         (requestOptionModel ?: uiState.value.request).asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
             }
         )?.let { request ->
-            _dialogEvent.emit(
-                TxtToImgResultDialog(
-                    requestOption = uiState.value.request.copy(),
-                    width = request.width,
-                    height = request.height
-                )
+            txtToImgRepository.setLastRequest(request = request)
+            _navigationEvent.emit(
+                TxtToImgResultDestination.route
             )
-
-            showLoading(show = true)
-            val response = txtToImgRepository.generateImage(request = request)
-            when (response.status) {
-                StableDiffusionConstants.RESPONSE_SUCCESS -> {
-                    Logger.presentation("result ${response.output.map { it.replaceDomain() }}")
-                    onSuccessImageGeneration(
-                        request = request,
-                        result = txtToImgResultMapper.map(dto = response)
-                    )
-                }
-
-                StableDiffusionConstants.RESPONSE_PROCESSING -> {
-                    fetchQueuedImage(
-                        request = request, id = response.id
-                    )
-                }
-
-                else -> {
-                    showToast(message = TextString(response.status))
-                    showLoading(show = false)
-                }
-            }
-        }
-    }
-
-    private suspend fun onSuccessImageGeneration(
-        request: TxtToImgRequest,
-        result: TxtToImgResultModel
-    ) {
-        _dialogEvent.emit(
-            TxtToImgResultDialog(
-                requestOption = uiState.value.request.copy(),
-                result = result,
-                width = request.width,
-                height = request.height
-            )
-        )
-        showLoading(show = false)
-    }
-
-    private fun fetchQueuedImage(request: TxtToImgRequest, id: Int) {
-        scope.launch {
-            delay(3000L)
-            val response = txtToImgRepository.fetchQueuedImage(requestId = id.toString())
-
-            when (response.status) {
-                StableDiffusionConstants.RESPONSE_PROCESSING -> {
-                    fetchQueuedImage(request = request, id = id)
-                }
-
-                StableDiffusionConstants.RESPONSE_SUCCESS -> {
-                    onSuccessImageGeneration(
-                        request = request,
-                        result = txtToImgResultMapper.map(
-                            id = response.id,
-                            outputUrls = response.output,
-                            status = response.status
-                        )
-                    )
-                }
-
-                else -> {
-                    showLoading(show = false)
-                }
-            }
         }
     }
 }

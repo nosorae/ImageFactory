@@ -1,6 +1,6 @@
-package com.yessorae.imagefactory.ui.screen.main.tti.model
+package com.yessorae.imagefactory.ui.screen.result.model
 
-data class UpscaleResult(
+data class UpscaleResultModel(
     val id: Int,
     val outputUrl: String,
     val status: String,

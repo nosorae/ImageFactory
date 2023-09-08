@@ -28,7 +28,11 @@ fun MainBottomNavHost(
         composable(
             route = TxtToImgBottomTabDestination.route
         ) {
-            TxtToImgScreen()
+            TxtToImgScreen(
+                onNavOutEvent = { route ->
+                    onNavOutEvent(route)
+                }
+            )
         }
 
         composable(

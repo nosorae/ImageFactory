@@ -8,7 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.yessorae.imagefactory.ui.navigation.destination.Destination
 import com.yessorae.imagefactory.ui.navigation.destination.MainDestination
+import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.main.MainScreen
+import com.yessorae.imagefactory.ui.screen.result.TxtToImgResultScreen
 import com.yessorae.imagefactory.util.navigateSingleTopTo
 
 @Composable
@@ -28,6 +30,19 @@ fun ImageFactoryNavHost(
             MainScreen(
                 onNavOutEvent = { route ->
                     navController.navigateSingleTopTo(route)
+                }
+            )
+        }
+
+        composable(
+            route = TxtToImgResultDestination.route
+        ) {
+            TxtToImgResultScreen(
+                onNavEvent = { route ->
+                    navController.navigate(route)
+                },
+                onBackEvent = {
+                    navController.popBackStack()
                 }
             )
         }

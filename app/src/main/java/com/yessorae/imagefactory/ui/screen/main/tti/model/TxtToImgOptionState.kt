@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.main.tti.model
 
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequest
+import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
@@ -57,7 +57,7 @@ data class TxtToImgOptionState(
 
     fun asTxtToImgRequest(
         toastEvent: (StringModel) -> Unit
-    ): TxtToImgRequest? {
+    ): TxtToImgRequestBody? {
         if (positivePromptOptions.count { it.selected } == 0) {
             toastEvent(ResString(R.string.common_warning_input_prompt))
             return null
@@ -75,7 +75,7 @@ data class TxtToImgOptionState(
             return null
         }
 
-        return TxtToImgRequest(
+        return TxtToImgRequestBody(
             modelId = modelId,
             prompt = positivePromptOptions.toPrompt(),
             negativePrompt = negativePromptOptions.toPrompt(),

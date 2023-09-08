@@ -7,10 +7,10 @@ data class TxtToImgDto(
     @SerializedName("generationTime") val generationTime: Double,
     @SerializedName("id") val id: Int,
     @SerializedName("output") val output: List<String>,
-    @SerializedName("meta") val meta: MetaData
+    @SerializedName("meta") val meta: MetaDataDto
 )
 
-data class MetaData(
+data class MetaDataDto(
     @SerializedName("prompt") val prompt: String,
     @SerializedName("model_id") val modelId: String,
     @SerializedName("negative_prompt") val negativePrompt: String,

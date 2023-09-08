@@ -3,7 +3,7 @@ package com.yessorae.data.remote.stablediffusion.model.request
 
 import com.google.gson.annotations.SerializedName
 
-data class UpscaleRequest(
+data class UpscaleRequestBody(
     @SerializedName("key")
     val key: String,
     @SerializedName("url")

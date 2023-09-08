@@ -1,6 +1,7 @@
 package com.yessorae.data.repository
 
 import android.graphics.Bitmap
+import com.yessorae.common.FireStorageConstants
 import com.yessorae.data.BuildConfig
 import com.yessorae.data.local.database.dao.PromptDao
 import com.yessorae.data.local.database.model.PromptEntity
@@ -10,9 +11,9 @@ import com.yessorae.data.remote.firebase.model.ImageUploadResponse
 import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
 import com.yessorae.data.remote.stablediffusion.api.ModelListApi
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
-import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequest
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequest
-import com.yessorae.data.remote.stablediffusion.model.request.UpscaleRequest
+import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestBody
+import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
+import com.yessorae.data.remote.stablediffusion.model.request.UpscaleRequestBody
 import com.yessorae.data.remote.stablediffusion.model.response.FetchQueuedImageDto
 import com.yessorae.data.remote.stablediffusion.model.response.PublicModelDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
@@ -21,6 +22,7 @@ import com.yessorae.data.util.ImageFactoryException
 import com.yessorae.data.util.handleResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +36,7 @@ class TxtToImgRepository @Inject constructor(
     private val preferenceService: PreferenceService
 ) {
     suspend fun generateImage(
-        request: TxtToImgRequest
+        request: TxtToImgRequestBody
     ): TxtToImgDto {
         return txtToImgApi.generateImage(request).handleResponse()
     }
@@ -43,26 +45,26 @@ class TxtToImgRepository @Inject constructor(
         requestId: String
     ): FetchQueuedImageDto {
         return txtToImgApi.fetchQueuedImage(
-            FetchQueuedImageRequest(
+            FetchQueuedImageRequestBody(
                 requestId = requestId
             )
         ).handleResponse()
     }
 
-    private suspend fun setLastRequest(request: TxtToImgRequest) {
+    suspend fun setLastRequest(request: TxtToImgRequestBody) {
         preferenceService.setLastTxtToImageRequest(request = request)
     }
 
-    fun getLastRequest(): Flow<TxtToImgRequest?> {
+    fun getLastRequest(): Flow<TxtToImgRequestBody?> {
         return preferenceService.getLastTxtToImageRequest()
     }
 
     suspend fun upscaleImage(
         bitmap: Bitmap,
-        path: String,
-        name: String,
-        scale: Int,
-        faceEnhance: Boolean
+        path: String = FireStorageConstants.STABLE_DIFFUSION_TTI,
+        name: String = UUID.randomUUID().toString(),
+        scale: Int = 4,
+        faceEnhance: Boolean = true
     ): UpscaleDto {
         val url = uploadImage(
             bitmap = bitmap,
@@ -72,7 +74,7 @@ class TxtToImgRepository @Inject constructor(
             ?: throw ImageFactoryException.FirebaseStorageException("downloadUrl is null")
 
         return imageEditingApi.upscaleImage(
-            UpscaleRequest(
+            UpscaleRequestBody(
                 key = BuildConfig.STABLE_DIFFUSION_API_API_KEY,
                 url = url,
                 scale = scale,

@@ -49,6 +49,7 @@
 
     <!-- 결과 화면 -->
     <string name="result_dialog_option_retry">재시도</string>
+    <string name="result_dialog_option_back">이전 상태로 돌아가기</string>
     <string name="result_dialog_option_save">저장</string>
     <string name="result_dialog_option_upscale">화질 개선</string>
     <string name="result_before">전</string>

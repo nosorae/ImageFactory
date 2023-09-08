@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.yessorae.common.Constants
 import com.yessorae.data.BuildConfig
 
-data class TxtToImgRequest(
+data class TxtToImgRequestBody(
     @SerializedName("key") val key: String = BuildConfig.STABLE_DIFFUSION_API_API_KEY,
     @SerializedName("model_id") val modelId: String,
     @SerializedName("prompt") val prompt: String,
@@ -21,9 +21,9 @@ data class TxtToImgRequest(
     @SerializedName("lora_model") val loraModel: String?,
     @SerializedName("multi_lingual") val multiLingual: String,
     @SerializedName("upscale") val upscale: String,
-    @SerializedName("clip_skip") val clipSkip: Int = 2,
     @SerializedName("embeddings_model") val embeddingsModel: String?,
     @SerializedName("scheduler") val scheduler: String,
+    @SerializedName("clip_skip") val clipSkip: Int = 2,
     @SerializedName("safety_checker_type") val safetyCheckerType: String = "blur",
     @SerializedName("tomesd") val tomesd: String = Constants.ARG_YES,
     @SerializedName("use_karras_sigmas") val useKarrasSigmas: String = Constants.ARG_YES,
