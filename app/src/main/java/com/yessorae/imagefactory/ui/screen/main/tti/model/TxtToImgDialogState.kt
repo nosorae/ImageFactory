@@ -44,12 +44,14 @@ data class SeedChangeDialog(
 
 data class TxtToImgResultDialog(
     val requestOption: TxtToImgOptionState,
+    val width: Int,
+    val height: Int,
     val result: TxtToImgResultModel? = null,
     val upscaleResult: TxtToImgResultModel? = null,
-    val upscale: Boolean = false,
-    val ratio: Float
+    val fail: Boolean = false
 ) : TxtToImgDialogState() {
 
+    val ratio: Float = width / height.toFloat()
 }
 
 data class UpscaleResultDialog(

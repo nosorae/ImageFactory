@@ -434,6 +434,7 @@ fun TxtToImgScreen(
         sdModels = requestModel.sdModelOption,
         loRaModels = requestModel.loRaModelsOptions,
         embeddingsModels = requestModel.embeddingsModelOption,
+        loading = uiState.loading,
         onAddPositivePrompt = { prompt ->
             viewModel.onAddPositivePrompt(prompt = prompt)
         },
@@ -485,6 +486,7 @@ fun TxtToImgDialog(
     sdModels: List<SDModelOption>,
     loRaModels: List<LoRaModelOption>,
     embeddingsModels: List<EmbeddingsModelOption>,
+    loading: Boolean,
     onAddPositivePrompt: (String) -> Unit,
     onAddNegativePrompt: (String) -> Unit,
     onSelectSDModel: (SDModelOption) -> Unit,
@@ -568,6 +570,7 @@ fun TxtToImgDialog(
         is TxtToImgResultDialog -> {
             ResultDialogScreen(
                 dialog = dialogState,
+                loading = loading,
                 onClickRetry = {
                     onClickRetry(dialogState)
                 },

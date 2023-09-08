@@ -385,10 +385,15 @@ class TxtToImgViewModel @Inject constructor(
         generateImage()
     }
 
-    fun onClickRetry(data: TxtToImgResultDialog) {
-        generateImage(
-            requestOptionModel = data.requestOption
-        )
+    fun onClickRetry(data: TxtToImgResultDialog) = sharedEventScope.launch {
+        data.result?.outputUrls?.forEach { url ->
+            generateImage(
+                requestOptionModel = data.requestOption
+            )
+        } ?: run {
+            _toast.emit(ResString(R.string.common_state_still_load_image))
+        }
+
     }
 
     fun onClickSaveResultImage(data: TxtToImgResultDialog) = sharedEventScope.launch {
@@ -500,11 +505,20 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun generateImage(requestOptionModel: TxtToImgOptionState? = null) = scope.launch {
+
         (requestOptionModel ?: uiState.value.request).asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
             }
         )?.let { request ->
+            _dialogEvent.emit(
+                TxtToImgResultDialog(
+                    requestOption = uiState.value.request.copy(),
+                    width = request.width,
+                    height = request.height
+                )
+            )
+
             showLoading(show = true)
             val response = txtToImgRepository.generateImage(request = request)
             when (response.status) {
@@ -538,7 +552,8 @@ class TxtToImgViewModel @Inject constructor(
             TxtToImgResultDialog(
                 requestOption = uiState.value.request.copy(),
                 result = result,
-                ratio = request.width / request.height.toFloat()
+                width = request.width,
+                height = request.height
             )
         )
         showLoading(show = false)

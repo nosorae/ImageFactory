@@ -46,18 +46,10 @@ fun BaseImage(
             }
         },
         error = {
-            Box(
+            ImageLoadError(
                 modifier = Modifier
-                    .fillMaxSize()
                     .size(Dimen.small_icon_size)
-                    .background(color = Gray400, shape = MaterialTheme.shapes.medium),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.common_error_not_watch_image_your_country),
-                    textAlign = TextAlign.Center
-                )
-            }
+            )
         },
         onError = { error ->
             Logger.recordException(error.result.throwable)

@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
@@ -50,10 +52,12 @@ import coil.request.ImageRequest
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.item.IconWithText
 import com.yessorae.imagefactory.ui.components.item.common.BaseDialog
+import com.yessorae.imagefactory.ui.components.item.common.ImageLoadError
 import com.yessorae.imagefactory.ui.components.layout.ImageLoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
+import com.yessorae.imagefactory.ui.theme.Gray400
 import com.yessorae.imagefactory.util.compose.Margin
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -61,6 +65,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ResultDialogScreen(
     dialog: TxtToImgResultDialog,
+    loading: Boolean,
     onClickUpscale: (Bitmap?) -> Unit,
     onClickRetry: () -> Unit,
     onClickSave: () -> Unit,
@@ -92,6 +97,7 @@ fun ResultDialogScreen(
             }
         }
     }
+
     BaseDialog(
         onDismissRequest = onClickCancel,
         dismissOnClickOutside = false,
@@ -134,13 +140,28 @@ fun ResultDialogScreen(
                             .clip(MaterialTheme.shapes.medium),
                         contentAlignment = Alignment.Center
                     ) {
-                        ImageLoadingLayout(modifier = Modifier.fillMaxSize())
-                        Image(
-                            painter = painterState,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        when {
+                            loading -> {
+                                ImageLoadingLayout(modifier = Modifier.fillMaxSize())
+                            }
+
+                            painterState.state is AsyncImagePainter.State.Error -> {
+                                ImageLoadError(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                )
+                            }
+
+                            else -> {
+                                Image(
+                                    painter = painterState,
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
                     }
+
                     Margin(margin = Dimen.space_8)
                     if (dialog.result == null) {
                         Text(text = stringResource(id = R.string.common_state_generate_image))
@@ -161,38 +182,27 @@ fun ResultDialogScreen(
                     }
                 }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    Color.DarkGray,
-                                )
-                            )
-                        )
-                        .padding(bottom = Dimen.space_24),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-
+                ResultOptionRow {
                     IconWithText(
                         imageVector = Icons.Default.Replay,
                         text = stringResource(id = R.string.result_dialog_option_retry),
-                        onClick = onClickRetry
+                        onClick = onClickRetry,
+                        modifier = Modifier.weight(1f)
+
                     )
                     IconWithText(
                         imageVector = Icons.Default.SaveAlt,
                         text = stringResource(id = R.string.result_dialog_option_save),
-                        onClick = onClickSave
+                        onClick = onClickSave,
+                        modifier = Modifier.weight(1f)
                     )
                     IconWithText(
                         imageVector = Icons.Default.AutoAwesome,
                         text = stringResource(id = R.string.result_dialog_option_upscale),
                         onClick = {
                             onClickUpscale(bitmap)
-                        }
+                        },
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
@@ -225,6 +235,29 @@ fun ResultDialogScreen(
             }
 
         }
+    }
+}
+
+@Composable
+private fun ResultOptionRow(
+    content: @Composable RowScope.() -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        Color.DarkGray,
+                    )
+                )
+            )
+            .padding(bottom = Dimen.space_24),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        content()
     }
 
 }
