@@ -2,8 +2,9 @@ package com.yessorae.data.repository
 
 import android.graphics.Bitmap
 import com.yessorae.data.BuildConfig
-import com.yessorae.data.local.dao.PromptDao
-import com.yessorae.data.local.model.PromptEntity
+import com.yessorae.data.local.database.dao.PromptDao
+import com.yessorae.data.local.database.model.PromptEntity
+import com.yessorae.data.local.preference.PreferenceService
 import com.yessorae.data.remote.firebase.FireStorageService
 import com.yessorae.data.remote.firebase.model.ImageUploadResponse
 import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
@@ -29,7 +30,8 @@ class TxtToImgRepository @Inject constructor(
     private val modelListApi: ModelListApi,
     private val imageEditingApi: ImageEditingApi,
     private val promptDao: PromptDao,
-    private val firebaseStorageService: FireStorageService
+    private val firebaseStorageService: FireStorageService,
+    private val preferenceService: PreferenceService
 ) {
     suspend fun generateImage(
         request: TxtToImgRequest
@@ -47,16 +49,12 @@ class TxtToImgRepository @Inject constructor(
         ).handleResponse()
     }
 
-    fun uploadImage(
-        bitmap: Bitmap,
-        path: String,
-        name: String
-    ): Flow<ImageUploadResponse> {
-        return firebaseStorageService.uploadImage(
-            bitmap = bitmap,
-            path = path,
-            name = name
-        )
+    private suspend fun setLastRequest(request: TxtToImgRequest) {
+        preferenceService.setLastTxtToImageRequest(request = request)
+    }
+
+    fun getLastRequest(): Flow<TxtToImgRequest?> {
+        return preferenceService.getLastTxtToImageRequest()
     }
 
     suspend fun upscaleImage(
@@ -81,6 +79,18 @@ class TxtToImgRepository @Inject constructor(
                 faceEnhance = faceEnhance
             )
         ).handleResponse()
+    }
+
+    private fun uploadImage(
+        bitmap: Bitmap,
+        path: String,
+        name: String
+    ): Flow<ImageUploadResponse> {
+        return firebaseStorageService.uploadImage(
+            bitmap = bitmap,
+            path = path,
+            name = name
+        )
     }
 
     suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {

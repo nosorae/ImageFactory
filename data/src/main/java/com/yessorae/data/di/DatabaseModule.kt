@@ -3,7 +3,7 @@ package com.yessorae.data.di
 import android.content.Context
 import androidx.room.Room
 import com.yessorae.data.util.DBConstants
-import com.yessorae.data.local.ImageFactoryDatabase
+import com.yessorae.data.local.database.ImageFactoryDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

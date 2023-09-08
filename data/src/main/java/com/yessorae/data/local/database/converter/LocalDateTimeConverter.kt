@@ -1,4 +1,4 @@
-package com.yessorae.data.local.converter
+package com.yessorae.data.local.database.converter
 
 
 import androidx.room.TypeConverter

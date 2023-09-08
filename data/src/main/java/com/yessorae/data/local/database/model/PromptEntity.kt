@@ -1,4 +1,4 @@
-package com.yessorae.data.local.model
+package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

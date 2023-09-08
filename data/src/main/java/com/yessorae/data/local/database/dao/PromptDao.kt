@@ -1,12 +1,9 @@
-package com.yessorae.data.local.dao
+package com.yessorae.data.local.database.dao
 
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import com.yessorae.data.util.DBConstants
-import com.yessorae.data.local.model.PromptEntity
-import kotlinx.coroutines.flow.Flow
+import com.yessorae.data.local.database.model.PromptEntity
 
 @Dao
 interface PromptDao : BaseDao<PromptEntity> {

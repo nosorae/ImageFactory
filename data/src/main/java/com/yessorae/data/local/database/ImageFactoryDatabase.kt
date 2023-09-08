@@ -1,11 +1,11 @@
-package com.yessorae.data.local
+package com.yessorae.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.yessorae.data.local.converter.LocalDateTimeConverter
-import com.yessorae.data.local.dao.PromptDao
-import com.yessorae.data.local.model.PromptEntity
+import com.yessorae.data.local.database.converter.LocalDateTimeConverter
+import com.yessorae.data.local.database.dao.PromptDao
+import com.yessorae.data.local.database.model.PromptEntity
 
 @Database(entities = [PromptEntity::class], version = 1, exportSchema = false)
 @TypeConverters(LocalDateTimeConverter::class)

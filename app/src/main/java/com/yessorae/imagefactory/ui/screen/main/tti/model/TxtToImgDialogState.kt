@@ -47,17 +47,8 @@ data class TxtToImgResultDialog(
     val width: Int,
     val height: Int,
     val result: TxtToImgResultModel? = null,
-    val upscaleResult: TxtToImgResultModel? = null,
+    val upscaleResult: UpscaleResult? = null,
     val fail: Boolean = false
 ) : TxtToImgDialogState() {
-
     val ratio: Float = width / height.toFloat()
 }
-
-data class UpscaleResultDialog(
-    val request: TxtToImgOptionState,
-    val txtToImgResult: TxtToImgResultModel? = null,
-    val upscaleResult: TxtToImgResultModel? = null,
-    val upscale: Boolean = false,
-    val ratio: Float,
-) : TxtToImgDialogState()

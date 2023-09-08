@@ -453,8 +453,8 @@ fun TxtToImgScreen(
         onSelectEmbeddingsModelOption = { option ->
             viewModel.onSelectEmbeddingsModel(option = option)
         },
-        onClickRetry = { data ->
-            viewModel.onClickRetry(data)
+        onClickRetry = { data, loading ->
+            viewModel.onClickRetry(data, loading)
         },
         onClickSave = { data ->
             viewModel.onClickSaveResultImage(data)
@@ -493,8 +493,8 @@ fun TxtToImgDialog(
     onSelectLoRaModel: (LoRaModelOption) -> Unit,
     onSelectEmbeddingsModelOption: (EmbeddingsModelOption) -> Unit,
     onSeedChange: (Long?) -> Unit,
-    onClickRetry: (TxtToImgResultDialog) -> Unit,
-    onClickSave: (TxtToImgResultDialog) -> Unit,
+    onClickRetry: (TxtToImgOptionState, Boolean) -> Unit,
+    onClickSave: (String?) -> Unit,
     onClickUpscale: (Bitmap?) -> Unit,
     onCancelDialog: () -> Unit
 ) {
@@ -571,11 +571,11 @@ fun TxtToImgDialog(
             ResultDialogScreen(
                 dialog = dialogState,
                 loading = loading,
-                onClickRetry = {
-                    onClickRetry(dialogState)
+                onClickRetry = { option ->
+                    onClickRetry(option, loading)
                 },
-                onClickSave = {
-                    onClickSave(dialogState)
+                onClickSave = { imageUrl ->
+                    onClickSave(imageUrl)
                 },
                 onClickUpscale = { bitmap ->
                     onClickUpscale(bitmap)

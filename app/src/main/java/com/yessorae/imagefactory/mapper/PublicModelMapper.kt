@@ -66,7 +66,7 @@ class PublicModelMapper @Inject constructor() {
                 id = model.modelId,
                 image = model.screenshots, // .replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = index == 0,
+                selected = false,
                 generationCount = try {
                     model.apiCalls?.toLong()
                 } catch (e: Exception) {

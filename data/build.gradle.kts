@@ -97,6 +97,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
+    // datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }
 

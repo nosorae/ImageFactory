@@ -385,19 +385,20 @@ class TxtToImgViewModel @Inject constructor(
         generateImage()
     }
 
-    fun onClickRetry(data: TxtToImgResultDialog) = sharedEventScope.launch {
-        data.result?.outputUrls?.forEach { url ->
-            generateImage(
-                requestOptionModel = data.requestOption
-            )
-        } ?: run {
+    fun onClickRetry(data: TxtToImgOptionState, loading: Boolean) = sharedEventScope.launch {
+        if (loading.not()) {
+            generateImage(requestOptionModel = data)
+        } else {
             _toast.emit(ResString(R.string.common_state_still_load_image))
+
         }
+        Logger.presentation(message = "onClickRetry : $data", error = true)
 
     }
 
-    fun onClickSaveResultImage(data: TxtToImgResultDialog) = sharedEventScope.launch {
-        data.result?.outputUrls?.forEach { url ->
+    fun onClickSaveResultImage(data: String?) = sharedEventScope.launch {
+        Logger.presentation(message = "onClickSaveResultImage : $data", error = true)
+        data?.let { url ->
             _saveImageEvent.emit(url)
         } ?: run {
             _toast.emit(ResString(R.string.common_state_still_load_image))
@@ -406,6 +407,7 @@ class TxtToImgViewModel @Inject constructor(
 
     fun onClickUpscale(resultBitmap: Bitmap?) = scope.launch {
         Logger.presentation("onClickUpscale start")
+        showLoading(show = true)
         resultBitmap?.let { bitmap ->
             val response = txtToImgRepository.upscaleImage(
                 bitmap = bitmap,
@@ -414,7 +416,17 @@ class TxtToImgViewModel @Inject constructor(
                 scale = 4,
                 faceEnhance = true
             )
-            // todo
+
+            if (dialogEvent.value is TxtToImgResultDialog) {
+                _dialogEvent.emit(
+                    (dialogEvent.value as TxtToImgResultDialog).copy(
+                        upscaleResult = upscaleResultModelMapper.map(dto = response)
+                    )
+                )
+            }
+
+            showLoading(show = false)
+
             Logger.presentation("onClickUpscale $response")
         }
     }
@@ -566,7 +578,7 @@ class TxtToImgViewModel @Inject constructor(
 
             when (response.status) {
                 StableDiffusionConstants.RESPONSE_PROCESSING -> {
-                    fetchQueuedImage(request = request, id = response.id)
+                    fetchQueuedImage(request = request, id = id)
                 }
 
                 StableDiffusionConstants.RESPONSE_SUCCESS -> {

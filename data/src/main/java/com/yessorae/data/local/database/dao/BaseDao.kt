@@ -1,4 +1,4 @@
-package com.yessorae.data.local.dao
+package com.yessorae.data.local.database.dao
 
 import androidx.room.Delete
 import androidx.room.Insert

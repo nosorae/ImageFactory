@@ -47,9 +47,12 @@
     <string name="common_state_load_image_failed">이미지 로딩 실패.\n개발자에게 문의해주세요 🙏</string>
     <string name="common_state_error_redirect_web_browser">에러 발생, 웹브라우저 앱이 있는지 확인해주세요</string>
 
+    <!-- 결과 화면 -->
     <string name="result_dialog_option_retry">재시도</string>
     <string name="result_dialog_option_save">저장</string>
     <string name="result_dialog_option_upscale">화질 개선</string>
+    <string name="result_before">전</string>
+    <string name="result_after">후</string>
 
 
     <string name="common_work_in_progress_function">아직 작업중이에요, 기대해주세요!</string>
