@@ -22,7 +22,7 @@ import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.yesOrNo
 
-data class TxtToImgRequestModel(
+data class TxtToImgOptionState(
     val positivePromptOptions: List<PromptOption> = listOf(),
     val negativePromptOptions: List<PromptOption> = listOf(),
     val sdModelOption: List<SDModelOption> = listOf(),

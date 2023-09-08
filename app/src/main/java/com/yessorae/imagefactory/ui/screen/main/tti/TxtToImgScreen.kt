@@ -56,7 +56,7 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAd
 import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestModel
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
@@ -591,7 +591,7 @@ fun TxtToImgDialog(
 
 @Composable
 fun SelectionScreen(
-    requestModel: TxtToImgRequestModel
+    requestModel: TxtToImgOptionState
 ) {
 
 }

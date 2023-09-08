@@ -6,7 +6,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.yessorae.common.Logger
 import com.yessorae.data.remote.firebase.model.ImageUploadResponse
-import com.yessorae.data.util.NetworkResult
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class FireStorageServiceImpl @Inject constructor() : FireStorageService {
     override val storageRef = Firebase.storage.reference
@@ -32,12 +30,12 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
 
         ref.putBytes(data)
             .addOnProgressListener { progressInfo ->
-                Logger.data("uploadImage bitmap - pro.bytesTransferred / pro.totalByteCount ${progressInfo.bytesTransferred / progressInfo.totalByteCount}")
+                Logger.data("uploadImage bitmap - pro.bytesTransferred / pro.totalByteCount ${progressInfo.bytesTransferred / progressInfo.totalByteCount.toFloat()}")
             }
             .continueWithTask { task ->
                 if (task.isSuccessful.not()) {
                     task.exception?.let {
-                        throw it
+                        close(cause = it)
                     }
                 }
                 ref.downloadUrl
@@ -45,10 +43,12 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     trySendBlocking(ImageUploadResponse(uri = task.result))
+                    close()
                 } else {
                     task.exception?.let {
-                        throw it
+                        close(cause = it)
                     }
+
                 }
             }
 
@@ -89,7 +89,3 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
     }
 }
 
-object FireStorageConstants {
-    //{서버}_{기능}_{범위}
-    const val STABLE_DIFFUSION_TTI_PUBLIC = "stable-diffusion-tti-public"
-}

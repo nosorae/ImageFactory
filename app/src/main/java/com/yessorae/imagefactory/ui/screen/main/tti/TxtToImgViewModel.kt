@@ -1,19 +1,21 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
 import android.graphics.Bitmap
-import androidx.compose.runtime.referentialEqualityPolicy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yessorae.common.FireStorageConstants
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequest
 import com.yessorae.data.repository.TxtToImgRepository
+import com.yessorae.data.util.StableDiffusionConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
+import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
@@ -31,7 +33,9 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.None
 import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultModel
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
@@ -58,7 +62,8 @@ class TxtToImgViewModel @Inject constructor(
     private val txtToImgRepository: TxtToImgRepository,
     private val publicModelMapper: PublicModelMapper,
     private val promptMapper: PromptMapper,
-    private val txtToImgResultMapper: TxtToImgResultMapper
+    private val txtToImgResultMapper: TxtToImgResultMapper,
+    private val upscaleResultModelMapper: UpscaleResultModelMapper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TxtToImgScreenState())
@@ -381,7 +386,9 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     fun onClickRetry(data: TxtToImgResultDialog) {
-        generateImage()
+        generateImage(
+            requestOptionModel = data.requestOption
+        )
     }
 
     fun onClickSaveResultImage(data: TxtToImgResultDialog) = sharedEventScope.launch {
@@ -393,12 +400,17 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     fun onClickUpscale(resultBitmap: Bitmap?) = scope.launch {
+        Logger.presentation("onClickUpscale start")
         resultBitmap?.let { bitmap ->
-            txtToImgRepository.upscaleImage(
+            val response = txtToImgRepository.upscaleImage(
                 bitmap = bitmap,
-                path = "stable-diffusion-tti-public",
-                name = UUID.randomUUID().toString()
+                path = FireStorageConstants.STABLE_DIFFUSION_TTI,
+                name = UUID.randomUUID().toString(),
+                scale = 4,
+                faceEnhance = true
             )
+            // todo
+            Logger.presentation("onClickUpscale $response")
         }
     }
 
@@ -487,8 +499,8 @@ class TxtToImgViewModel @Inject constructor(
         }
     }
 
-    private fun generateImage() = scope.launch {
-        uiState.value.request.asTxtToImgRequest(
+    private fun generateImage(requestOptionModel: TxtToImgOptionState? = null) = scope.launch {
+        (requestOptionModel ?: uiState.value.request).asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
             }
@@ -496,55 +508,66 @@ class TxtToImgViewModel @Inject constructor(
             showLoading(show = true)
             val response = txtToImgRepository.generateImage(request = request)
             when (response.status) {
-                "success" -> {
-                    response.let { result ->
-                        Logger.presentation("result ${result.output.map { it.replaceDomain() }}")
-                        _dialogEvent.emit(
-                            TxtToImgResultDialog(
-                                request = uiState.value.request.copy(),
-                                result = txtToImgResultMapper.map(
-                                    dto = result.copy(
-                                        output = result.output.map { it.replaceDomain() }
-                                    )
-                                ),
-                                ratio = request.width / request.height.toFloat()
-                            )
-                        )
-                    }
+                StableDiffusionConstants.RESPONSE_SUCCESS -> {
+                    Logger.presentation("result ${response.output.map { it.replaceDomain() }}")
+                    onSuccessImageGeneration(
+                        request = request,
+                        result = txtToImgResultMapper.map(dto = response)
+                    )
                 }
 
-                "processing" -> {
+                StableDiffusionConstants.RESPONSE_PROCESSING -> {
                     fetchQueuedImage(
                         request = request, id = response.id
                     )
-
                 }
 
                 else -> {
                     showToast(message = TextString(response.status))
+                    showLoading(show = false)
                 }
             }
-            showLoading(show = false)
         }
+    }
+
+    private suspend fun onSuccessImageGeneration(
+        request: TxtToImgRequest,
+        result: TxtToImgResultModel
+    ) {
+        _dialogEvent.emit(
+            TxtToImgResultDialog(
+                requestOption = uiState.value.request.copy(),
+                result = result,
+                ratio = request.width / request.height.toFloat()
+            )
+        )
+        showLoading(show = false)
     }
 
     private fun fetchQueuedImage(request: TxtToImgRequest, id: Int) {
         scope.launch {
             delay(3000L)
             val response = txtToImgRepository.fetchQueuedImage(requestId = id.toString())
-            if (response.status == "processing") {
-                fetchQueuedImage(request = request, id = response.id)
-            } else if (response.status == "success") {
-                _dialogEvent.emit(
-                    TxtToImgResultDialog(
-                        request = uiState.value.request.copy(), result = txtToImgResultMapper.map(
+
+            when (response.status) {
+                StableDiffusionConstants.RESPONSE_PROCESSING -> {
+                    fetchQueuedImage(request = request, id = response.id)
+                }
+
+                StableDiffusionConstants.RESPONSE_SUCCESS -> {
+                    onSuccessImageGeneration(
+                        request = request,
+                        result = txtToImgResultMapper.map(
                             id = response.id,
                             outputUrls = response.output,
-                            status = response.status,
-                            generationTime = null
-                        ), ratio = request.width / request.height.toFloat()
+                            status = response.status
+                        )
                     )
-                )
+                }
+
+                else -> {
+                    showLoading(show = false)
+                }
             }
         }
     }
