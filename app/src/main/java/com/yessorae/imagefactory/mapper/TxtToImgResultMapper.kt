@@ -8,9 +8,7 @@ import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgRequest
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultModel
 import javax.inject.Inject
 
-class TxtToImgResultMapper @Inject constructor(
-    private val txtToImgRequestMapper: TxtToImgRequestMapper
-) {
+class TxtToImgResultMapper @Inject constructor() {
     fun map(
         dto: TxtToImgDto
     ): TxtToImgResultModel {

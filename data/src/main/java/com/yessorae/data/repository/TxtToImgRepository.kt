@@ -59,6 +59,19 @@ class TxtToImgRepository @Inject constructor(
         return preferenceService.getLastTxtToImageRequest()
     }
 
+    suspend fun uploadAndGetImageUrl(
+        bitmap: Bitmap,
+        path: String = FireStorageConstants.STABLE_DIFFUSION_TTI,
+        name: String = UUID.randomUUID().toString()
+    ): String {
+        return uploadImage(
+            bitmap = bitmap,
+            path = path,
+            name = name
+        ).firstOrNull()?.uri?.toString()
+            ?: throw ImageFactoryException.FirebaseStorageException("downloadUrl is null")
+    }
+
     suspend fun upscaleImage(
         bitmap: Bitmap,
         path: String = FireStorageConstants.STABLE_DIFFUSION_TTI,
@@ -66,12 +79,11 @@ class TxtToImgRepository @Inject constructor(
         scale: Int = 4,
         faceEnhance: Boolean = true
     ): UpscaleDto {
-        val url = uploadImage(
+        val url = uploadAndGetImageUrl(
             bitmap = bitmap,
             path = path,
             name = name
-        ).firstOrNull()?.uri?.toString()
-            ?: throw ImageFactoryException.FirebaseStorageException("downloadUrl is null")
+        )
 
         return imageEditingApi.upscaleImage(
             UpscaleRequestBody(

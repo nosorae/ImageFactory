@@ -25,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,6 +60,7 @@ import com.yessorae.imagefactory.ui.components.item.common.ImageLoadError
 import com.yessorae.imagefactory.ui.components.layout.ImageCompareLayout
 import com.yessorae.imagefactory.ui.components.layout.StableDiffusionLoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.UpscaleLoadingLayout
+import com.yessorae.imagefactory.ui.screen.result.model.Result
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultModel
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultScreenState
 import com.yessorae.imagefactory.ui.theme.Dimen
@@ -68,6 +70,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+// todo 옵션버튼 바텀패딩 안으로 옮기기
+// todo 이미지 석세스로 가야하는데 안가는 문제 수정
+// todo 스테이터스바 패딩
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TxtToImgResultScreen(
@@ -101,12 +106,30 @@ fun TxtToImgResultScreen(
                 onNavEvent(route)
             }
         }
+
+        launch {
+            viewModel.backNavigationEvent.collectLatest {
+                onBackEvent()
+            }
+        }
     }
     Scaffold(
         topBar = {
-            Row(
+            TopAppBar(
+                title = {
+                    // do nothing
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackEvent
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = null,
+                        )
+                    }
+                },
                 modifier = Modifier
-                    .height(Dimen.top_app_bar_height)
                     .fillMaxWidth()
                     .background(
                         brush = Brush.verticalGradient(
@@ -116,81 +139,82 @@ fun TxtToImgResultScreen(
                             )
                         )
                     ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                IconButton(
-                    onClick = onBackEvent
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = null,
-                    )
-                }
-            }
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
+                    actionIconContentColor = Color.Transparent
+                )
+            )
         }
     ) { paddingValue ->
-        Box(
-            modifier = Modifier.padding(
-                top = 0.dp,
-                bottom = paddingValue.calculateBottomPadding()
-            )
-        ) {
-            when (val state = screenState) {
-                is TxtToImgResultScreenState.Initial -> {
-                    // do nothing
-                }
+        when (val state = screenState) {
+            is TxtToImgResultScreenState.Initial -> {
+                // do nothing
+            }
 
-                is TxtToImgResultScreenState.Loading -> {
-                    StableDiffusionLoadingLayout(
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+            is TxtToImgResultScreenState.Loading -> {
+                StableDiffusionLoadingLayout(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValue)
+                )
+            }
 
-                is TxtToImgResultScreenState.SdSuccess -> {
-                    SdSuccessScreen(
-                        state = state,
-                        onClickRetry = { success ->
-                            viewModel.onClickRetry(currentState = success)
-                        },
-                        onClickSave = { success ->
-                            viewModel.onClickSave(currentState = success)
-                        },
-                        onClickUpscale = { success, bitmap ->
-                            viewModel.onClickUpscale(
-                                currentState = success,
-                                sdResultBitmap = bitmap
-                            )
-                        }
-                    )
-                }
+            is TxtToImgResultScreenState.SdSuccess -> {
+                SdSuccessScreen(
+                    state = state,
+                    onClickRetry = { success ->
+                        viewModel.onClickRetry(currentState = success)
+                    },
+                    onClickSave = { success ->
+                        viewModel.onClickSave(currentState = success)
+                    },
+                    onClickUpscale = { success, bitmap ->
+                        viewModel.onClickUpscale(
+                            currentState = success,
+                            sdResultBitmap = bitmap
+                        )
+                    }
+                )
+            }
 
-                is TxtToImgResultScreenState.UpscaleLoading -> {
-                    UpscaleLoadingLayout(
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+            is TxtToImgResultScreenState.UpscaleLoading -> {
+                UpscaleLoadingLayout(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValue)
+                )
+            }
 
-                is TxtToImgResultScreenState.UpscaleSuccess -> {
-                    UpscaleSuccessScreen(
-                        state = state,
-                        onClickRetry = { success ->
-                            viewModel.onClickRetry(currentState = success)
-                        },
-                        onClickSave = { success ->
-                            viewModel.onClickSave(currentState = success)
-                        }
-                    )
-                }
+            is TxtToImgResultScreenState.UpscaleSuccess -> {
+                UpscaleSuccessScreen(
+                    state = state,
+                    onClickRetry = { success ->
+                        viewModel.onClickRetry(currentState = success)
+                    },
+                    onClickSave = { success ->
+                        viewModel.onClickSave(currentState = success)
+                    }
+                )
+            }
 
-                is TxtToImgResultScreenState.Error -> {
-                    ErrorScreen(
-                        state = state,
-                        onClickBackState = { backState ->
-                            viewModel.onClickBackFromError(backState = backState)
-                        }
-                    )
-                }
+            is TxtToImgResultScreenState.Processing -> {
+                ProcessingScreen(
+                    state = state,
+                    onClickBackState = {
+                        viewModel.onClickBack()
+                    }
+                )
+            }
+
+            is TxtToImgResultScreenState.Error -> {
+                ErrorScreen(
+                    state = state,
+                    onClickBackState = { backState ->
+                        viewModel.onClickBackFromError(backState = backState)
+                    }
+                )
             }
         }
     }
@@ -239,25 +263,35 @@ fun SdSuccessScreen(
                     .padding(horizontal = Dimen.space_16)
                     .aspectRatio(state.ratio)
                     .clip(MaterialTheme.shapes.medium)
-            )
-            when (val imageLoadState = sdResultImageState.state) {
-                is AsyncImagePainter.State.Loading -> {
-                    Text(text = "loading", modifier = Modifier.fillMaxSize())
-                }
+            ) {
+                Image(
+                    painter = sdResultImageState,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
 
-                is AsyncImagePainter.State.Error -> {
-                    Text(text = imageLoadState.result.toString(), modifier = Modifier.fillMaxSize())
-                }
+                when (val imageLoadState = sdResultImageState.state) {
+                    is AsyncImagePainter.State.Loading -> {
+                        Text(
+                            text = "loading",
+                            modifier = Modifier.fillMaxSize(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
 
-                else -> {
-                    Image(
-                        painter = sdResultImageState,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    is AsyncImagePainter.State.Error -> {
+                        Text(
+                            text = imageLoadState.result.toString(),
+                            modifier = Modifier.fillMaxSize(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    else -> {
+                        // do nothing
+                    }
                 }
             }
-
         },
         optionContent = {
             IconWithText(
@@ -339,6 +373,40 @@ fun UpscaleSuccessScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(bottom = Dimen.space_24),
+            )
+        }
+    )
+}
+
+@Composable
+private fun ProcessingScreen(
+    state: TxtToImgResultScreenState.Processing,
+    onClickBackState: () -> Unit
+) {
+    BaseScreen(
+        backgroundImageUrl = null,
+        imageContent = {
+            Text(
+                text = state.message.getValue(),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Dimen.space_16),
+                maxLines = 7,
+                overflow = TextOverflow.Clip
+            )
+        },
+        optionContent = {
+            IconWithText(
+                imageVector = Icons.Default.Replay,
+                text = stringResource(id = R.string.result_dialog_option_back),
+                onClick = {
+                    onClickBackState()
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = Dimen.space_24)
+
             )
         }
     )

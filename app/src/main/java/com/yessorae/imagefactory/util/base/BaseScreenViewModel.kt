@@ -6,6 +6,7 @@ import com.yessorae.common.Logger
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,8 +32,13 @@ abstract class BaseScreenViewModel<T> : ViewModel() {
     protected val _navigationEvent = MutableSharedFlow<String>()
     val navigationEvent: SharedFlow<String> = _navigationEvent.asSharedFlow()
 
+    protected val _backNavigationEvent = MutableSharedFlow<Unit>()
+    val backNavigationEvent: SharedFlow<Unit> = _backNavigationEvent.asSharedFlow()
+
     protected val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
+
+    abstract val ceh: CoroutineExceptionHandler
 
     val ioScope = viewModelScope + Dispatchers.IO
 
