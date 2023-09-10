@@ -3,6 +3,7 @@ package com.yessorae.data.local.database.converter
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 class LocalDateTimeConverter {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME

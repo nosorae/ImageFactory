@@ -20,7 +20,7 @@ import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
-import com.yessorae.imagefactory.util.yesOrNo
+import com.yessorae.common.yesOrNo
 
 data class TxtToImgOptionState(
     val positivePromptOptions: List<PromptOption> = listOf(),
