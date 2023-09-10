@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.components.item.model.Option
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
+import com.yessorae.imagefactory.util.compose.ColumnPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

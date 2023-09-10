@@ -20,8 +20,8 @@ import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.common.SelectableImage
 import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
-import com.yessorae.imagefactory.ui.util.compose.Margin
+import com.yessorae.imagefactory.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.Margin
 
 @Composable
 fun ModelCover(

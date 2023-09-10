@@ -4,26 +4,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
 import com.yessorae.common.Logger
-import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.theme.Gray400
 import com.yessorae.imagefactory.ui.theme.PrimaryBrush
 
 @Composable
@@ -32,6 +26,9 @@ fun BaseImage(
     modifier: Modifier
 ) {
     val context = LocalContext.current
+    // AsyncImage로 전환
+    // Subcomposition is less performant than regular composition
+    // so this composable may not be suitable for parts of your UI where high performance is critical (e.g. lists).
     SubcomposeAsyncImage(
         model = model,
         contentDescription = null,
@@ -44,18 +41,10 @@ fun BaseImage(
             }
         },
         error = {
-            Box(
+            ImageLoadError(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(Dimen.space_2)
-                    .background(color = Gray400, shape = MaterialTheme.shapes.medium),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.common_error_not_fount_image_your_country),
-                    textAlign = TextAlign.Center
-                )
-            }
+                    .size(Dimen.small_icon_size)
+            )
         },
         onError = { error ->
             Logger.recordException(error.result.throwable)

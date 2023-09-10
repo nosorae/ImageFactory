@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.ui.theme.AlertRed
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.StringModel
-import com.yessorae.imagefactory.ui.util.TextString
-import com.yessorae.imagefactory.ui.util.compose.Margin
+import com.yessorae.imagefactory.util.StringModel
+import com.yessorae.imagefactory.util.TextString
+import com.yessorae.imagefactory.util.compose.Margin
 
 @Composable
 fun WarningLayout(

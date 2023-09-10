@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGri
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,8 +19,7 @@ import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.PromptChip
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.ui.util.compose.ColumnPreview
-import com.yessorae.imagefactory.ui.util.compose.UiConfig
+import com.yessorae.imagefactory.util.compose.ColumnPreview
 
 /**
  * TODO
@@ -27,7 +27,7 @@ import com.yessorae.imagefactory.ui.util.compose.UiConfig
  * 커스텀 프롬프트 추가 버튼
  * 커스텀 프롬프트 추가할 때 ,로 구분하면 한 번에 여러 개 입력 가능
  */
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PromptOptionLayout(
     modifier: Modifier = Modifier,
@@ -35,9 +35,10 @@ fun PromptOptionLayout(
     onPromptClick: (Option) -> Unit = {}
 ) {
     val state = rememberLazyStaggeredGridState()
+
     LazyHorizontalStaggeredGrid(
-        rows = StaggeredGridCells.Fixed(UiConfig.PROMPT_CAROUSEL_ROW),
-        modifier = modifier.fillMaxWidth(),
+        rows = StaggeredGridCells.Adaptive(24.dp),
+        modifier = modifier.height(120.dp).fillMaxWidth(),
         state = state,
         contentPadding = Dimen.carousel_padding_values,
         verticalArrangement = Arrangement.spacedBy(Dimen.space_8),

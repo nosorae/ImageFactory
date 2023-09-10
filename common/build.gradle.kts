@@ -1,7 +1,9 @@
 plugins {
+
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -34,7 +36,13 @@ android {
 }
 
 dependencies {
+    // timber
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

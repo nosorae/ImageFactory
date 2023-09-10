@@ -1,7 +1,8 @@
 package com.yessorae.data.di
 
-import com.yessorae.data.api.ModelListApi
-import com.yessorae.data.api.TxtToImgApi
+import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
+import com.yessorae.data.remote.stablediffusion.api.ModelListApi
+import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,5 +20,10 @@ object ApiModule {
     @Provides
     fun provideModelListApi(retrofit: Retrofit): ModelListApi {
         return retrofit.create(ModelListApi::class.java)
+    }
+
+    @Provides
+    fun provideImageEditingApi(retrofit: Retrofit): ImageEditingApi {
+        return retrofit.create(ImageEditingApi::class.java)
     }
 }
