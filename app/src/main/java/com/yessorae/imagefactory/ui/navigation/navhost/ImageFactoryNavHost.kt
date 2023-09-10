@@ -47,5 +47,4 @@ fun ImageFactoryNavHost(
             )
         }
     }
-
 }

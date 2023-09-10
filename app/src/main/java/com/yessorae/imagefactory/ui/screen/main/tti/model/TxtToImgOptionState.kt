@@ -44,15 +44,15 @@ data class TxtToImgOptionState(
     }
 
     val previewSDModels by lazy {
-        sdModelOption.filterIndexed { index, sdModelOption ->  sdModelOption.selected || index < PREVIEW_COUNT }
+        sdModelOption.filterIndexed { index, sdModelOption -> sdModelOption.selected || index < PREVIEW_COUNT }
     }
 
     val previewLoRas by lazy {
-        loRaModelsOptions.filterIndexed { index, sdModelOption ->  sdModelOption.selected || index < PREVIEW_COUNT }
+        loRaModelsOptions.filterIndexed { index, sdModelOption -> sdModelOption.selected || index < PREVIEW_COUNT }
     }
 
     val previewEmbeddings by lazy {
-        embeddingsModelOption.filterIndexed { index, sdModelOption ->  sdModelOption.selected || index < PREVIEW_COUNT }
+        embeddingsModelOption.filterIndexed { index, sdModelOption -> sdModelOption.selected || index < PREVIEW_COUNT }
     }
 
     fun asTxtToImgRequest(

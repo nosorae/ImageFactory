@@ -3,11 +3,11 @@ package com.yessorae.imagefactory.ui.screen.result.model
 import com.yessorae.imagefactory.util.StringModel
 
 sealed class TxtToImgResultScreenState(
-    open val request: TxtToImgRequest? = null,
+    open val request: TxtToImgRequest? = null
 ) {
     object Initial : TxtToImgResultScreenState()
     data class Loading(
-        override val request: TxtToImgRequest,
+        override val request: TxtToImgRequest
     ) : TxtToImgResultScreenState(request = request)
 
     data class SdSuccess(

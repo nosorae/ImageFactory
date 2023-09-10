@@ -12,10 +12,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +38,7 @@ fun FullModelOptionBottomSheet(
     title: StringModel,
     options: List<CoverOption>,
     onCancelDialog: () -> Unit,
-    onSelectModelOption: (CoverOption) -> Unit,
+    onSelectModelOption: (CoverOption) -> Unit
 ) {
     val windowInsets = BottomSheetDefaults.windowInsets
     val scope = rememberCoroutineScope()
@@ -71,7 +69,6 @@ fun FullModelOptionBottomSheet(
             .fillMaxSize()
             .padding(top = Dimen.bottom_sheet_top_padding)
     ) {
-
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -109,13 +106,11 @@ fun FullModelOptionBottomSheet(
             modifier = Modifier.fillMaxWidth(),
             models = options.filter {
                 it.title.getValue().contains(value, ignoreCase = true) ||
-                        it.id.contains(value, ignoreCase = true)
+                    it.id.contains(value, ignoreCase = true)
             },
             onClick = { coverOption ->
                 onSelectModelOption(coverOption)
             }
         )
-
-
     }
 }

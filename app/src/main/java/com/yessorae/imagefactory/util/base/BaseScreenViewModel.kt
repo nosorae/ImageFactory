@@ -3,8 +3,6 @@ package com.yessorae.imagefactory.util.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
-import com.yessorae.imagefactory.R
-import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

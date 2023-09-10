@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
-import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
@@ -42,7 +41,8 @@ class TxtToImgResultViewModel @Inject constructor(
 
     override val ceh: CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Logger.presentation(
-            message = throwable.toString(), error = true
+            message = throwable.toString(),
+            error = true
         )
     }
 
@@ -114,7 +114,6 @@ class TxtToImgResultViewModel @Inject constructor(
                 showToast(ResString(R.string.common_state_still_load_image))
             }
         }
-
     }
 
     fun onClickUpscale(currentState: TxtToImgResultScreenState.SdSuccess, sdResultBitmap: Bitmap?) =
@@ -138,7 +137,7 @@ class TxtToImgResultViewModel @Inject constructor(
         }
     }
 
-    fun onClickBack() = viewModelScope.launch{
+    fun onClickBack() = viewModelScope.launch {
         _backNavigationEvent.emit(Unit)
     }
 
@@ -157,7 +156,6 @@ class TxtToImgResultViewModel @Inject constructor(
         _toast.emit(ResString(R.string.common_error_not_download_image_your_country))
         Logger.recordException(error = error)
     }
-
 
     /** network request **/
 
@@ -191,10 +189,8 @@ class TxtToImgResultViewModel @Inject constructor(
             },
             onError = {
                 _toast.emit(ResString(R.string.common_response_error))
-
             }
         )
-
     }
 
     private suspend fun upscaleImage(
@@ -270,13 +266,3 @@ class TxtToImgResultViewModel @Inject constructor(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

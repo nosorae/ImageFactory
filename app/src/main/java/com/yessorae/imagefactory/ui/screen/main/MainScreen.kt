@@ -21,14 +21,14 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.yessorae.imagefactory.ui.navigation.navhost.MainBottomNavHost
 import com.yessorae.imagefactory.ui.navigation.destination.MainDestination
+import com.yessorae.imagefactory.ui.navigation.navhost.MainBottomNavHost
 import com.yessorae.imagefactory.ui.theme.Gray200
 import com.yessorae.imagefactory.util.navigateSingleTopTo
 
 @Composable
 fun MainScreen(
-    onNavOutEvent: (route: String) -> Unit,
+    onNavOutEvent: (route: String) -> Unit
 ) {
     val bottomNavController = rememberNavController()
     val currentBackstack by bottomNavController.currentBackStackEntryAsState()
@@ -64,7 +64,7 @@ private fun MainScreenBottomNavigation(
     Column {
         Divider(modifier = Modifier.fillMaxWidth(), color = Gray200, thickness = 0.5.dp)
         BottomNavigation(
-            backgroundColor = MaterialTheme.colorScheme.background,
+            backgroundColor = MaterialTheme.colorScheme.background
         ) {
             MainDestination.screens.forEach { screen ->
                 val isSelected = currentDestination?.hierarchy?.any {

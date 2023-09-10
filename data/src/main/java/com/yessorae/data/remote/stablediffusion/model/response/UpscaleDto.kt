@@ -1,6 +1,5 @@
 package com.yessorae.data.remote.stablediffusion.model.response
 
-
 import com.google.gson.annotations.SerializedName
 
 data class UpscaleDto(

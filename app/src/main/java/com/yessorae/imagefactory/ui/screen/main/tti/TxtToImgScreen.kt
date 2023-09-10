@@ -1,6 +1,5 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,10 +60,8 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.TextString
 import com.yessorae.imagefactory.util.getSettingsLocale
-import com.yessorae.imagefactory.util.showToast
-import com.yessorae.imagefactory.util.downloadImageByUrl
 import com.yessorae.imagefactory.util.redirectToWebBrowser
-import kotlinx.coroutines.Dispatchers
+import com.yessorae.imagefactory.util.showToast
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -116,7 +113,7 @@ fun TxtToImgScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.common_title_txt_to_img),
+                        text = stringResource(R.string.common_title_txt_to_img)
                     )
                 },
                 actions = {
@@ -153,7 +150,7 @@ fun TxtToImgScreen(
             ) {
                 viewModel.onClickGenerateImage()
             }
-        },
+        }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -422,8 +419,6 @@ fun TxtToImgScreen(
         }
     }
 
-
-
     TxtToImgDialog(
         dialogState = dialogState,
         sdModels = requestModel.sdModelOption,
@@ -479,10 +474,8 @@ fun TxtToImgDialog(
     onSeedChange: (Long?) -> Unit,
     onCancelDialog: () -> Unit
 ) {
-
     when (dialogState) {
         is PositivePromptAdditionDialog -> {
-
             InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = onAddPositivePrompt
@@ -558,5 +551,4 @@ fun TxtToImgDialog(
 fun SelectionScreen(
     requestModel: TxtToImgOptionState
 ) {
-
 }

@@ -101,7 +101,3 @@ fun createGalleryIntent(): Intent {
         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
     }
 }
-
-
-
-

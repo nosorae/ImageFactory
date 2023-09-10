@@ -9,7 +9,6 @@ import com.yessorae.data.local.database.model.PromptEntity
 
 @Database(entities = [PromptEntity::class], version = 1, exportSchema = false)
 @TypeConverters(LocalDateTimeConverter::class)
-
 abstract class ImageFactoryDatabase : RoomDatabase() {
     abstract fun promptDao(): PromptDao
 }

@@ -31,7 +31,7 @@ class TxtToImgResultMapper @Inject constructor() {
             id = id,
             outputUrls = outputUrls,
             status = status,
-            generationTime = generationTime,
+            generationTime = generationTime
         )
     }
 
@@ -45,4 +45,3 @@ class TxtToImgResultMapper @Inject constructor() {
         )
     }
 }
-

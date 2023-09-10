@@ -2,8 +2,8 @@ package com.yessorae.data.local.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.yessorae.data.util.DBConstants
 import com.yessorae.data.local.database.model.PromptEntity
+import com.yessorae.data.util.DBConstants
 
 @Dao
 interface PromptDao : BaseDao<PromptEntity> {

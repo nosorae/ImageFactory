@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -51,17 +50,13 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.item.IconWithText
-import com.yessorae.imagefactory.ui.components.item.common.ImageLoadError
 import com.yessorae.imagefactory.ui.components.layout.ImageCompareLayout
 import com.yessorae.imagefactory.ui.components.layout.StableDiffusionLoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.UpscaleLoadingLayout
-import com.yessorae.imagefactory.ui.screen.result.model.Result
-import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultModel
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultScreenState
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.downloadImageByUrl
@@ -125,7 +120,7 @@ fun TxtToImgResultScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBackIosNew,
-                            contentDescription = null,
+                            contentDescription = null
                         )
                     }
                 },
@@ -135,7 +130,7 @@ fun TxtToImgResultScreen(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.DarkGray,
-                                Color.Transparent,
+                                Color.Transparent
                             )
                         )
                     ),
@@ -227,7 +222,6 @@ fun SdSuccessScreen(
     onClickSave: (state: TxtToImgResultScreenState.SdSuccess) -> Unit,
     onClickUpscale: (state: TxtToImgResultScreenState.SdSuccess, bitmap: Bitmap?) -> Unit
 ) {
-
     val imageUrl = state.sdResult.imageUrl
     val context = LocalContext.current
 
@@ -372,7 +366,7 @@ fun UpscaleSuccessScreen(
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = Dimen.space_24),
+                    .padding(bottom = Dimen.space_24)
             )
         }
     )
@@ -435,7 +429,6 @@ private fun ErrorScreen(
             else -> {
                 null
             }
-
         },
         imageContent = {
             Text(
@@ -492,7 +485,7 @@ private fun BaseScreen(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.DarkGray,
+                                Color.DarkGray
                             )
                         )
                     ),

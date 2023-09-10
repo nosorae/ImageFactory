@@ -31,7 +31,7 @@ fun InputDialog(
     onDismissRequest: () -> Unit,
     onClickAddButton: (String) -> Unit,
     placeholderText: StringModel = ResString(R.string.common_input_prompt),
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     var text by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current

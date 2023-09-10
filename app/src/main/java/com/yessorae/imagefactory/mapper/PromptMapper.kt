@@ -17,7 +17,7 @@ class PromptMapper @Inject constructor() {
         }
     }
 
-    fun mapToEntity(prompt: String, positive: Boolean) : PromptEntity {
+    fun mapToEntity(prompt: String, positive: Boolean): PromptEntity {
         return PromptEntity(
             prompt = prompt,
             positive = positive,

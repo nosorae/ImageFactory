@@ -1,9 +1,7 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
-import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yessorae.common.FireStorageConstants
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
@@ -32,7 +30,6 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAddition
 import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgResultDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
@@ -49,7 +46,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.util.Locale
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -81,7 +77,8 @@ class TxtToImgViewModel @Inject constructor(
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         Logger.presentation(
-            message = throwable.toString(), error = true
+            message = throwable.toString(),
+            error = true
         )
     }
 
@@ -98,30 +95,38 @@ class TxtToImgViewModel @Inject constructor(
     fun onSelectPositivePrompt(option: PromptOption) {
         val oldList = uiState.value.request.positivePromptOptions
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(positivePromptOptions = oldList.map { old ->
-                if (old.id == option.id) {
-                    option.copy(
-                        selected = option.selected.not()
-                    )
-                } else {
-                    old
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    positivePromptOptions = oldList.map { old ->
+                        if (old.id == option.id) {
+                            option.copy(
+                                selected = option.selected.not()
+                            )
+                        } else {
+                            old
+                        }
+                    }
+                )
+            )
         }
     }
 
     fun onSelectNegativePrompt(option: PromptOption) {
         val oldList = uiState.value.request.negativePromptOptions
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(negativePromptOptions = oldList.map { old ->
-                if (old.id == option.id) {
-                    option.copy(
-                        selected = option.selected.not()
-                    )
-                } else {
-                    old
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    negativePromptOptions = oldList.map { old ->
+                        if (old.id == option.id) {
+                            option.copy(
+                                selected = option.selected.not()
+                            )
+                        } else {
+                            old
+                        }
+                    }
+                )
+            )
         }
     }
 
@@ -148,63 +153,78 @@ class TxtToImgViewModel @Inject constructor(
     fun onSelectSDModel(option: SDModelOption) {
         val oldList = uiState.value.request.sdModelOption
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(sdModelOption = oldList.map { old ->
-                if (old.id == option.id) {
-                    old.copy(
-                        selected = true
-                    )
-                } else {
-                    old.copy(
-                        selected = false
-                    )
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    sdModelOption = oldList.map { old ->
+                        if (old.id == option.id) {
+                            old.copy(
+                                selected = true
+                            )
+                        } else {
+                            old.copy(
+                                selected = false
+                            )
+                        }
+                    }
+                )
+            )
         }
     }
 
     fun onSelectLoRaModel(option: LoRaModelOption) {
         val oldList = uiState.value.request.loRaModelsOptions
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(loRaModelsOptions = oldList.map { old ->
-                if (old.id == option.id) {
-                    old.copy(
-                        selected = option.selected.not()
-                    )
-                } else {
-                    old
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    loRaModelsOptions = oldList.map { old ->
+                        if (old.id == option.id) {
+                            old.copy(
+                                selected = option.selected.not()
+                            )
+                        } else {
+                            old
+                        }
+                    }
+                )
+            )
         }
     }
 
     fun onChangeLoRaModelStrength(option: LoRaModelOption, strength: Float) {
         val oldList = uiState.value.request.loRaModelsOptions
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(loRaModelsOptions = oldList.map { old ->
-                if (old.id == option.id) {
-                    old.copy(
-                        strength = strength
-                    )
-                } else {
-                    old
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    loRaModelsOptions = oldList.map { old ->
+                        if (old.id == option.id) {
+                            old.copy(
+                                strength = strength
+                            )
+                        } else {
+                            old
+                        }
+                    }
+                )
+            )
         }
-
     }
 
     fun onSelectEmbeddingsModel(option: EmbeddingsModelOption) {
         val oldList = uiState.value.request.embeddingsModelOption
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(embeddingsModelOption = oldList.map { old ->
-                if (old.id == option.id) {
-                    old.copy(
-                        selected = option.selected.not()
-                    )
-                } else {
-                    old
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    embeddingsModelOption = oldList.map { old ->
+                        if (old.id == option.id) {
+                            old.copy(
+                                selected = option.selected.not()
+                            )
+                        } else {
+                            old
+                        }
+                    }
+                )
+            )
         }
     }
 
@@ -244,17 +264,21 @@ class TxtToImgViewModel @Inject constructor(
     fun onChangeScheduler(scheduler: SchedulerOption) {
         val oldList = uiState.value.request.schedulerOption
         _uiState.update {
-            uiState.value.copy(request = uiState.value.request.copy(schedulerOption = oldList.map { old ->
-                if (old.id == scheduler.id) {
-                    old.copy(
-                        selected = true
-                    )
-                } else {
-                    old.copy(
-                        selected = false
-                    )
-                }
-            }))
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    schedulerOption = oldList.map { old ->
+                        if (old.id == scheduler.id) {
+                            old.copy(
+                                selected = true
+                            )
+                        } else {
+                            old.copy(
+                                selected = false
+                            )
+                        }
+                    }
+                )
+            )
         }
     }
 
@@ -267,7 +291,6 @@ class TxtToImgViewModel @Inject constructor(
                 )
             )
         }
-
     }
 
     fun onAddPositivePrompt(prompt: String) {
@@ -344,17 +367,15 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     fun onClickMorePositivePrompt() = scope.launch {
-
     }
 
     fun onClickMoreNegativePrompt() = scope.launch {
-
     }
 
     fun onClickMoreSDModel() = scope.launch {
         _dialogEvent.emit(
             MoreSDModelBottomSheet(
-                options = uiState.value.request.sdModelOption,
+                options = uiState.value.request.sdModelOption
             )
         )
     }
@@ -362,7 +383,7 @@ class TxtToImgViewModel @Inject constructor(
     fun onClickMoreLoRaModel() = scope.launch {
         _dialogEvent.emit(
             MoreLoRaModelBottomSheet(
-                options = uiState.value.request.loRaModelsOptions,
+                options = uiState.value.request.loRaModelsOptions
             )
         )
     }
@@ -370,7 +391,7 @@ class TxtToImgViewModel @Inject constructor(
     fun onClickMoreEmbeddingsModel() = scope.launch {
         _dialogEvent.emit(
             MoreEmbeddingsBottomSheet(
-                options = uiState.value.request.embeddingsModelOption,
+                options = uiState.value.request.embeddingsModelOption
             )
         )
     }

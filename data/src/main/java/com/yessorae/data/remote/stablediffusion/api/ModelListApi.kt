@@ -14,4 +14,3 @@ interface ModelListApi {
         @Body key: KeyRequestBody = KeyRequestBody(BuildConfig.STABLE_DIFFUSION_API_API_KEY)
     ): Response<PublicModelDto>
 }
-

@@ -57,7 +57,6 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun ImageCompareLayout(
     modifier: Modifier = Modifier,
@@ -93,7 +92,6 @@ fun ImageCompareLayout(
         .data(before)
         .build()
 
-
     val painterState = rememberAsyncImagePainter(
         model = afterImageRequest
     )
@@ -110,11 +108,9 @@ fun ImageCompareLayout(
         }
     }
 
-
     Box(
         modifier = modifier
     ) {
-
         SubcomposeAsyncImage(
             model = beforeImageRequest,
             contentDescription = stringResource(id = R.string.result_after),

@@ -26,7 +26,7 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val data = baos.toByteArray()
 
-        val ref = storageRef.child("${path}/$name")
+        val ref = storageRef.child("$path/$name")
 
         ref.putBytes(data)
             .addOnProgressListener { progressInfo ->
@@ -48,7 +48,6 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
                     task.exception?.let {
                         close(cause = it)
                     }
-
                 }
             }
 
@@ -64,7 +63,7 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
         name: String
     ): Flow<ImageUploadResponse> = callbackFlow {
         storageRef
-            .child("${path}/$name")
+            .child("$path/$name")
             .putStream(stream).addOnFailureListener {
                 // Handle unsuccessful uploads
             }.addOnSuccessListener { taskSnapshot ->
@@ -79,7 +78,7 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
         name: String
     ): Flow<ImageUploadResponse> = callbackFlow {
         storageRef
-            .child("${path}/$name")
+            .child("$path/$name")
             .putFile(uri).addOnFailureListener {
                 // Handle unsuccessful uploads
             }.addOnSuccessListener { taskSnapshot ->
@@ -88,4 +87,3 @@ class FireStorageServiceImpl @Inject constructor() : FireStorageService {
             }
     }
 }
-

@@ -23,7 +23,7 @@ fun MainBottomNavHost(
     NavHost(
         navController = navController,
         modifier = modifier.fillMaxSize(),
-        startDestination = startDestination.route,
+        startDestination = startDestination.route
     ) {
         composable(
             route = TxtToImgBottomTabDestination.route
@@ -47,6 +47,4 @@ fun MainBottomNavHost(
             ReadyScreen(ProfileBottomTabDestination.route)
         }
     }
-
 }
-

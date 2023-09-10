@@ -22,7 +22,6 @@ enum class UpscaleType(val value: String) {
     }
 }
 
-
 fun Option.toUpscaleType(): UpscaleType {
     return UpscaleType.valueOf(this.id)
 }

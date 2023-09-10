@@ -91,8 +91,7 @@ class PublicModelMapper @Inject constructor() {
 
     private fun isSDModel(dto: PublicModelItem): Boolean {
         return dto.modelCategory == Constants.ARG_MODEL_TYPE_STABLE_DIFFUSION ||
-                dto.modelCategory == Constants.ARG_MODEL_TYPE_STABLE_DIFFUSION_XL
-
+            dto.modelCategory == Constants.ARG_MODEL_TYPE_STABLE_DIFFUSION_XL
     }
 
     private fun isLoRaModel(dto: PublicModelItem): Boolean {

@@ -4,8 +4,7 @@ data class TxtToImgResultModel(
     val id: Int,
     val outputUrls: List<String>,
     val status: String,
-    val generationTime: Double?,
+    val generationTime: Double?
 ) {
     val imageUrl: String? = outputUrls.firstOrNull()
 }
-

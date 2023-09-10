@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.yessorae.imagefactory.ui.navigation.navhost.ImageFactoryNavHost
-import com.yessorae.imagefactory.ui.screen.main.tti.TxtToImgScreen
 import com.yessorae.imagefactory.ui.theme.ImageFactoryTheme
 
 @Composable
