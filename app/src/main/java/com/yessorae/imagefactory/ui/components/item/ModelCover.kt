@@ -71,22 +71,11 @@ fun ModelCover(
 fun ModelCoverPlaceholder(
     modifier: Modifier = Modifier
 ) {
-    val infiniteTransition = rememberInfiniteTransition(label = "")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(500),
-            repeatMode = RepeatMode.Reverse
-        ), label = ""
-    )
-
     val color = Gray200
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentHeight()
-            .alpha(alpha)
     ) {
         Box(
             modifier = Modifier

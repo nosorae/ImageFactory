@@ -23,9 +23,9 @@ data class PublicModelEntity(
     @ColumnInfo(name = DBConstants.COL_MODEL_CATEGORY)
     val modelCategory: String, // stable_diffusion
     @ColumnInfo(name = DBConstants.COL_IS_NSFW)
-    val isNsfw: Boolean, // yes || no
+    val isNsfw: Boolean?, // yes || no
     @ColumnInfo(name = DBConstants.COL_FEATURED)
-    val featured: Boolean, // yes || no
+    val featured: Boolean?, // yes || no
     @ColumnInfo(name = DBConstants.COL_MODEL_NAME)
     val modelName: String, // MidJourney V4
     @ColumnInfo(name = DBConstants.COL_DESCRIPTION)
@@ -46,8 +46,8 @@ fun PublicModelItem.mapToEntity(): PublicModelEntity {
             null
         },
         modelCategory = this.modelCategory,
-        isNsfw = this.isNsfw.trueOrFalse(),
-        featured = this.featured.trueOrFalse(),
+        isNsfw = this.isNsfw?.trueOrFalse(),
+        featured = this.featured?.trueOrFalse(),
         modelName = this.modelName,
         description = this.description,
         screenshots = this.screenshots

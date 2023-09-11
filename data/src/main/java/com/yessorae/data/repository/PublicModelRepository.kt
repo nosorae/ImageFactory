@@ -22,13 +22,15 @@ class PublicModelRepository @Inject constructor(
         val lastUpdateTime = preferenceService.getLastModelUpdateTime()
 
 
-        return if (oldEntities.isEmpty() || lastUpdateTime?.isDaysApartFromNow(day = 7) != false) {
+        return if (oldEntities.isEmpty() || lastUpdateTime?.isDaysApartFromNow(day = 3) != false) {
             val remoteData = modelListApi.getPublicModels().handleResponse()
             val newEntities = remoteData.map {
                 it.mapToEntity()
             }
 
             publicModelDao.insertAll(newEntities)
+
+            preferenceService.setLastModelUpdateTime()
 
             newEntities
         } else {
