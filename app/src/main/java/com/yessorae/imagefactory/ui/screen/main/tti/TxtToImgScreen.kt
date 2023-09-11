@@ -248,7 +248,8 @@ fun TxtToImgScreen(
                         viewModel.onSelectSDModel(
                             option = option as SDModelOption
                         )
-                    }
+                    },
+                    loading = uiState.modelLoading
                 )
             }
 
@@ -271,7 +272,8 @@ fun TxtToImgScreen(
                         viewModel.onSelectLoRaModel(
                             option = option as LoRaModelOption
                         )
-                    }
+                    },
+                    loading = uiState.modelLoading
                 )
             }
             requestModel.loRaModelsOptions
@@ -318,7 +320,8 @@ fun TxtToImgScreen(
                         viewModel.onSelectEmbeddingsModel(
                             option = option as EmbeddingsModelOption
                         )
-                    }
+                    },
+                    loading = uiState.modelLoading
                 )
             }
 

@@ -1,6 +1,4 @@
-package com.yessorae.imagefactory.util
-
-import com.yessorae.common.Constants
+package com.yessorae.common
 
 fun Boolean.yesOrNo(): String {
     return if (this) {
@@ -8,4 +6,8 @@ fun Boolean.yesOrNo(): String {
     } else {
         Constants.ARG_NO
     }
+}
+
+fun String.trueOrFalse(): Boolean {
+    return this == Constants.ARG_YES
 }

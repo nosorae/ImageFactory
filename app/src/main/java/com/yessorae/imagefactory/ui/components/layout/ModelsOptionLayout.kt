@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.mock
 import com.yessorae.imagefactory.ui.components.item.ModelCover
+import com.yessorae.imagefactory.ui.components.item.ModelCoverPlaceholder
 import com.yessorae.imagefactory.ui.components.item.model.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.compose.ColumnPreview
@@ -21,19 +22,29 @@ fun ModelsLayout(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     models: List<CoverOption>,
+    loading: Boolean = true,
     onClick: (CoverOption) -> Unit = {}
 ) {
     LazyRow(
         modifier = modifier,
         state = state,
         contentPadding = Dimen.carousel_padding_values,
-        horizontalArrangement = Arrangement.spacedBy(Dimen.space_4)
+        horizontalArrangement = Arrangement.spacedBy(Dimen.space_4),
+        userScrollEnabled = loading.not()
     ) {
-        itemsIndexed(items = models) { _, item ->
-            ModelCover(
-                model = item,
-                onClick = { onClick(item) }
-            )
+        if (loading) {
+            repeat(6) {
+                item {
+                    ModelCoverPlaceholder()
+                }
+            }
+        } else {
+            itemsIndexed(items = models) { _, item ->
+                ModelCover(
+                    model = item,
+                    onClick = { onClick(item) }
+                )
+            }
         }
     }
 }

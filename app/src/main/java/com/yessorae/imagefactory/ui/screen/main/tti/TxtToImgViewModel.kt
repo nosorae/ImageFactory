@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
+import com.yessorae.data.repository.PublicModelRepository
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
@@ -51,6 +52,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TxtToImgViewModel @Inject constructor(
     private val txtToImgRepository: TxtToImgRepository,
+    private val publicModelRepository: PublicModelRepository,
     private val publicModelMapper: PublicModelMapper,
     private val promptMapper: PromptMapper,
     private val txtToImgResultMapper: TxtToImgResultMapper,
@@ -76,6 +78,9 @@ class TxtToImgViewModel @Inject constructor(
     val navigationEvent: SharedFlow<String> = _navigationEvent.asSharedFlow()
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
+        viewModelScope.launch {
+            _toast.emit(ResString(R.string.common_response_error))
+        }
         Logger.presentation(
             message = throwable.toString(),
             error = true
@@ -435,14 +440,15 @@ class TxtToImgViewModel @Inject constructor(
 
     /** load **/
     private fun getPublicModels() = scope.launch {
-        val models = txtToImgRepository.getPublicModels()
+        val models = publicModelRepository.getPublicModels()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
                     sdModelOption = publicModelMapper.mapSDModelOption(dto = models),
                     loRaModelsOptions = publicModelMapper.mapLoRaModelOption(dto = models),
                     embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models)
-                )
+                ),
+                modelLoading = false
             )
         }
     }
@@ -471,14 +477,6 @@ class TxtToImgViewModel @Inject constructor(
 
     private fun showToast(message: StringModel) = sharedEventScope.launch {
         _toast.emit(message)
-    }
-
-    private fun showLoading(show: Boolean) {
-        _uiState.update {
-            uiState.value.copy(
-                loading = show
-            )
-        }
     }
 
     private fun generateImage(requestOptionModel: TxtToImgOptionState? = null) = scope.launch {

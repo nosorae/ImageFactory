@@ -8,17 +8,25 @@ import com.google.gson.Gson
 import com.yessorae.common.Logger
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.util.DatastoreConstants
+import com.yessorae.data.util.LocalDateTimeConverter
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PreferenceService @Inject constructor(
-    private val dataStorePreference: DataStore<Preferences>
+    private val dataStorePreference: DataStore<Preferences>,
+    private val localDateTimeConverter: LocalDateTimeConverter
 ) {
     private val lastTxtToImageRequest = stringPreferencesKey(
         name = DatastoreConstants.KEY_LAST_TXT_TO_IMG_REQUEST
+    )
+
+    private val lastModelUpdateTime = stringPreferencesKey(
+        name = DatastoreConstants.KEY_LAST_MODEL_UPDATE_TIME
     )
 
     suspend fun setLastTxtToImageRequest(request: TxtToImgRequestBody) {
@@ -35,5 +43,20 @@ class PreferenceService @Inject constructor(
                 Gson().fromJson(jsonString, TxtToImgRequestBody::class.java)
             }
         }
+    }
+
+    suspend fun setLastModelUpdateTime() {
+        Logger.data("setLastModelUpdateTime now : ${localDateTimeConverter.fromLocalDateTime(LocalDateTime.now())}")
+        dataStorePreference.edit { pref ->
+            pref[lastModelUpdateTime] = localDateTimeConverter.fromLocalDateTime(LocalDateTime.now())
+        }
+    }
+
+    suspend fun getLastModelUpdateTime(): LocalDateTime? {
+        return dataStorePreference.data.map { pref ->
+            pref[lastModelUpdateTime]?.let { lastTime ->
+                localDateTimeConverter.toLocalDateTime(lastTime)
+            }
+        }.firstOrNull()
     }
 }
