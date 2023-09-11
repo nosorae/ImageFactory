@@ -9,7 +9,7 @@ object MainDestination : Destination {
     val screens: List<MainBottomTabDestination> = listOf(
         TxtToImgBottomTabDestination,
         InpaintingBottomTabDestination,
-        ProfileBottomTabDestination
+        HistoryBottomTabDestination
     )
 }
 
@@ -30,8 +30,8 @@ object InpaintingBottomTabDestination : MainBottomTabDestination {
     override val display: StringModel = TextString("Inpainting")
 }
 
-object ProfileBottomTabDestination : MainBottomTabDestination {
-    override val icon: Int = R.drawable.ic_bottom_nav_profile_24_dp
+object HistoryBottomTabDestination : MainBottomTabDestination {
+    override val icon: Int = R.drawable.ic_bottom_nav_history_24_dp
     override val route: String = "profile_bottom_tab_destination"
     override val display: StringModel = TextString("Profile")
 }

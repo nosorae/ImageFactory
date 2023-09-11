@@ -36,3 +36,4 @@ data class TxtToImgRequestBody(
     @SerializedName("track_id") val trackId: String? = null,
     @SerializedName("temp") val temp: String = Constants.ARG_YES
 )
+

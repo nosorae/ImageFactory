@@ -41,15 +41,6 @@ class TxtToImgRepository @Inject constructor(
         return txtToImgApi.generateImage(request).handleResponse()
     }
 
-    suspend fun fetchQueuedImage(
-        requestId: String
-    ): FetchQueuedImageDto {
-        return txtToImgApi.fetchQueuedImage(
-            FetchQueuedImageRequestBody(
-                requestId = requestId
-            )
-        ).handleResponse()
-    }
 
     suspend fun setLastRequest(request: TxtToImgRequestBody) {
         preferenceService.setLastTxtToImageRequest(request = request)

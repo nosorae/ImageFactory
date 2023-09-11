@@ -3,9 +3,11 @@ package com.yessorae.data.local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.yessorae.data.local.database.converter.ListStringConverter
 import com.yessorae.data.local.database.converter.LocalDateTimeConverter
 import com.yessorae.data.local.database.dao.PromptDao
 import com.yessorae.data.local.database.dao.PublicModelDao
+import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
 import com.yessorae.data.local.database.model.PromptEntity
 import com.yessorae.data.local.database.model.PublicModelEntity
 
@@ -14,8 +16,9 @@ import com.yessorae.data.local.database.model.PublicModelEntity
     version = 1,
     exportSchema = false
 )
-@TypeConverters(LocalDateTimeConverter::class)
+@TypeConverters(LocalDateTimeConverter::class, ListStringConverter::class)
 abstract class ImageFactoryDatabase : RoomDatabase() {
     abstract fun promptDao(): PromptDao
     abstract fun publicModelDao(): PublicModelDao
+    abstract fun txtToImgHistoryDao(): TxtToImgHistoryDao
 }
