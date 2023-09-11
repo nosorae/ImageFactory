@@ -1,10 +1,5 @@
 package com.yessorae.imagefactory.ui.components.item
 
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,14 +8,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,7 +77,7 @@ fun ModelCoverPlaceholder(
                     shape = MaterialTheme.shapes.medium,
                     color = color
                 )
-                .size(Dimen.cover_size),
+                .size(Dimen.cover_size)
         )
         Margin(margin = Dimen.space_4)
 
@@ -104,7 +97,6 @@ fun ModelCoverPlaceholder(
         Margin(margin = Dimen.space_2)
     }
 }
-
 
 @Composable
 fun GridModelCover(

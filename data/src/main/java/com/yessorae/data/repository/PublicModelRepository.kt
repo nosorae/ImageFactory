@@ -21,7 +21,6 @@ class PublicModelRepository @Inject constructor(
         val oldEntities = publicModelDao.getPublicModelByCallCounts()
         val lastUpdateTime = preferenceService.getLastModelUpdateTime()
 
-
         return if (oldEntities.isEmpty() || lastUpdateTime?.isDaysApartFromNow(day = 3) != false) {
             val remoteData = modelListApi.getPublicModels().handleResponse()
             val newEntities = remoteData.map {
@@ -45,5 +44,4 @@ class PublicModelRepository @Inject constructor(
         val daysApart = ChronoUnit.DAYS.between(this, now)
         return Math.abs(daysApart) >= day
     }
-
 }

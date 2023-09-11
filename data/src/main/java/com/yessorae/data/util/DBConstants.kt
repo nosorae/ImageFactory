@@ -17,7 +17,7 @@ object DBConstants {
     const val COL_STATUS = "status"
     const val COL_INSTANCE_PROMPT = "instance_prompt"
     const val COL_API_CALLS = "api_calls"
-    const val COL_MODEL_CATEGORY  = "model_category"
+    const val COL_MODEL_CATEGORY = "model_category"
     const val COL_IS_NSFW = "is_nsfw"
     const val COL_FEATURED = "featured"
     const val COL_MODEL_NAME = "model_name"

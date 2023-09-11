@@ -446,7 +446,7 @@ class TxtToImgViewModel @Inject constructor(
                 request = uiState.value.request.copy(
                     sdModelOption = publicModelMapper.mapSDModelOption(dto = models),
                     loRaModelsOptions = publicModelMapper.mapLoRaModelOption(dto = models),
-                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models),
+                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models)
                 ),
                 modelLoading = false
             )

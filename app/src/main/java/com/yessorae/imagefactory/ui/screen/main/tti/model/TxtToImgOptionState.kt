@@ -1,5 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.main.tti.model
 
+import com.yessorae.common.yesOrNo
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
@@ -20,7 +21,6 @@ import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
-import com.yessorae.common.yesOrNo
 
 data class TxtToImgOptionState(
     val positivePromptOptions: List<PromptOption> = listOf(),
