@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -88,9 +89,9 @@ fun ModelCoverPlaceholder(
         Margin(margin = Dimen.space_4)
 
         Text(
-            text = "-",
+            text = "",
             modifier = Modifier
-                .fillMaxWidth()
+                .width(Dimen.cover_size)
                 .background(
                     shape = MaterialTheme.shapes.medium,
                     color = color
