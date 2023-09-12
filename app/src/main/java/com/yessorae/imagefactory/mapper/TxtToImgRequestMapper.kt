@@ -1,7 +1,8 @@
 package com.yessorae.imagefactory.mapper
 
+import com.yessorae.data.local.database.model.RequestBodyEntity
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
-import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgRequest
+import com.yessorae.imagefactory.ui.model.TxtToImgRequest
 import javax.inject.Inject
 
 class TxtToImgRequestMapper @Inject constructor() {
@@ -29,6 +30,30 @@ class TxtToImgRequestMapper @Inject constructor() {
         )
     }
 
+    fun map(entity: RequestBodyEntity): TxtToImgRequest {
+        return TxtToImgRequest(
+            prompt = entity.prompt,
+            modelId = entity.modelId,
+            negativePrompt = entity.negativePrompt,
+            width = entity.width,
+            height = entity.height,
+            guidanceScale = entity.guidanceScale,
+            seed = entity.seed?.toLongOrNull(),
+            steps = entity.numInferenceSteps,
+            nSamples = entity.samples,
+            upscale = entity.upscale,
+            multiLingual = entity.multiLingual,
+            panorama = entity.panorama,
+            selfAttention = entity.selfAttention,
+            embeddings = entity.embeddingsModel,
+            lora = entity.loraModel,
+            loraStrength = entity.loraStrength,
+            scheduler = entity.scheduler,
+            safetyChecker = entity.safetyChecker,
+            enhancePrompt = entity.enhancePrompt
+        )
+    }
+
     fun mapToRequestBody(request: TxtToImgRequest): TxtToImgRequestBody {
         return TxtToImgRequestBody(
             prompt = request.prompt,
@@ -52,4 +77,6 @@ class TxtToImgRequestMapper @Inject constructor() {
             enhancePrompt = request.enhancePrompt
         )
     }
+
+
 }

@@ -32,9 +32,15 @@ object DBConstants {
     const val PREFIX_RESULT = "result_"
     const val PREFIX_META = "meta_"
 
+    // Txt to Img Upscale History Model
+    const val TABLE_TXT_TO_IMG_UPSCALE_HISTORY  =  "txt_to_img_upscale_history"
+    const val COL_HISTORY_ID = "history_id"
+
 
     // common
+    const val COL_ID = "id"
     const val COL_CREATED_AT = "created_at"
     const val COL_MODEL_ID = "model_id"
     const val COL_STATUS = "status"
+    const val COL_FILE_PATH = "file_path"
 }

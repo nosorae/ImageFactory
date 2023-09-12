@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.yessorae.imagefactory.ui.navigation.destination.Destination
@@ -35,11 +36,18 @@ fun ImageFactoryNavHost(
         }
 
         composable(
-            route = TxtToImgResultDestination.route
+            route = TxtToImgResultDestination.routeWithArgs,
+            arguments = TxtToImgResultDestination.arguments
         ) {
             TxtToImgResultScreen(
                 onNavEvent = { route ->
-                    navController.navigate(route)
+                    navController.navigate(
+                        route,
+                        navOptions = NavOptions
+                            .Builder()
+                            .setLaunchSingleTop(singleTop = false)
+                            .build()
+                    )
                 },
                 onBackEvent = {
                     navController.popBackStack()

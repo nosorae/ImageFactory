@@ -16,6 +16,8 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -41,6 +43,19 @@ fun Context.downloadImageByUrl(
 
     val downloadManager = this.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     downloadManager.enqueue(request)
+}
+
+fun Context.downloadImageByBitmap(
+    bitmap: Bitmap
+): String {
+    val directory = filesDir
+    val dateText = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    val fileName = "${this.getString(R.string.app_name)}_$dateText.png"
+    val file = File(directory, fileName)
+    val outputStream = FileOutputStream(file)
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+    outputStream.close()
+    return file.absolutePath
 }
 
 fun Context.uriToBitmap(

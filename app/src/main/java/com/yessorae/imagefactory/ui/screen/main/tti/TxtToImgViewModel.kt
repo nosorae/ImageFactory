@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
+import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.PublicModelRepository
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
@@ -53,6 +54,7 @@ import javax.inject.Inject
 class TxtToImgViewModel @Inject constructor(
     private val txtToImgRepository: TxtToImgRepository,
     private val publicModelRepository: PublicModelRepository,
+    private val txtToImgHistoryRepository: TxtToImgHistoryRepository,
     private val publicModelMapper: PublicModelMapper,
     private val promptMapper: PromptMapper,
     private val txtToImgResultMapper: TxtToImgResultMapper,
@@ -485,9 +487,10 @@ class TxtToImgViewModel @Inject constructor(
                 showToast(message = message)
             }
         )?.let { request ->
+            val requestId = txtToImgHistoryRepository.insertRequestHistory(request)
             txtToImgRepository.setLastRequest(request = request)
             _navigationEvent.emit(
-                TxtToImgResultDestination.route
+                TxtToImgResultDestination.getRouteWithArgs(requestId = requestId.toInt())
             )
         }
     }

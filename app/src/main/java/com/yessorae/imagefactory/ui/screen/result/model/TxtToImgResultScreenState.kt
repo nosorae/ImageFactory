@@ -1,5 +1,8 @@
 package com.yessorae.imagefactory.ui.screen.result.model
 
+import com.yessorae.imagefactory.ui.model.TxtToImgRequest
+import com.yessorae.imagefactory.ui.model.TxtToImgResult
+import com.yessorae.imagefactory.ui.model.UpscaleResultModel
 import com.yessorae.imagefactory.util.StringModel
 
 sealed class TxtToImgResultScreenState(
@@ -12,33 +15,33 @@ sealed class TxtToImgResultScreenState(
 
     data class SdSuccess(
         override val request: TxtToImgRequest,
-        val sdResult: TxtToImgResultModel
-    ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResultModel> {
+        val sdResult: TxtToImgResult
+    ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResult> {
         val ratio = request.width / request.height.toFloat()
-        override val result: TxtToImgResultModel = sdResult
+        override val result: TxtToImgResult = sdResult
     }
 
     data class UpscaleLoading(
         override val request: TxtToImgRequest,
-        val sdResult: TxtToImgResultModel
-    ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResultModel> {
-        override val result: TxtToImgResultModel = sdResult
+        val sdResult: TxtToImgResult
+    ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResult> {
+        override val result: TxtToImgResult = sdResult
     }
 
     data class UpscaleSuccess(
         override val request: TxtToImgRequest,
-        val sdResult: TxtToImgResultModel,
+        val sdResult: TxtToImgResult,
         val upscaleResult: UpscaleResultModel
-    ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResultModel> {
+    ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResult> {
         val ratio = request.width / request.height.toFloat()
         val beforeImageUrl: String? = sdResult.imageUrl
         val afterImageUrl: String = upscaleResult.outputUrl
-        override val result: TxtToImgResultModel = sdResult
+        override val result: TxtToImgResult = sdResult
     }
 
     data class Processing(
         override val request: TxtToImgRequest,
-        val sdResult: TxtToImgResultModel,
+        val sdResult: TxtToImgResult,
         val message: StringModel
     ) : TxtToImgResultScreenState(request = request)
 

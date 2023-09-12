@@ -33,5 +33,5 @@ object InpaintingBottomTabDestination : MainBottomTabDestination {
 object HistoryBottomTabDestination : MainBottomTabDestination {
     override val icon: Int = R.drawable.ic_bottom_nav_history_24_dp
     override val route: String = "profile_bottom_tab_destination"
-    override val display: StringModel = TextString("Profile")
+    override val display: StringModel = TextString("History")
 }

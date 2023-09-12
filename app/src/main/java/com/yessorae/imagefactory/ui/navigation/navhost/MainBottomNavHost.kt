@@ -10,6 +10,7 @@ import com.yessorae.imagefactory.ui.navigation.destination.InpaintingBottomTabDe
 import com.yessorae.imagefactory.ui.navigation.destination.MainBottomTabDestination
 import com.yessorae.imagefactory.ui.navigation.destination.HistoryBottomTabDestination
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgBottomTabDestination
+import com.yessorae.imagefactory.ui.screen.main.history.TxtToImgHistoryScreen
 import com.yessorae.imagefactory.ui.screen.main.tti.TxtToImgScreen
 import com.yessorae.imagefactory.util.compose.ReadyScreen
 
@@ -44,7 +45,7 @@ fun MainBottomNavHost(
         composable(
             route = HistoryBottomTabDestination.route
         ) {
-            ReadyScreen(HistoryBottomTabDestination.route)
+            TxtToImgHistoryScreen()
         }
     }
 }

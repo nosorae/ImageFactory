@@ -4,6 +4,7 @@ import com.yessorae.data.local.database.ImageFactoryDatabase
 import com.yessorae.data.local.database.dao.PromptDao
 import com.yessorae.data.local.database.dao.PublicModelDao
 import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
+import com.yessorae.data.local.database.dao.TxtToImgUpscaleHistoryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +27,9 @@ object DaoModule {
     fun provideTxtToImgHistoryDao(
         database: ImageFactoryDatabase
     ): TxtToImgHistoryDao = database.txtToImgHistoryDao()
+
+    @Provides
+    fun provideTxtToImgUpscaleHistoryDao(
+        database: ImageFactoryDatabase
+    ): TxtToImgUpscaleHistoryDao = database.txtToImgUpscaleHistoryDao()
 }

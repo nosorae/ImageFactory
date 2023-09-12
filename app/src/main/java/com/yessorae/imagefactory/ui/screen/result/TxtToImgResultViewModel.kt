@@ -1,16 +1,20 @@
 package com.yessorae.imagefactory.ui.screen.result
 
 import android.graphics.Bitmap
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
+import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.TxtToImgRepository
+import com.yessorae.data.util.StableDiffusionConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
 import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
-import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgRequest
-import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultModel
+import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
+import com.yessorae.imagefactory.ui.model.TxtToImgRequest
+import com.yessorae.imagefactory.ui.model.TxtToImgResult
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultScreenState
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
@@ -18,33 +22,27 @@ import com.yessorae.imagefactory.util.TextString
 import com.yessorae.imagefactory.util.base.BaseScreenViewModel
 import com.yessorae.imagefactory.util.handleSdResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TxtToImgResultViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val txtToImgRepository: TxtToImgRepository,
+    private val txtToImgHistoryRepository: TxtToImgHistoryRepository,
     private val txtToImgRequestMapper: TxtToImgRequestMapper,
     private val resultMapper: TxtToImgResultMapper,
     private val upscaleResultModelMapper: UpscaleResultModelMapper
 ) : BaseScreenViewModel<TxtToImgResultScreenState>() {
-    override val initialState: TxtToImgResultScreenState = TxtToImgResultScreenState.Initial
+    private val requestId: Int =
+        checkNotNull(savedStateHandle[TxtToImgResultDestination.requestIdArg])
 
-    private var lastRequestBody: TxtToImgRequestBody? = null
+    override val initialState: TxtToImgResultScreenState = TxtToImgResultScreenState.Initial
 
     private val _saveImageEvent = MutableSharedFlow<String>()
     val saveImageEvent = _saveImageEvent.asSharedFlow()
-
-    override val ceh: CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Logger.presentation(
-            message = throwable.toString(),
-            error = true
-        )
-    }
 
     init {
         initRequest()
@@ -53,43 +51,22 @@ class TxtToImgResultViewModel @Inject constructor(
     /** init **/
 
     private fun initRequest() = ioScope.launch {
-        txtToImgRepository.getLastRequest().collectLatest { requestBody ->
-            Logger.presentation("initRequest requestBody : $requestBody")
-            requestBody?.let {
-                lastRequestBody = requestBody
-                generateImage(requestBody = requestBody)
-            }
-        }
+        val requestBody = txtToImgHistoryRepository.getRequestHistory(requestId = requestId)
+        generateImage(requestBody = requestBody)
     }
 
     /** onClick **/
 
     fun onClickRetry(currentState: TxtToImgResultScreenState) = ioScope.launch {
-        when (currentState) {
-            is TxtToImgResultScreenState.SdSuccess,
-            is TxtToImgResultScreenState.UpscaleSuccess -> {
-                try {
-                    generateImage(
-                        requestBody = txtToImgRequestMapper.mapToRequestBody(
-                            request = currentState.request!!
-                        )
-                    )
-                } catch (e: NullPointerException) {
-                    onError(
-                        currentState = currentState,
-                        cause = TextString(e.toString())
-                    )
-                } catch (e: Exception) {
-                    onError(
-                        currentState = currentState,
-                        cause = TextString(e.toString())
-                    )
-                }
-            }
-
-            else -> {
-                showToast(ResString(R.string.common_state_still_load_image))
-            }
+        currentState.request?.let { request ->
+            val requestId = txtToImgHistoryRepository.insertRequestHistory(
+                txtToImgRequestMapper.mapToRequestBody(
+                    request = request
+                )
+            )
+            _navigationEvent.emit(
+                TxtToImgResultDestination.getRouteWithArgs(requestId = requestId.toInt())
+            )
         }
     }
 
@@ -141,12 +118,6 @@ class TxtToImgResultViewModel @Inject constructor(
         _backNavigationEvent.emit(Unit)
     }
 
-    /** onComplete **/
-
-    fun onCompleteLoadGeneratedImage(state: TxtToImgResultScreenState.SdSuccess, bitmap: Bitmap) {
-        // todo firestorage 에 이미지 저장하고 url받아와서, 요청정보와 결과 이미지 url db 에 저장
-        // todo 이 때 업스케일을 위한 url을 관리하는 것도 생각해야한다.
-    }
 
     fun onSaveComplete() = viewModelScope.launch {
         _toast.emit(ResString(R.string.common_state_complete_save_image))
@@ -169,6 +140,15 @@ class TxtToImgResultViewModel @Inject constructor(
         }
 
         val dto = txtToImgRepository.generateImage(request = requestBody)
+
+        if (dto.status != StableDiffusionConstants.RESPONSE_ERROR) {
+            txtToImgHistoryRepository.updateRequestHistory(
+                id = requestId,
+                result = dto,
+                meta = dto.meta
+            )
+        }
+
         dto.status.handleSdResponse(
             onSuccess = {
                 updateState {
@@ -256,7 +236,7 @@ class TxtToImgResultViewModel @Inject constructor(
         }
     }
 
-    private fun onSdProcessing(request: TxtToImgRequest, response: TxtToImgResultModel) {
+    private fun onSdProcessing(request: TxtToImgRequest, response: TxtToImgResult) {
         updateState {
             TxtToImgResultScreenState.Processing(
                 request = request,

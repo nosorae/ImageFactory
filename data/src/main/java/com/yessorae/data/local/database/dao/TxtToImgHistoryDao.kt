@@ -13,7 +13,12 @@ interface TxtToImgHistoryDao : BaseDao<TxtToImgHistoryEntity> {
             SELECT * FROM ${DBConstants.TABLE_TXT_TO_IMG_HISTORY}
         """
     )
-    fun getTxtToImgHistoryModel(): Flow<List<TxtToImgHistoryEntity>>
+    fun getTxtToImgHistoryModels(): Flow<List<TxtToImgHistoryEntity>>
 
-
+    @Query(
+        """
+            SELECT * FROM ${DBConstants.TABLE_TXT_TO_IMG_HISTORY} WHERE ${DBConstants.COL_ID} = :id  
+        """
+    )
+    suspend fun getTxtToImgHistoryModel(id: Int): TxtToImgHistoryEntity
 }

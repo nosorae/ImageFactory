@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.screen.result.model
+package com.yessorae.imagefactory.ui.model
 
 data class UpscaleResultModel(
     val id: Int,

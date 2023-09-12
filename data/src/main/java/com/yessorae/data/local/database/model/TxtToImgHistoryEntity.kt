@@ -1,31 +1,33 @@
 package com.yessorae.data.local.database.model
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import com.yessorae.common.Constants
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yessorae.data.BuildConfig
+import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
+import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
+import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.util.DBConstants
 import java.time.LocalDateTime
 
 @Entity(tableName = DBConstants.TABLE_TXT_TO_IMG_HISTORY)
 data class TxtToImgHistoryEntity(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = DBConstants.COL_ID)
     var id: Int = 0,
+    @ColumnInfo(DBConstants.COL_CREATED_AT)
+    val createdAt: LocalDateTime,
     @Embedded(prefix = DBConstants.PREFIX_REQUEST)
     val request: RequestBodyEntity,
-    @Embedded(prefix = DBConstants.PREFIX_RESULT)
-    val result: ResultEntity,
     @Embedded(prefix = DBConstants.PREFIX_META)
-    val meta: ResultMetaData,
-    @ColumnInfo(DBConstants.COL_CREATED_AT)
-    val createdAt: LocalDateTime
+    val meta: ResultMetaDataEntity? = null,
+    @Embedded(prefix = DBConstants.PREFIX_RESULT)
+    val result: ResultEntity? = null
 )
 
 data class RequestBodyEntity(
-    @ColumnInfo(name = "key")
-    val key: String = BuildConfig.STABLE_DIFFUSION_API_API_KEY,
     @ColumnInfo(name = "model_id")
     val modelId: String,
     @ColumnInfo(name = "prompt")
@@ -89,15 +91,15 @@ data class RequestBodyEntity(
 data class ResultEntity(
     @ColumnInfo(name = "status")
     val status: String,
-    @ColumnInfo(name = "generationTime")
+    @ColumnInfo(name = "generation_time")
     val generationTime: Double,
     @ColumnInfo(name = "id")
     val id: Int,
     @ColumnInfo(name = "output")
-    val output: List<String>,
+    val output: List<String>
 )
 
-data class ResultMetaData(
+data class ResultMetaDataEntity(
     @ColumnInfo(name = "prompt")
     val prompt: String,
     @ColumnInfo(name = "model_id")
@@ -131,7 +133,123 @@ data class ResultMetaData(
     @ColumnInfo(name = "lora")
     val lora: String?,
     @ColumnInfo(name = "outdir")
-    val outdir: String,
+    val outdir: String?,
     @ColumnInfo(name = "file_prefix")
-    val filePrefix: String
+    val filePrefix: String?
 )
+
+fun TxtToImgRequestBody.asHistoryEntity(): TxtToImgHistoryEntity {
+    return TxtToImgHistoryEntity(
+        createdAt = LocalDateTime.now(),
+        request = this.asEntity()
+    )
+}
+
+fun TxtToImgRequestBody.asEntity(): RequestBodyEntity {
+    return RequestBodyEntity(
+        modelId = this.modelId,
+        prompt = this.prompt,
+        negativePrompt = this.negativePrompt,
+        width = this.width,
+        height = this.height,
+        samples = this.samples,
+        numInferenceSteps = this.numInferenceSteps,
+        safetyChecker = this.safetyChecker,
+        enhancePrompt = this.enhancePrompt,
+        seed = this.seed,
+        guidanceScale = this.guidanceScale,
+        loraStrength = this.loraStrength,
+        loraModel = this.loraModel,
+        multiLingual = this.multiLingual,
+        upscale = this.upscale,
+        embeddingsModel = this.embeddingsModel,
+        scheduler = this.scheduler
+    )
+}
+
+fun RequestBodyEntity.asRequestBody(): TxtToImgRequestBody {
+    return TxtToImgRequestBody(
+        modelId = this.modelId,
+        prompt = this.prompt,
+        negativePrompt = this.negativePrompt,
+        width = this.width,
+        height = this.height,
+        samples = this.samples,
+        numInferenceSteps = this.numInferenceSteps,
+        safetyChecker = this.safetyChecker,
+        enhancePrompt = this.enhancePrompt,
+        seed = this.seed,
+        guidanceScale = this.guidanceScale,
+        loraStrength = this.loraStrength,
+        loraModel = this.loraModel,
+        multiLingual = this.multiLingual,
+        upscale = this.upscale,
+        embeddingsModel = this.embeddingsModel,
+        scheduler = this.scheduler
+    )
+}
+
+fun TxtToImgDto.asResultEntity(): ResultEntity {
+    return ResultEntity(
+        status = this.status,
+        generationTime = this.generationTime,
+        id = this.id,
+        output = this.output
+    )
+}
+
+fun ResultEntity.asDto(metaDataDto: ResultMetaDataEntity): TxtToImgDto {
+    return TxtToImgDto(
+        status = this.status,
+        generationTime = this.generationTime,
+        id = this.id,
+        output = this.output,
+        meta = metaDataDto.asDto()
+    )
+}
+
+fun ResultMetaDataEntity.asDto(): MetaDataDto {
+    return MetaDataDto(
+        prompt = this.prompt,
+        modelId = this.modelId,
+        negativePrompt = this.negativePrompt,
+        w = this.w,
+        h = this.h,
+        guidanceScale = this.guidanceScale,
+        seed = this.seed,
+        steps = this.steps,
+        nSamples = this.nSamples,
+        fullUrl = this.fullUrl,
+        upscale = this.upscale,
+        multiLingual = this.multiLingual,
+        panorama = this.panorama,
+        selfAttention = this.selfAttention,
+        embeddings = this.embeddings,
+        lora = this.lora,
+        outdir = this.outdir,
+        filePrefix = this.filePrefix,
+    )
+}
+
+fun MetaDataDto.asEntity(): ResultMetaDataEntity {
+    return ResultMetaDataEntity(
+        prompt = this.prompt,
+        modelId = this.modelId,
+        negativePrompt = this.negativePrompt,
+        w = this.w,
+        h = this.h,
+        guidanceScale = this.guidanceScale,
+        seed = this.seed,
+        steps = this.steps,
+        nSamples = this.nSamples,
+        fullUrl = this.fullUrl,
+        upscale = this.upscale,
+        multiLingual = this.multiLingual,
+        panorama = this.panorama,
+        selfAttention = this.selfAttention,
+        embeddings = this.embeddings,
+        lora = this.lora,
+        outdir = this.outdir,
+        filePrefix = this.filePrefix,
+    )
+}

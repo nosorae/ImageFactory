@@ -27,6 +27,6 @@ data class MetaDataDto(
     @SerializedName("self_attention") val selfAttention: String,
     @SerializedName("embeddings") val embeddings: String?,
     @SerializedName("lora") val lora: String?,
-    @SerializedName("outdir") val outdir: String,
-    @SerializedName("file_prefix") val filePrefix: String
+    @SerializedName("outdir") val outdir: String?,
+    @SerializedName("file_prefix") val filePrefix: String?
 )

@@ -4,7 +4,9 @@ import android.graphics.Bitmap
 import com.yessorae.common.FireStorageConstants
 import com.yessorae.data.BuildConfig
 import com.yessorae.data.local.database.dao.PromptDao
+import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
 import com.yessorae.data.local.database.model.PromptEntity
+import com.yessorae.data.local.database.model.asHistoryEntity
 import com.yessorae.data.local.preference.PreferenceService
 import com.yessorae.data.remote.firebase.FireStorageService
 import com.yessorae.data.remote.firebase.model.ImageUploadResponse
@@ -31,6 +33,7 @@ class TxtToImgRepository @Inject constructor(
     private val txtToImgApi: TxtToImgApi,
     private val modelListApi: ModelListApi,
     private val imageEditingApi: ImageEditingApi,
+
     private val promptDao: PromptDao,
     private val firebaseStorageService: FireStorageService,
     private val preferenceService: PreferenceService
@@ -38,7 +41,9 @@ class TxtToImgRepository @Inject constructor(
     suspend fun generateImage(
         request: TxtToImgRequestBody
     ): TxtToImgDto {
-        return txtToImgApi.generateImage(request).handleResponse()
+        return txtToImgApi.generateImage(
+            request = request
+        ).handleResponse()
     }
 
 
@@ -50,7 +55,7 @@ class TxtToImgRepository @Inject constructor(
         return preferenceService.getLastTxtToImageRequest()
     }
 
-    suspend fun uploadAndGetImageUrl(
+    private suspend fun uploadAndGetImageUrl(
         bitmap: Bitmap,
         path: String = FireStorageConstants.STABLE_DIFFUSION_TTI,
         name: String = UUID.randomUUID().toString()

@@ -36,7 +36,12 @@ abstract class BaseScreenViewModel<T> : ViewModel() {
     protected val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-    abstract val ceh: CoroutineExceptionHandler
+    open val ceh: CoroutineExceptionHandler  = CoroutineExceptionHandler { _, throwable ->
+        Logger.presentation(
+            message = throwable.toString(),
+            error = true
+        )
+    }
 
     val ioScope = viewModelScope + Dispatchers.IO
 

@@ -1,6 +1,6 @@
-package com.yessorae.imagefactory.ui.screen.result.model
+package com.yessorae.imagefactory.ui.model
 
-data class TxtToImgResultModel(
+data class TxtToImgResult(
     val id: Int,
     val outputUrls: List<String>,
     val status: String,

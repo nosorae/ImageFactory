@@ -5,8 +5,8 @@ import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultModel
-import com.yessorae.imagefactory.ui.screen.result.model.UpscaleResultModel
+import com.yessorae.imagefactory.ui.model.TxtToImgResult
+import com.yessorae.imagefactory.ui.model.UpscaleResultModel
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.TextString
@@ -48,7 +48,7 @@ data class TxtToImgResultDialog(
     val requestOption: TxtToImgOptionState,
     val width: Int,
     val height: Int,
-    val result: TxtToImgResultModel? = null,
+    val result: TxtToImgResult? = null,
     val upscaleResultModel: UpscaleResultModel? = null,
     val fail: Boolean = false
 ) : TxtToImgDialogState() {

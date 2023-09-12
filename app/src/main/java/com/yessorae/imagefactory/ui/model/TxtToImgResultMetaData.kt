@@ -1,23 +1,22 @@
-package com.yessorae.imagefactory.ui.screen.result.model
+package com.yessorae.imagefactory.ui.model
 
-data class TxtToImgRequest(
+data class TxtToImgResultMetaData(
     val prompt: String,
     val modelId: String,
     val negativePrompt: String,
-    val width: Int,
-    val height: Int,
+    val w: Int,
+    val h: Int,
     val guidanceScale: Double,
     val seed: Long?,
     val steps: Int,
     val nSamples: Int,
+    val fullUrl: String,
     val upscale: String,
     val multiLingual: String,
     val panorama: String,
     val selfAttention: String,
     val embeddings: String?,
     val lora: String?,
-    val loraStrength: String?,
-    val scheduler: String,
-    val safetyChecker: String,
-    val enhancePrompt: String
+    val outdir: String?,
+    val filePrefix: String?
 )
