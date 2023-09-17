@@ -2,7 +2,6 @@ package com.yessorae.imagefactory.ui.screen.main.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -19,9 +17,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +36,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.yessorae.common.Constants
 import com.yessorae.data.util.StableDiffusionConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.dialog.ConfirmDialog
@@ -51,6 +48,7 @@ import com.yessorae.imagefactory.ui.model.TxtToImgHistory
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.compose.Margin
+import com.yessorae.imagefactory.util.compose.debouncedClickable
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -70,9 +68,14 @@ fun TxtToImgHistoryScreen(
             TopAppBar(title = {
                 Text(text = "History")
             })
-        }
+        },
+        modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding())
+        ) {
             when (val state = screenState) {
                 is TxtToImgHistoryScreenState.Loading -> {
                     DefaultLoadingLayout()
@@ -80,7 +83,7 @@ fun TxtToImgHistoryScreen(
 
                 is TxtToImgHistoryScreenState.View -> {
                     HistoryListLayout(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxSize(),
                         histories = state.histories,
                         listState = listState,
                         onClickDelete = { history ->
@@ -187,7 +190,10 @@ private fun HistoryListItem(
                     ImageLoadError(
                         modifier = Modifier
                             .fillMaxSize()
-                            .clickable { onClickFetch() },
+                            .debouncedClickable(
+                                onClick = onClickFetch,
+                                interval = Constants.MIN_FETCH_INTERVAL
+                            ),
                         text = stringResource(id = R.string.history_cover_error_message)
                     )
                 } else {
