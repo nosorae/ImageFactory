@@ -15,6 +15,8 @@ import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.util.handleResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -57,6 +59,15 @@ class TxtToImgHistoryRepository @Inject constructor(
         return txtToImgHistoryDao.getTxtToImgHistoryModels().onEach {
             Logger.data("TxtToImgHistoryRepository - getHistories - $it")
         }
+            .map { list ->
+                list.filter { it.result != null }
+            }
+    }
+
+    suspend fun deleteHistory(
+        requestId: Int
+    ) {
+        txtToImgHistoryDao.deleteById(id = requestId)
     }
 
     suspend fun fetchQueuedImage(

@@ -50,6 +50,12 @@
     <string name="common_response_upscale_processing">이미지가 백그라운드에서 처리되고 있어요. 5초 후 다시 시도해보세요.</string>
     <string name="common_response_error">예상하지 못한 에러가 발생했어요.\n인터넷 연결을 확인하시고, 잠시 후 다시 시도해주세요.</string>
 
+    <!-- common dialog -->
+    <string name="common_dialog_title_delete_history">기록을 삭제합니다</string>
+    <string name="common_dialog_body_delete_history">정말 삭제하시겠습니까?\n다시 복구할 수 없어요.</string>
+    <string name="common_dialog_button_confirm">예</string>
+    <string name="common_dialog_button_no">아니오</string>
+
     <!-- 결과 화면 -->
     <string name="result_dialog_option_retry">재시도</string>
     <string name="result_dialog_option_back">이전 상태로 돌아가기</string>
