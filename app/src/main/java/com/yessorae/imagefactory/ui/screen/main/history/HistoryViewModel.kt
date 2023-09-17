@@ -35,6 +35,14 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
+    fun onClickFetch(txtToImgHistory: TxtToImgHistory) = ioScope.launch {
+        fetchTxtToImgHistory(txtToImgHistory = txtToImgHistory)
+    }
+
+    fun onClickImage(txtToImgHistory: TxtToImgHistory) = ioScope.launch {
+        // todo
+    }
+
     fun onClickConfirmTxtToImgHistory(txtToImgHistory: TxtToImgHistory) = ioScope.launch {
         deleteTxtToImgHistory(id = txtToImgHistory.id)
     }
@@ -47,6 +55,16 @@ class HistoryViewModel @Inject constructor(
 
     private suspend fun deleteTxtToImgHistory(id: Int) {
         txtToImgHistoryRepository.deleteHistory(id)
+    }
+
+    private suspend fun fetchTxtToImgHistory(txtToImgHistory: TxtToImgHistory) {
+        updateState {
+            TxtToImgHistoryScreenState.Loading
+        }
+        txtToImgHistoryRepository.fetchQueuedImage(
+            id = txtToImgHistory.id,
+            requestId = txtToImgHistory.result.id.toString()
+        )
     }
 
     private fun getTxtToImgHistories() = ioScope.launch {

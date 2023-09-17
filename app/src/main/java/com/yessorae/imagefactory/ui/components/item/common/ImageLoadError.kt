@@ -14,7 +14,8 @@ import com.yessorae.imagefactory.ui.theme.Gray400
 
 @Composable
 fun ImageLoadError(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    text: String = stringResource(id = R.string.common_error_not_watch_image_your_country)
 ) {
     Box(
         modifier = modifier
@@ -22,7 +23,7 @@ fun ImageLoadError(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(id = R.string.common_error_not_watch_image_your_country),
+            text = text,
             textAlign = TextAlign.Center
         )
     }

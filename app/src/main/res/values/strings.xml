@@ -64,6 +64,9 @@
     <string name="result_before">전</string>
     <string name="result_after">후</string>
 
+    <!-- 히스토리 화면 -->
+    <string name="history_cover_error_message">이미지가 백그라운드에서 생성되고 있어요.\클릭해서 가져오기.</string>
+
 
     <string name="common_work_in_progress_function">아직 작업중이에요, 기대해주세요!</string>
 </resources>

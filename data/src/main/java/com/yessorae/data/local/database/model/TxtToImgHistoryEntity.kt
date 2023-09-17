@@ -7,6 +7,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
+import com.yessorae.data.remote.stablediffusion.model.response.FetchQueuedImageDto
 import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.util.DBConstants
