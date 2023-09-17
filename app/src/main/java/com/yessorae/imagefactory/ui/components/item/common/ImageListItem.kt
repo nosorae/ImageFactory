@@ -1,5 +1,6 @@
 package com.yessorae.imagefactory.ui.components.item.common
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -15,14 +16,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.yessorae.common.Logger
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.theme.PrimaryBrush
 
 @Composable
-fun BaseImage(
-    model: Any,
+fun ImageListItem(
+    model: Any?,
     modifier: Modifier
 ) {
     val context = LocalContext.current
@@ -72,7 +77,7 @@ fun SelectableImage(
     }
 
     Box(modifier = modifier.then(shapeModifier)) {
-        BaseImage(
+        ImageListItem(
             model = model,
             modifier = Modifier.fillMaxSize()
         )
