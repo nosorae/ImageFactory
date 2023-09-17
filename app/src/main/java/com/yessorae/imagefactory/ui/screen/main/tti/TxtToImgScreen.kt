@@ -78,8 +78,6 @@ fun TxtToImgScreen(
 
     val context = LocalContext.current
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     LaunchedEffect(key1 = Unit) {
         launch {
             viewModel.toast.collectLatest { message ->
@@ -107,8 +105,7 @@ fun TxtToImgScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            .fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
@@ -133,7 +130,6 @@ fun TxtToImgScreen(
                         Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
                     }
                 },
-                scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
                     scrolledContainerColor = MaterialTheme.colorScheme.background
