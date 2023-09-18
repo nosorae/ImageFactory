@@ -25,7 +25,9 @@ data class TxtToImgHistoryEntity(
     @Embedded(prefix = DBConstants.PREFIX_META)
     val meta: ResultMetaDataEntity? = null,
     @Embedded(prefix = DBConstants.PREFIX_RESULT)
-    val result: ResultEntity? = null
+    val result: ResultEntity? = null,
+    @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)
+    val serverSync: Boolean = false
 )
 
 data class RequestBodyEntity(

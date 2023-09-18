@@ -17,5 +17,7 @@ data class TxtToImgUpscaleHistoryEntity(
     @ColumnInfo(name = "generation_time")
     val generationTime: Double,
     @ColumnInfo(name = "output")
-    val output: String
+    val output: String,
+    @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)
+    val serverSync: Boolean = false
 )

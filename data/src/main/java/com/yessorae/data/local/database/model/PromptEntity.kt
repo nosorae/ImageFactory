@@ -20,5 +20,7 @@ data class PromptEntity(
     @ColumnInfo(name = DBConstants.COL_CREATED_AT)
     val createdAt: LocalDateTime,
     @ColumnInfo(name = DBConstants.COL_UPDATED_AT)
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
+    @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)
+    val serverSync: Boolean = false
 )

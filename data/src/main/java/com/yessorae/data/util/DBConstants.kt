@@ -43,4 +43,5 @@ object DBConstants {
     const val COL_MODEL_ID = "model_id"
     const val COL_STATUS = "status"
     const val COL_FILE_PATH = "file_path"
+    const val COL_SERVER_SYNC = "server_sync"
 }
