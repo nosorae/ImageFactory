@@ -6,7 +6,6 @@ data class TxtToImgHistory(
     var id: Int = 0,
     val createdAt: LocalDateTime,
     val request: TxtToImgRequest,
-    val meta: TxtToImgResultMetaData,
-    val result: TxtToImgResult
+    val meta: TxtToImgResultMetaData?,
+    val result: TxtToImgResult?
 )
-

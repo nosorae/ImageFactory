@@ -1,16 +1,14 @@
 package com.yessorae.imagefactory.mapper
 
-import com.yessorae.data.local.database.model.RequestBodyEntity
 import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
 import com.yessorae.imagefactory.ui.model.TxtToImgHistory
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class TxtToImgHistoryMapper @Inject constructor(
     private val txtToImgResultMapper: TxtToImgResultMapper,
     private val txtToImgRequestMapper: TxtToImgRequestMapper
 ) {
-    fun map(entities: List<TxtToImgHistoryEntity>): List<TxtToImgHistory> {
+    fun mapNotResultNull(entities: List<TxtToImgHistoryEntity>): List<TxtToImgHistory> {
         return entities.mapNotNull { entity ->
             val resultEntity = entity.result
             val metaEntity = entity.meta
@@ -26,5 +24,15 @@ class TxtToImgHistoryMapper @Inject constructor(
                 null
             }
         }
+    }
+
+    fun map(entity: TxtToImgHistoryEntity): TxtToImgHistory {
+        return TxtToImgHistory(
+            id = entity.id,
+            createdAt = entity.createdAt,
+            request = txtToImgRequestMapper.map(entity = entity.request),
+            result = entity.result?.let { txtToImgResultMapper.map(entity = it) },
+            meta = entity.meta?.let { txtToImgResultMapper.mapMeta(entity = it) }
+        )
     }
 }

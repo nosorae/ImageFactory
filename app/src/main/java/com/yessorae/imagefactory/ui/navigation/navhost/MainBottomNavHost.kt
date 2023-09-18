@@ -45,7 +45,9 @@ fun MainBottomNavHost(
         composable(
             route = HistoryBottomTabDestination.route
         ) {
-            TxtToImgHistoryScreen()
+            TxtToImgHistoryScreen(
+                onNavOutEvent = onNavOutEvent
+            )
         }
     }
 }

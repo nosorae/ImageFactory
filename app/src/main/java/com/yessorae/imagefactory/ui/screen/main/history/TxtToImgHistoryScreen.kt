@@ -25,14 +25,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,20 +48,28 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.compose.Margin
 import com.yessorae.imagefactory.util.compose.debouncedClickable
-import java.text.SimpleDateFormat
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TxtToImgHistoryScreen(
-    viewModel: HistoryViewModel = hiltViewModel()
+    viewModel: HistoryViewModel = hiltViewModel(),
+    onNavOutEvent: (route: String) -> Unit
 ) {
     val screenState by viewModel.state.collectAsState()
     val dialogState by viewModel.dialogState.collectAsState()
     val listState = rememberLazyStaggeredGridState()
 
+    LaunchedEffect(key1 = Unit  ) {
+        launch {
+            viewModel.navigationEvent.collectLatest { route ->
+                onNavOutEvent(route)
+            }
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -186,7 +193,7 @@ private fun HistoryListItem(
                     .fillMaxWidth()
                     .aspectRatio(history.request.width / history.request.height.toFloat())
             ) {
-                if (history.result.status == StableDiffusionConstants.RESPONSE_PROCESSING && history.result.imageUrl == null) {
+                if (history.result?.status == StableDiffusionConstants.RESPONSE_PROCESSING && history.result.imageUrl == null) {
                     ImageLoadError(
                         modifier = Modifier
                             .fillMaxSize()
@@ -198,7 +205,7 @@ private fun HistoryListItem(
                     )
                 } else {
                     ImageListItem(
-                        model = history.result.imageUrl,
+                        model = history.result?.imageUrl,
                         modifier = Modifier
                             .fillMaxSize()
                             .clickable { onClickImage() }

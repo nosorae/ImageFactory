@@ -4,11 +4,12 @@ import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
+import com.yessorae.common.replaceDomain
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.data.util.StableDiffusionConstants
 import com.yessorae.imagefactory.R
+import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
 import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
@@ -34,9 +35,10 @@ class TxtToImgResultViewModel @Inject constructor(
     private val txtToImgHistoryRepository: TxtToImgHistoryRepository,
     private val txtToImgRequestMapper: TxtToImgRequestMapper,
     private val resultMapper: TxtToImgResultMapper,
-    private val upscaleResultModelMapper: UpscaleResultModelMapper
+    private val upscaleResultModelMapper: UpscaleResultModelMapper,
+    private val txtToImgHistoryMapper: TxtToImgHistoryMapper
 ) : BaseScreenViewModel<TxtToImgResultScreenState>() {
-    private val requestId: Int =
+    private val historyId: Int =
         checkNotNull(savedStateHandle[TxtToImgResultDestination.requestIdArg])
 
     override val initialState: TxtToImgResultScreenState = TxtToImgResultScreenState.Initial
@@ -51,8 +53,31 @@ class TxtToImgResultViewModel @Inject constructor(
     /** init **/
 
     private fun initRequest() = ioScope.launch {
-        val requestBody = txtToImgHistoryRepository.getRequestHistory(requestId = requestId)
-        generateImage(requestBody = requestBody)
+
+        val history = txtToImgHistoryMapper.map(
+            entity = txtToImgHistoryRepository.getTxtToImgHistory(id = historyId)
+        )
+        Logger.presentation(message = "id : ${history.id}", true)
+        Logger.presentation(message = "${this::class.java.simpleName} - history $history")
+
+        onLoading(request = history.request)
+
+        when {
+            history.result != null && history.result.status == StableDiffusionConstants.RESPONSE_PROCESSING -> {
+                onSdSuccess(
+                    request = history.request,
+                    result = history.result
+                )
+            }
+
+            history.result != null && history.result.status == StableDiffusionConstants.RESPONSE_SUCCESS -> {
+                fetchImage(requestId = history.result.id)
+            }
+
+            history.result == null -> {
+                generateImage(request = history.request)
+            }
+        }
     }
 
     /** onClick **/
@@ -130,36 +155,30 @@ class TxtToImgResultViewModel @Inject constructor(
 
     /** network request **/
 
-    private suspend fun generateImage(requestBody: TxtToImgRequestBody) {
-        val request = txtToImgRequestMapper.map(requestBody = requestBody)
-
-        updateState {
-            TxtToImgResultScreenState.Loading(
-                request = request
-            )
-        }
-
-        val dto = txtToImgRepository.generateImage(request = requestBody)
+    private suspend fun generateImage(request: TxtToImgRequest) {
+        val dto = txtToImgRepository.generateImage(
+            request = txtToImgRequestMapper.mapToRequestBody(request = request)
+        )
 
         if (dto.status != StableDiffusionConstants.RESPONSE_ERROR) {
             txtToImgHistoryRepository.updateRequestHistory(
-                id = requestId,
-                result = dto,
+                id = historyId,
+                result = dto.copy(
+                    output = dto.output.map { it.replaceDomain() }
+                ),
                 meta = dto.meta
             )
         }
 
         dto.status.handleSdResponse(
             onSuccess = {
-                updateState {
-                    TxtToImgResultScreenState.SdSuccess(
-                        request = resultMapper.mapToMetaDataFromUserRequest(
-                            userRequest = request,
-                            dto = dto.meta
-                        ),
-                        sdResult = resultMapper.map(dto = dto)
-                    )
-                }
+                onSdSuccess(
+                    request = resultMapper.mapToMetaDataFromUserRequest(
+                        userRequest = request,
+                        dto = dto.meta
+                    ),
+                    result = resultMapper.map(dto = dto)
+                )
             },
             onProcessing = {
                 onSdProcessing(
@@ -168,9 +187,43 @@ class TxtToImgResultViewModel @Inject constructor(
                 )
             },
             onError = {
+                txtToImgHistoryRepository.deleteHistory(id = historyId)
                 _toast.emit(ResString(R.string.common_response_error))
             }
         )
+    }
+
+    private suspend fun fetchImage(requestId: Int) {
+        val historyEntity = txtToImgHistoryRepository.fetchQueuedImage(
+            id = historyId,
+            requestId = requestId.toString()
+        )
+        val history = txtToImgHistoryMapper.map(
+            entity = historyEntity
+        )
+
+        history.result?.status?.handleSdResponse(
+            onSuccess = {
+                updateState {
+                    TxtToImgResultScreenState.SdSuccess(
+                        request = history.request,
+                        sdResult = history.result
+                    )
+                }
+            },
+            onProcessing = {
+                onSdProcessing(
+                    request = history.request,
+                    response = history.result
+                )
+            },
+            onError = {
+                txtToImgHistoryRepository.deleteHistory(id = historyId)
+                _toast.emit(ResString(R.string.common_response_error))
+            }
+        ) ?: run {
+            // todo 예외발생
+        }
     }
 
     private suspend fun upscaleImage(
@@ -226,12 +279,19 @@ class TxtToImgResultViewModel @Inject constructor(
 
     /** util **/
 
-    private fun onError(currentState: TxtToImgResultScreenState, cause: StringModel) {
+    private fun onLoading(request: TxtToImgRequest) {
         updateState {
-            TxtToImgResultScreenState.Error(
-                request = currentState.request,
-                cause = cause,
-                backState = currentState
+            TxtToImgResultScreenState.Loading(
+                request = request
+            )
+        }
+    }
+
+    private fun onSdSuccess(request: TxtToImgRequest, result: TxtToImgResult) {
+        updateState {
+            TxtToImgResultScreenState.SdSuccess(
+                request = request,
+                sdResult = result
             )
         }
     }
@@ -242,6 +302,16 @@ class TxtToImgResultViewModel @Inject constructor(
                 request = request,
                 sdResult = response,
                 message = ResString(R.string.common_response_sd_processing)
+            )
+        }
+    }
+
+    private fun onError(currentState: TxtToImgResultScreenState, cause: StringModel) {
+        updateState {
+            TxtToImgResultScreenState.Error(
+                request = currentState.request,
+                cause = cause,
+                backState = currentState
             )
         }
     }

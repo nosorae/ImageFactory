@@ -1,8 +1,10 @@
 package com.yessorae.imagefactory.ui.screen.main.history
 
+import com.yessorae.common.Logger
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
 import com.yessorae.imagefactory.ui.model.TxtToImgHistory
+import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.util.base.BaseScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,11 +38,11 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onClickFetch(txtToImgHistory: TxtToImgHistory) = ioScope.launch {
-        fetchTxtToImgHistory(txtToImgHistory = txtToImgHistory)
+        _navigationEvent.emit(TxtToImgResultDestination.getRouteWithArgs(requestId = txtToImgHistory.id))
     }
 
     fun onClickImage(txtToImgHistory: TxtToImgHistory) = ioScope.launch {
-        // todo
+        _navigationEvent.emit(TxtToImgResultDestination.getRouteWithArgs(requestId = txtToImgHistory.id))
     }
 
     fun onClickConfirmTxtToImgHistory(txtToImgHistory: TxtToImgHistory) = ioScope.launch {
@@ -57,21 +59,12 @@ class HistoryViewModel @Inject constructor(
         txtToImgHistoryRepository.deleteHistory(id)
     }
 
-    private suspend fun fetchTxtToImgHistory(txtToImgHistory: TxtToImgHistory) {
-        updateState {
-            TxtToImgHistoryScreenState.Loading
-        }
-        txtToImgHistoryRepository.fetchQueuedImage(
-            id = txtToImgHistory.id,
-            requestId = txtToImgHistory.result.id.toString()
-        )
-    }
-
     private fun getTxtToImgHistories() = ioScope.launch {
         txtToImgHistoryRepository.getHistories().collectLatest { entities ->
+            Logger.presentation("entities ${entities}")
             updateState {
                 TxtToImgHistoryScreenState.View(
-                    histories = txtToImgHistoryMapper.map(entities = entities)
+                    histories = txtToImgHistoryMapper.mapNotResultNull(entities = entities)
                 )
             }
         }

@@ -1,6 +1,7 @@
 package com.yessorae.data.repository
 
 import com.yessorae.common.Logger
+import com.yessorae.common.replaceDomain
 import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
 import com.yessorae.data.local.database.model.ResultEntity
 import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
@@ -48,10 +49,10 @@ class TxtToImgHistoryRepository @Inject constructor(
         txtToImgHistoryDao.update(entity = newHistory)
     }
 
-    suspend fun getRequestHistory(
-        requestId: Int
-    ): TxtToImgRequestBody {
-        return txtToImgHistoryDao.getTxtToImgHistoryModel(id = requestId).request.asRequestBody()
+    suspend fun getTxtToImgHistory(
+        id: Int
+    ): TxtToImgHistoryEntity {
+        return txtToImgHistoryDao.getTxtToImgHistoryModel(id = id)
     }
 
     fun getHistories(): Flow<List<TxtToImgHistoryEntity>> {
@@ -72,7 +73,7 @@ class TxtToImgHistoryRepository @Inject constructor(
     suspend fun fetchQueuedImage(
         id: Int,
         requestId: String
-    ) {
+    ): TxtToImgHistoryEntity {
         val oldEntity = txtToImgHistoryDao.getTxtToImgHistoryModel(id = id)
         val dto = txtToImgApi.fetchQueuedImage(
             FetchQueuedImageRequestBody(
@@ -84,11 +85,11 @@ class TxtToImgHistoryRepository @Inject constructor(
             result = oldEntity.result?.copy(
                 status = dto.status,
                 id = dto.id,
-                output = dto.output
+                output = dto.output.map { it.replaceDomain() }
             ) ?: ResultEntity(
                 status = dto.status,
                 id = dto.id,
-                output = dto.output,
+                output = dto.output.map { it.replaceDomain() },
                 generationTime = 0.0 // todo null 처리
             )
         )
@@ -97,5 +98,6 @@ class TxtToImgHistoryRepository @Inject constructor(
         Logger.data("fetchQueuedImage newEntity $newEntity", error = true)
 
         txtToImgHistoryDao.update(newEntity)
+        return newEntity
     }
 }

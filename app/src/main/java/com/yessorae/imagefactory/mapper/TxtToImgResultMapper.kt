@@ -30,7 +30,7 @@ class TxtToImgResultMapper @Inject constructor() {
     ): TxtToImgResult {
         return TxtToImgResult(
             id = entity.id,
-            outputUrls = entity.output,
+            outputUrls = entity.output.map { it.replaceDomain() },
             status = entity.status,
             generationTime = entity.generationTime
         )
@@ -70,7 +70,7 @@ class TxtToImgResultMapper @Inject constructor() {
     ): TxtToImgResult {
         return TxtToImgResult(
             id = id,
-            outputUrls = outputUrls,
+            outputUrls = outputUrls.map { it.replaceDomain() },
             status = status,
             generationTime = generationTime
         )
