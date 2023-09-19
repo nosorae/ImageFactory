@@ -14,6 +14,7 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.TextString
 import com.yessorae.imagefactory.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.rememberDebouncedEvent
 
 @Composable
 fun OptionTitle(
@@ -72,7 +73,10 @@ fun OptionTitle(
 
 @Composable
 fun MoreButton(text: StringModel, onClick: () -> Unit) {
-    TextButton(onClick = onClick) {
+    val singleEvent = rememberDebouncedEvent()
+    TextButton(onClick = {
+        singleEvent.processEvent(onClick)
+    }) {
         Text(text = text.getValue(), style = MaterialTheme.typography.bodySmall)
     }
 }
