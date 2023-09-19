@@ -59,6 +59,7 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.TextString
+import com.yessorae.imagefactory.util.compose.rememberDebouncedEvent
 import com.yessorae.imagefactory.util.getSettingsLocale
 import com.yessorae.imagefactory.util.redirectToWebBrowser
 import com.yessorae.imagefactory.util.showToast
@@ -75,6 +76,8 @@ fun TxtToImgScreen(
     val requestModel = uiState.request
 
     val dialogState by viewModel.dialogEvent.collectAsState()
+
+    val singleEvent = rememberDebouncedEvent()
 
     val context = LocalContext.current
 
@@ -124,7 +127,9 @@ fun TxtToImgScreen(
 
                     IconButton(
                         onClick = {
-                            viewModel.onClickHelp(context.getSettingsLocale())
+                            singleEvent.processEvent {
+                                viewModel.onClickHelp(context.getSettingsLocale())
+                            }
                         }
                     ) {
                         Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
@@ -544,10 +549,4 @@ fun TxtToImgDialog(
             // do nothing
         }
     }
-}
-
-@Composable
-fun SelectionScreen(
-    requestModel: TxtToImgOptionState
-) {
 }
