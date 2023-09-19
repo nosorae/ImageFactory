@@ -48,6 +48,7 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.compose.Margin
 import com.yessorae.imagefactory.util.compose.debouncedClickable
+import com.yessorae.imagefactory.util.compose.rememberDebouncedEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
@@ -63,7 +64,7 @@ fun TxtToImgHistoryScreen(
     val dialogState by viewModel.dialogState.collectAsState()
     val listState = rememberLazyStaggeredGridState()
 
-    LaunchedEffect(key1 = Unit  ) {
+    LaunchedEffect(key1 = Unit) {
         launch {
             viewModel.navigationEvent.collectLatest { route ->
                 onNavOutEvent(route)
@@ -181,6 +182,7 @@ private fun HistoryListItem(
     onClickDelete: () -> Unit,
     onClickFetch: () -> Unit
 ) {
+    val singleEvent = rememberDebouncedEvent()
     Box(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -208,7 +210,9 @@ private fun HistoryListItem(
                         model = history.result?.imageUrl,
                         modifier = Modifier
                             .fillMaxSize()
-                            .clickable { onClickImage() }
+                            .debouncedClickable(
+                                onClick = onClickImage
+                            )
                     )
                 }
             }
@@ -230,7 +234,11 @@ private fun HistoryListItem(
         }
 
         IconButton(
-            onClick = onClickDelete,
+            onClick = {
+                singleEvent.processEvent {
+                    onClickDelete()
+                }
+            },
             modifier = Modifier.align(Alignment.TopEnd)
         ) {
             Icon(
