@@ -2,6 +2,7 @@ package com.yessorae.data.local.preference
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
@@ -27,6 +28,10 @@ class PreferenceService @Inject constructor(
 
     private val lastModelUpdateTime = stringPreferencesKey(
         name = DatastoreConstants.KEY_LAST_MODEL_UPDATE_TIME
+    )
+
+    private val completeInitPrompt = booleanPreferencesKey(
+        name = DatastoreConstants.KEY_COMPLETE_INIT_PROMPT
     )
 
     suspend fun setLastTxtToImageRequest(request: TxtToImgRequestBody) {
@@ -58,5 +63,18 @@ class PreferenceService @Inject constructor(
                 localDateTimeConverter.toLocalDateTime(lastTime)
             }
         }.firstOrNull()
+    }
+
+    suspend fun setInitPromptData() {
+        dataStorePreference.edit { pref ->
+            pref[completeInitPrompt] = true
+        }
+    }
+
+    suspend fun getCompleteInitPromptData(): Boolean {
+        return dataStorePreference.data.map { pref ->
+            Logger.presentation("getCompleteInitPromptData pref[completeInitPrompt] ${pref[completeInitPrompt]}")
+            pref[completeInitPrompt]
+        }.firstOrNull() ?: false
     }
 }
