@@ -7,11 +7,11 @@ import com.yessorae.imagefactory.util.TextString
 import com.yessorae.imagefactory.util.isMultiLanguage
 
 data class PromptOption(
-    val dbId: Int = Constants.NONE_ID,
+    val dbId: String,
     override val title: StringModel,
     override val selected: Boolean
 ) : Option {
-    override val id: String = dbId.toString()
+    override val id: String = dbId
     companion object
 }
 
@@ -23,7 +23,7 @@ fun PromptOption.Companion.mock(): List<PromptOption> {
     )
 
     return words.mapIndexed { index, word ->
-        PromptOption(dbId = index, title = TextString(word), selected = index % words.size == 0)
+        PromptOption(dbId = word, title = TextString(word), selected = index % words.size == 0)
     }
 }
 

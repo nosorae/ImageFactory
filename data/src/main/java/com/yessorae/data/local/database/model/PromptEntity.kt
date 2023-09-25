@@ -8,19 +8,19 @@ import java.time.LocalDateTime
 
 @Entity(tableName = DBConstants.TABLE_PROMPT)
 data class PromptEntity(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = DBConstants.COL_PROMPT_ID)
-    var promptId: Int = 0,
+    @PrimaryKey
     @ColumnInfo(name = DBConstants.COL_PROMPT)
     val prompt: String,
     @ColumnInfo(name = DBConstants.COLPOSITIVE)
-    val positive: Boolean,
+    val positive: Boolean = true,
     @ColumnInfo(name = DBConstants.COL_SELECT_COUNT)
     val selectCount: Int = 0,
     @ColumnInfo(name = DBConstants.COL_CREATED_AT)
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     @ColumnInfo(name = DBConstants.COL_UPDATED_AT)
-    val updatedAt: LocalDateTime,
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
     @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)
     val serverSync: Boolean = false
 )
+
+
