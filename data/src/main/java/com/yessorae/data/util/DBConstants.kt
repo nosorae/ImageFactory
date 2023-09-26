@@ -14,6 +14,7 @@ object DBConstants {
     const val COLPOSITIVE = "positive"
     const val COL_SELECT_COUNT = "select_count"
     const val COL_UPDATED_AT = "updated_at"
+    const val COL_NSFW = "nsfw"
 
     // public model
     const val TABLE_PUBLIC_MODEL = "public_model_table"
