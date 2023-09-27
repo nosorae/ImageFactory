@@ -65,7 +65,7 @@ class PreferenceService @Inject constructor(
         }.firstOrNull()
     }
 
-    suspend fun setInitPromptData() {
+    suspend fun setCompleteInitPromptData() {
         dataStorePreference.edit { pref ->
             pref[completeInitPrompt] = true
         }
@@ -73,7 +73,6 @@ class PreferenceService @Inject constructor(
 
     suspend fun getCompleteInitPromptData(): Boolean {
         return dataStorePreference.data.map { pref ->
-            Logger.presentation("getCompleteInitPromptData pref[completeInitPrompt] ${pref[completeInitPrompt]}")
             pref[completeInitPrompt]
         }.firstOrNull() ?: false
     }
