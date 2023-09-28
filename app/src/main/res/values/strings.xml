@@ -66,6 +66,7 @@
 
     <!-- 히스토리 화면 -->
     <string name="history_cover_error_message">이미지가 백그라운드에서 생성되고 있어요.\클릭해서 가져오기.</string>
+    <string name="history_list_empty">저장된 이미지가 없어요\n이미지를 생성하면 자동으로 여기에 저장되어요</string>
 
 
     <string name="common_work_in_progress_function">아직 작업중이에요, 기대해주세요!</string>

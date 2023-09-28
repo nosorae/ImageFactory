@@ -42,6 +42,7 @@ import com.yessorae.imagefactory.ui.components.item.common.ImageListItem
 import com.yessorae.imagefactory.ui.components.item.common.ImageLoadError
 import com.yessorae.imagefactory.ui.components.layout.DEFAULT_IMAGE_LIST_COLUMN
 import com.yessorae.imagefactory.ui.components.layout.DefaultLoadingLayout
+import com.yessorae.imagefactory.ui.components.layout.EmptyListLayout
 import com.yessorae.imagefactory.ui.model.TxtToImgHistory
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
@@ -142,32 +143,38 @@ private fun HistoryListLayout(
     onClickFetch: (TxtToImgHistory) -> Unit,
     onClickImage: (TxtToImgHistory) -> Unit
 ) {
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Fixed(DEFAULT_IMAGE_LIST_COLUMN),
-        modifier = modifier,
-        state = listState,
-        contentPadding = Dimen.grid_padding_values,
-        horizontalArrangement = Arrangement.spacedBy(Dimen.space_8)
-    ) {
-        itemsIndexed(
-            items = histories,
-            contentType = { index, item ->
-                TxtToImgHistory::class.java.simpleName
-            }
-        ) { index, item ->
-            HistoryListItem(
-                modifier = modifier.fillMaxWidth(),
-                history = item,
-                onClickDelete = {
-                    onClickDelete(item)
-                },
-                onClickFetch = {
-                    onClickFetch(item)
-                },
-                onClickImage = {
-                    onClickImage(item)
+    if (histories.isEmpty()) {
+        EmptyListLayout(
+            text = ResString(R.string.history_list_empty)
+        )
+    } else {
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(DEFAULT_IMAGE_LIST_COLUMN),
+            modifier = modifier,
+            state = listState,
+            contentPadding = Dimen.grid_padding_values,
+            horizontalArrangement = Arrangement.spacedBy(Dimen.space_8)
+        ) {
+            itemsIndexed(
+                items = histories,
+                contentType = { index, item ->
+                    TxtToImgHistory::class.java.simpleName
                 }
-            )
+            ) { index, item ->
+                HistoryListItem(
+                    modifier = modifier.fillMaxWidth(),
+                    history = item,
+                    onClickDelete = {
+                        onClickDelete(item)
+                    },
+                    onClickFetch = {
+                        onClickFetch(item)
+                    },
+                    onClickImage = {
+                        onClickImage(item)
+                    }
+                )
+            }
         }
     }
 }
