@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val initialPromptRepository: InitialPromptRepository
-): ViewModel() {
+) : ViewModel() {
     fun processInitialData() = viewModelScope.launch(Dispatchers.IO) {
         initialPromptRepository.processInitialPromptData()
     }

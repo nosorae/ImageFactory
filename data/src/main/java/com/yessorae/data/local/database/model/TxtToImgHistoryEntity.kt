@@ -1,13 +1,11 @@
 package com.yessorae.data.local.database.model
 
-import android.graphics.Bitmap
 import androidx.room.ColumnInfo
-import com.yessorae.common.Constants
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yessorae.common.Constants
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
-import com.yessorae.data.remote.stablediffusion.model.response.FetchQueuedImageDto
 import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.util.DBConstants
@@ -230,7 +228,7 @@ fun ResultMetaDataEntity.asDto(): MetaDataDto {
         embeddings = this.embeddings,
         lora = this.lora,
         outdir = this.outdir,
-        filePrefix = this.filePrefix,
+        filePrefix = this.filePrefix
     )
 }
 
@@ -253,6 +251,6 @@ fun MetaDataDto.asEntity(): ResultMetaDataEntity {
         embeddings = this.embeddings,
         lora = this.lora,
         outdir = this.outdir,
-        filePrefix = this.filePrefix,
+        filePrefix = this.filePrefix
     )
 }

@@ -1,6 +1,5 @@
 package com.yessorae.data.repository
 
-import com.yessorae.common.Logger
 import com.yessorae.data.local.database.dao.PromptDao
 import com.yessorae.data.local.database.model.PromptEntity
 import com.yessorae.data.local.preference.PreferenceService
@@ -247,7 +246,7 @@ class InitialPromptRepository @Inject constructor(
             PromptEntity.createNegative(prompt = "old"),
             PromptEntity.createNegative(prompt = "nipples"),
             PromptEntity.createNegative(prompt = "extra hands"),
-            PromptEntity.createNegative(prompt = "more than 2 nipples"),
+            PromptEntity.createNegative(prompt = "more than 2 nipples")
 //                PromptEntity.createNegative(prompt = "easynegative"), // embeddings 이름
 //                PromptEntity.createNegative(prompt = "bad_prompt_version2"),
 //                PromptEntity.createNegative(prompt = "bad-hands-5"),

@@ -24,7 +24,6 @@ class HistoryViewModel @Inject constructor(
     private val _dialogState = MutableStateFlow<HistoryDialogState>(HistoryDialogState.None)
     val dialogState = _dialogState.asStateFlow()
 
-
     init {
         getTxtToImgHistories()
     }
@@ -61,7 +60,7 @@ class HistoryViewModel @Inject constructor(
 
     private fun getTxtToImgHistories() = ioScope.launch {
         txtToImgHistoryRepository.getHistories().collectLatest { entities ->
-            Logger.presentation("entities ${entities}")
+            Logger.presentation("entities $entities")
             updateState {
                 TxtToImgHistoryScreenState.View(
                     histories = txtToImgHistoryMapper.mapNotResultNull(entities = entities)
@@ -70,4 +69,3 @@ class HistoryViewModel @Inject constructor(
         }
     }
 }
-

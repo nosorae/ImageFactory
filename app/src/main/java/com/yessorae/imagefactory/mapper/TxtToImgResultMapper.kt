@@ -1,10 +1,8 @@
 package com.yessorae.imagefactory.mapper
 
 import com.yessorae.common.replaceDomain
-import com.yessorae.data.local.database.model.RequestBodyEntity
 import com.yessorae.data.local.database.model.ResultEntity
 import com.yessorae.data.local.database.model.ResultMetaDataEntity
-import com.yessorae.data.local.database.model.asEntity
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
@@ -57,7 +55,7 @@ class TxtToImgResultMapper @Inject constructor() {
             embeddings = entity.embeddings,
             lora = entity.lora,
             outdir = entity.outdir,
-            filePrefix = entity.filePrefix,
+            filePrefix = entity.filePrefix
         )
     }
 

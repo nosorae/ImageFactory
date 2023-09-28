@@ -8,5 +8,3 @@ sealed class TxtToImgHistoryScreenState {
         val histories: List<TxtToImgHistory>
     ) : TxtToImgHistoryScreenState()
 }
-
-

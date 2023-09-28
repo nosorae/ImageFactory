@@ -13,9 +13,9 @@ import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
 import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
-import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.model.TxtToImgRequest
 import com.yessorae.imagefactory.ui.model.TxtToImgResult
+import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultScreenState
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
@@ -53,7 +53,6 @@ class TxtToImgResultViewModel @Inject constructor(
     /** init **/
 
     private fun initRequest() = ioScope.launch {
-
         val history = txtToImgHistoryMapper.map(
             entity = txtToImgHistoryRepository.getTxtToImgHistory(id = historyId)
         )
@@ -142,7 +141,6 @@ class TxtToImgResultViewModel @Inject constructor(
     fun onClickBack() = viewModelScope.launch {
         _backNavigationEvent.emit(Unit)
     }
-
 
     fun onSaveComplete() = viewModelScope.launch {
         _toast.emit(ResString(R.string.common_state_complete_save_image))

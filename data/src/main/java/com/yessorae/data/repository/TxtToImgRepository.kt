@@ -4,19 +4,15 @@ import android.graphics.Bitmap
 import com.yessorae.common.FireStorageConstants
 import com.yessorae.data.BuildConfig
 import com.yessorae.data.local.database.dao.PromptDao
-import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
 import com.yessorae.data.local.database.model.PromptEntity
-import com.yessorae.data.local.database.model.asHistoryEntity
 import com.yessorae.data.local.preference.PreferenceService
 import com.yessorae.data.remote.firebase.FireStorageService
 import com.yessorae.data.remote.firebase.model.ImageUploadResponse
 import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
 import com.yessorae.data.remote.stablediffusion.api.ModelListApi
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
-import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestBody
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.remote.stablediffusion.model.request.UpscaleRequestBody
-import com.yessorae.data.remote.stablediffusion.model.response.FetchQueuedImageDto
 import com.yessorae.data.remote.stablediffusion.model.response.PublicModelDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.remote.stablediffusion.model.response.UpscaleDto
@@ -45,7 +41,6 @@ class TxtToImgRepository @Inject constructor(
             request = request
         ).handleResponse()
     }
-
 
     suspend fun setLastRequest(request: TxtToImgRequestBody) {
         preferenceService.setLastTxtToImageRequest(request = request)

@@ -24,7 +24,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -55,7 +54,6 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAd
 import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.TextString

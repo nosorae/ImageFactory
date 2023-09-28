@@ -24,6 +24,7 @@ fun DefaultLoadingLayout(
         CircularProgressIndicator()
     }
 }
+
 @Composable
 fun StableDiffusionLoadingLayout(
     modifier: Modifier = Modifier

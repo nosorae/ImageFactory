@@ -7,7 +7,6 @@ import com.yessorae.data.local.database.model.ResultEntity
 import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
 import com.yessorae.data.local.database.model.asEntity
 import com.yessorae.data.local.database.model.asHistoryEntity
-import com.yessorae.data.local.database.model.asRequestBody
 import com.yessorae.data.local.database.model.asResultEntity
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestBody

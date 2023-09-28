@@ -1,9 +1,5 @@
 package com.yessorae.data.util
 
-import com.google.gson.annotations.SerializedName
-import com.yessorae.common.Constants
-import com.yessorae.data.BuildConfig
-
 object DBConstants {
     const val DATABASE_NAME = "image_factory_database"
 
@@ -34,9 +30,8 @@ object DBConstants {
     const val PREFIX_META = "meta_"
 
     // Txt to Img Upscale History Model
-    const val TABLE_TXT_TO_IMG_UPSCALE_HISTORY  =  "txt_to_img_upscale_history"
+    const val TABLE_TXT_TO_IMG_UPSCALE_HISTORY = "txt_to_img_upscale_history"
     const val COL_HISTORY_ID = "history_id"
-
 
     // common
     const val COL_ID = "id"
