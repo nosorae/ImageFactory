@@ -52,6 +52,4 @@ sealed class TxtToImgDialog {
     ) : TxtToImgDialog() {
         val ratio: Float = width / height.toFloat()
     }
-
 }
-

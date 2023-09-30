@@ -1,7 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.main.tti.model
 
 import com.yessorae.common.yesOrNo
-import com.yessorae.data.local.preference.model.LastRequestOption
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
@@ -30,14 +29,14 @@ data class TxtToImgRequestOption(
     val enhancePrompt: Boolean = true,
     val loRaModelsOptions: List<LoRaModelOption> = listOf(),
     val embeddingsModelOption: List<EmbeddingsModelOption> = listOf(),
-    val stepCount: Int = 1,
+    val stepCount: Int = DEFAULT_STEP_COUNT,
     val safetyChecker: Boolean = false,
     val sizeOption: List<Option> = SDSizeType.defaultOptions,
     val seed: Long? = null,
     // Scale for classifier-free guidance (minimum: 1; maximum: 20)
-    val guidanceScale: Int = 10, // todo 적정값 찾기
+    val guidanceScale: Int = DEFAULT_GUIDANCE_SCALE, // todo 적정값 찾기
     val upscaleOption: List<Option> = UpscaleType.defaultOptions,
-    val samples: Int = 1,
+    val samples: Int = DEFAULT_SAMPLES,
     val schedulerOption: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
     private val multiLingual: Boolean by lazy {
@@ -100,5 +99,8 @@ data class TxtToImgRequestOption(
 
     companion object {
         const val PREVIEW_COUNT = 10
+        const val DEFAULT_GUIDANCE_SCALE = 10
+        const val DEFAULT_SAMPLES = 1
+        const val DEFAULT_STEP_COUNT = 1
     }
 }

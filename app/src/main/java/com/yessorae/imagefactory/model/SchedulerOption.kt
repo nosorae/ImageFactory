@@ -22,6 +22,8 @@ import com.yessorae.imagefactory.util.TextString
  * IPNDMScheduler
  * KarrasVeScheduler
  * ScoreSdeVeScheduler
+ *
+ * TODO:: Enum 으로 변경
  */
 data class SchedulerOption(
     override val id: String,
@@ -31,7 +33,7 @@ data class SchedulerOption(
     companion object
 }
 
-fun SchedulerOption.Companion.initialValues(): List<SchedulerOption> {
+fun SchedulerOption.Companion.initialValues(lastSchedulerId: String? = null): List<SchedulerOption> {
     // DPM++ SDE Karras는 실사모델에서 자주사용되며, 좀 더 디테일함, 시간 가장 오래걸림
     // Euler a(Ancestral) 가 가장 많이 사용되는 듯
     // Ancestral sampler 는 각 스텝별로 노이즈를 추가한다. 따라서 스텝을 아무리 올려도 수렴하지 않는다.
@@ -57,7 +59,11 @@ fun SchedulerOption.Companion.initialValues(): List<SchedulerOption> {
         SchedulerOption(
             id = scheduler,
             title = TextString(scheduler),
-            selected = index == 0
+            selected = if (lastSchedulerId != null) {
+                lastSchedulerId == scheduler
+            } else {
+                index == 0
+            }
         )
     }
 }

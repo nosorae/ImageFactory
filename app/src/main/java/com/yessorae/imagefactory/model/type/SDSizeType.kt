@@ -29,6 +29,24 @@ enum class SDSizeType(val title: StringModel, val width: Int, val height: Int) {
                 override val selected: Boolean = index == 0
             }
         }
+
+        fun createOptions(
+            width: Int?,
+            height: Int?
+        ): List<Option> {
+            return if (width != null && height != null) {
+                SDSizeType.values().mapIndexed { index, type ->
+                    object : Option {
+                        override val id: String = type.name
+                        override val title: StringModel = type.title
+                        override val selected: Boolean =
+                            width == type.width && height == type.height
+                    }
+                }
+            } else {
+                defaultOptions
+            }
+        }
     }
 }
 

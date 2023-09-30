@@ -9,7 +9,6 @@ import com.yessorae.data.local.preference.PreferenceService
 import com.yessorae.data.remote.firebase.FireStorageService
 import com.yessorae.data.remote.firebase.model.ImageUploadResponse
 import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
-import com.yessorae.data.remote.stablediffusion.api.ModelListApi
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.remote.stablediffusion.model.request.UpscaleRequestBody

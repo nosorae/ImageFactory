@@ -47,9 +47,9 @@ class PreferenceService @Inject constructor(
     suspend fun setLastModelUpdateTime() {
         Logger.data(
             "setLastModelUpdateTime now : ${
-                localDateTimeConverter.fromLocalDateTime(
-                    LocalDateTime.now()
-                )
+            localDateTimeConverter.fromLocalDateTime(
+                LocalDateTime.now()
+            )
             }"
         )
         dataStorePreference.edit { pref ->

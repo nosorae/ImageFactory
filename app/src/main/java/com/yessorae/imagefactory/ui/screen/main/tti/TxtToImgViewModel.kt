@@ -1,12 +1,12 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
-import android.text.style.TtsSpan.TimeBuilder
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Constants
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
+import com.yessorae.common.trueOrFalse
 import com.yessorae.data.repository.PublicModelRepository
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.TxtToImgRepository
@@ -18,12 +18,18 @@ import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.SchedulerOption
+import com.yessorae.imagefactory.model.initialValues
+import com.yessorae.imagefactory.model.type.SDSizeType
+import com.yessorae.imagefactory.model.type.UpscaleType
 import com.yessorae.imagefactory.model.type.toOptionList
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_GUIDANCE_SCALE
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_SAMPLES
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_STEP_COUNT
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
@@ -438,19 +444,43 @@ class TxtToImgViewModel @Inject constructor(
         }
     }
 
-
     /** load  **/
     private fun initTxtToImgRequestOption() = scope.launch {
         val lastRequest =
             txtToImgHistoryRepository.getLastTxtToImgHistory()?.request
         Logger.temp("initTxtToImgRequestOption lastRequest : $lastRequest")
+        _uiState.update {
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    enhancePrompt = lastRequest?.enhancePrompt?.trueOrFalse() ?: false,
+                    stepCount = lastRequest?.numInferenceSteps ?: DEFAULT_STEP_COUNT,
+                    safetyChecker = lastRequest?.safetyChecker?.trueOrFalse() ?: false,
+                    sizeOption = SDSizeType.createOptions(
+                        width = lastRequest?.width,
+                        height = lastRequest?.height
+                    ),
+                    seed = lastRequest?.seed?.toLongOrNull(),
+                    guidanceScale = lastRequest?.guidanceScale?.toInt() ?: DEFAULT_GUIDANCE_SCALE,
+                    upscaleOption = UpscaleType.createOptions(lastUpscaleNumber = lastRequest?.upscale?.toIntOrNull()),
+                    samples = lastRequest?.samples ?: DEFAULT_SAMPLES,
+                    schedulerOption = SchedulerOption.initialValues(lastSchedulerId = lastRequest?.scheduler)
+                )
+            )
+        }
+
         getPublicModels(
             modelId = lastRequest?.modelId?.trim(),
-            loRaModelIds = lastRequest?.loraModel
+            loRaModels = lastRequest?.loraModel
                 ?.split(Constants.SEPARATOR_DEFAULTS)
                 ?.map {
                     it.trim()
                 },
+            loRaStrength = lastRequest?.loraStrength
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.toFloatOrNull()
+                }
+                ?.filterNotNull(),
             embeddingsIds = lastRequest?.embeddingsModel
                 ?.split(Constants.SEPARATOR_DEFAULTS)
                 ?.map {
@@ -458,16 +488,23 @@ class TxtToImgViewModel @Inject constructor(
                 }
         )
         getPositivePrompts(
-            lastPrompts = lastRequest?.prompt?.split(Constants.SEPARATOR_DEFAULTS)
+            lastPrompts = lastRequest?.prompt
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.trim()
+                }
         )
         getNegativePrompts(
-            lastPrompts = lastRequest?.negativePrompt?.split(Constants.SEPARATOR_DEFAULTS)
+            lastPrompts = lastRequest?.negativePrompt
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map { it.trim() }
         )
     }
 
     private fun getPublicModels(
         modelId: String?,
-        loRaModelIds: List<String>?,
+        loRaModels: List<String>?,
+        loRaStrength: List<Float>?,
         embeddingsIds: List<String>?
     ) = scope.launch {
         val models = publicModelRepository.getPublicModels()
@@ -480,7 +517,8 @@ class TxtToImgViewModel @Inject constructor(
                     ),
                     loRaModelsOptions = publicModelMapper.mapLoRaModelOption(
                         dto = models,
-                        lastIds = loRaModelIds
+                        lastIds = loRaModels,
+                        lastStrength = loRaStrength
                     ),
                     embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(
                         dto = models,
