@@ -16,6 +16,16 @@ fun LoadingLayout(
 }
 
 @Composable
+fun DefaultLoadingLayout(
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        // 이미지 여러장 0.2초정도마다 교체하는 로딩화면 만들 예정
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
 fun StableDiffusionLoadingLayout(
     modifier: Modifier = Modifier
 ) {

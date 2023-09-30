@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.components.layout
+package com.yessorae.imagefactory.ui.components.layout.option
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth

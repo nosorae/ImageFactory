@@ -24,7 +24,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,13 +40,13 @@ import com.yessorae.imagefactory.ui.components.item.ActionButton
 import com.yessorae.imagefactory.ui.components.item.OptionTitle
 import com.yessorae.imagefactory.ui.components.item.OptionTitleWithMore
 import com.yessorae.imagefactory.ui.components.layout.LoadingLayout
-import com.yessorae.imagefactory.ui.components.layout.ModelsLayout
-import com.yessorae.imagefactory.ui.components.layout.NaturalNumberSliderOptionLayout
-import com.yessorae.imagefactory.ui.components.layout.OnOffOptionLayout
-import com.yessorae.imagefactory.ui.components.layout.PromptOptionLayout
-import com.yessorae.imagefactory.ui.components.layout.RadioOptionLayout
-import com.yessorae.imagefactory.ui.components.layout.ZeroToOneSliderOptionLayout
-import com.yessorae.imagefactory.ui.components.layout.roundToOneDecimalPlace
+import com.yessorae.imagefactory.ui.components.layout.option.ModelsLayout
+import com.yessorae.imagefactory.ui.components.layout.option.NaturalNumberSliderOptionLayout
+import com.yessorae.imagefactory.ui.components.layout.option.OnOffOptionLayout
+import com.yessorae.imagefactory.ui.components.layout.option.PromptOptionLayout
+import com.yessorae.imagefactory.ui.components.layout.option.RadioOptionLayout
+import com.yessorae.imagefactory.ui.components.layout.option.ZeroToOneSliderOptionLayout
+import com.yessorae.imagefactory.ui.components.layout.option.roundToOneDecimalPlace
 import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreEmbeddingsBottomSheet
 import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreLoRaModelBottomSheet
 import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreSDModelBottomSheet
@@ -55,10 +54,10 @@ import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAd
 import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.TextString
+import com.yessorae.imagefactory.util.compose.rememberDebouncedEvent
 import com.yessorae.imagefactory.util.getSettingsLocale
 import com.yessorae.imagefactory.util.redirectToWebBrowser
 import com.yessorae.imagefactory.util.showToast
@@ -76,9 +75,9 @@ fun TxtToImgScreen(
 
     val dialogState by viewModel.dialogEvent.collectAsState()
 
-    val context = LocalContext.current
+    val singleEvent = rememberDebouncedEvent()
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
         launch {
@@ -107,8 +106,7 @@ fun TxtToImgScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            .fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
@@ -127,13 +125,14 @@ fun TxtToImgScreen(
 
                     IconButton(
                         onClick = {
-                            viewModel.onClickHelp(context.getSettingsLocale())
+                            singleEvent.processEvent {
+                                viewModel.onClickHelp(context.getSettingsLocale())
+                            }
                         }
                     ) {
                         Icon(imageVector = Icons.Default.HelpOutline, contentDescription = null)
                     }
                 },
-                scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
                     scrolledContainerColor = MaterialTheme.colorScheme.background
@@ -548,10 +547,4 @@ fun TxtToImgDialog(
             // do nothing
         }
     }
-}
-
-@Composable
-fun SelectionScreen(
-    requestModel: TxtToImgOptionState
-) {
 }

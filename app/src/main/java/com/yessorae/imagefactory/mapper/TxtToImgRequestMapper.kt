@@ -77,6 +77,4 @@ class TxtToImgRequestMapper @Inject constructor() {
             enhancePrompt = request.enhancePrompt
         )
     }
-
-
 }

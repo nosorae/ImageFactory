@@ -6,9 +6,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.yessorae.imagefactory.ui.navigation.destination.HistoryBottomTabDestination
 import com.yessorae.imagefactory.ui.navigation.destination.InpaintingBottomTabDestination
 import com.yessorae.imagefactory.ui.navigation.destination.MainBottomTabDestination
-import com.yessorae.imagefactory.ui.navigation.destination.HistoryBottomTabDestination
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgBottomTabDestination
 import com.yessorae.imagefactory.ui.screen.main.history.TxtToImgHistoryScreen
 import com.yessorae.imagefactory.ui.screen.main.tti.TxtToImgScreen
@@ -45,7 +45,9 @@ fun MainBottomNavHost(
         composable(
             route = HistoryBottomTabDestination.route
         ) {
-            TxtToImgHistoryScreen()
+            TxtToImgHistoryScreen(
+                onNavOutEvent = onNavOutEvent
+            )
         }
     }
 }

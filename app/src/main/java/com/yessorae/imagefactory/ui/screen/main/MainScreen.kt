@@ -50,7 +50,7 @@ fun MainScreen(
     ) { innerPadding ->
         MainBottomNavHost(
             navController = bottomNavController,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
             onNavOutEvent = onNavOutEvent
         )
     }

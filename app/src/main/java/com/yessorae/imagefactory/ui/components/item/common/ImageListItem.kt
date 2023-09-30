@@ -21,8 +21,8 @@ import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.ui.theme.PrimaryBrush
 
 @Composable
-fun BaseImage(
-    model: Any,
+fun ImageListItem(
+    model: Any?,
     modifier: Modifier
 ) {
     val context = LocalContext.current
@@ -72,7 +72,7 @@ fun SelectableImage(
     }
 
     Box(modifier = modifier.then(shapeModifier)) {
-        BaseImage(
+        ImageListItem(
             model = model,
             modifier = Modifier.fillMaxSize()
         )

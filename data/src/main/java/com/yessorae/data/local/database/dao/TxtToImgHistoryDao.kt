@@ -21,4 +21,7 @@ interface TxtToImgHistoryDao : BaseDao<TxtToImgHistoryEntity> {
         """
     )
     suspend fun getTxtToImgHistoryModel(id: Int): TxtToImgHistoryEntity
+
+    @Query("DELETE FROM ${DBConstants.TABLE_TXT_TO_IMG_HISTORY} WHERE ${DBConstants.COL_ID} = :id")
+    suspend fun deleteById(id: Int)
 }

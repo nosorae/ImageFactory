@@ -1,9 +1,5 @@
 package com.yessorae.data.util
 
-import com.google.gson.annotations.SerializedName
-import com.yessorae.common.Constants
-import com.yessorae.data.BuildConfig
-
 object DBConstants {
     const val DATABASE_NAME = "image_factory_database"
 
@@ -14,6 +10,7 @@ object DBConstants {
     const val COLPOSITIVE = "positive"
     const val COL_SELECT_COUNT = "select_count"
     const val COL_UPDATED_AT = "updated_at"
+    const val COL_NSFW = "nsfw"
 
     // public model
     const val TABLE_PUBLIC_MODEL = "public_model_table"
@@ -33,9 +30,8 @@ object DBConstants {
     const val PREFIX_META = "meta_"
 
     // Txt to Img Upscale History Model
-    const val TABLE_TXT_TO_IMG_UPSCALE_HISTORY  =  "txt_to_img_upscale_history"
+    const val TABLE_TXT_TO_IMG_UPSCALE_HISTORY = "txt_to_img_upscale_history"
     const val COL_HISTORY_ID = "history_id"
-
 
     // common
     const val COL_ID = "id"
@@ -43,4 +39,5 @@ object DBConstants {
     const val COL_MODEL_ID = "model_id"
     const val COL_STATUS = "status"
     const val COL_FILE_PATH = "file_path"
+    const val COL_SERVER_SYNC = "server_sync"
 }

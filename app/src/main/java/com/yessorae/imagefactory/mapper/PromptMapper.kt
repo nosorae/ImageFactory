@@ -10,7 +10,7 @@ class PromptMapper @Inject constructor() {
     fun map(dto: List<PromptEntity>): List<PromptOption> {
         return dto.map {
             PromptOption(
-                dbId = it.promptId,
+                dbId = it.prompt,
                 title = TextString(it.prompt),
                 selected = false
             )

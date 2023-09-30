@@ -7,10 +7,4 @@ sealed class TxtToImgHistoryScreenState {
     data class View(
         val histories: List<TxtToImgHistory>
     ) : TxtToImgHistoryScreenState()
-
-    data class Edit(
-        val histories: List<TxtToImgHistory>,
-        val prevState: TxtToImgHistoryScreenState
-    ) : TxtToImgHistoryScreenState()
 }
-

@@ -8,9 +8,21 @@ class TxtToImgHistoryMapper @Inject constructor(
     private val txtToImgResultMapper: TxtToImgResultMapper,
     private val txtToImgRequestMapper: TxtToImgRequestMapper
 ) {
-    fun map(entities: List<TxtToImgHistoryEntity>): List<TxtToImgHistory> {
-        return entities.map { entity ->
-            map(entity = entity)
+    fun mapNotResultNull(entities: List<TxtToImgHistoryEntity>): List<TxtToImgHistory> {
+        return entities.mapNotNull { entity ->
+            val resultEntity = entity.result
+            val metaEntity = entity.meta
+            if (resultEntity != null && metaEntity != null) {
+                TxtToImgHistory(
+                    id = entity.id,
+                    createdAt = entity.createdAt,
+                    request = txtToImgRequestMapper.map(entity = entity.request),
+                    result = txtToImgResultMapper.map(entity = resultEntity),
+                    meta = txtToImgResultMapper.mapMeta(entity = metaEntity)
+                )
+            } else {
+                null
+            }
         }
     }
 
@@ -19,8 +31,8 @@ class TxtToImgHistoryMapper @Inject constructor(
             id = entity.id,
             createdAt = entity.createdAt,
             request = txtToImgRequestMapper.map(entity = entity.request),
-            result = txtToImgResultMapper.map(entity = entity.result),
-            meta = txtToImgResultMapper.mapMeta(entity = entity.meta)
+            result = entity.result?.let { txtToImgResultMapper.map(entity = it) },
+            meta = entity.meta?.let { txtToImgResultMapper.mapMeta(entity = it) }
         )
     }
 }

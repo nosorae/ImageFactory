@@ -28,11 +28,15 @@ import androidx.compose.ui.unit.dp
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.compose.ColumnPreview
+import com.yessorae.imagefactory.util.compose.rememberDebouncedEvent
 
 @Composable
 fun ActionButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
+    val singleEvent = rememberDebouncedEvent()
     Button(
-        onClick = onClick,
+        onClick = {
+            singleEvent.processEvent(onClick)
+        },
         colors = ButtonDefaults.buttonColors(),
         shape = MaterialTheme.shapes.medium,
         contentPadding = PaddingValues(horizontal = Dimen.space_16, vertical = Dimen.space_18),
@@ -48,8 +52,13 @@ fun ActionButton(modifier: Modifier = Modifier, text: String, onClick: () -> Uni
 
 @Composable
 fun ActionButtonWithAd(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
+    val singleEvent = rememberDebouncedEvent()
     Button(
-        onClick = onClick,
+        onClick = {
+            singleEvent.processEvent {
+                onClick()
+            }
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.White
@@ -76,8 +85,13 @@ fun ActionButtonWithAd(modifier: Modifier = Modifier, text: String, onClick: () 
 
 @Composable
 fun OutlinedActionButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
+    val singleEvent = rememberDebouncedEvent()
     OutlinedButton(
-        onClick = onClick,
+        onClick = {
+            singleEvent.processEvent {
+                onClick()
+            }
+        },
         colors = ButtonDefaults.outlinedButtonColors(),
         contentPadding = PaddingValues(horizontal = Dimen.space_16, vertical = Dimen.space_18),
         shape = MaterialTheme.shapes.medium,

@@ -1,11 +1,10 @@
 package com.yessorae.data.local.database.model
 
-import android.graphics.Bitmap
 import androidx.room.ColumnInfo
-import com.yessorae.common.Constants
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yessorae.common.Constants
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
@@ -24,7 +23,9 @@ data class TxtToImgHistoryEntity(
     @Embedded(prefix = DBConstants.PREFIX_META)
     val meta: ResultMetaDataEntity? = null,
     @Embedded(prefix = DBConstants.PREFIX_RESULT)
-    val result: ResultEntity? = null
+    val result: ResultEntity? = null,
+    @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)
+    val serverSync: Boolean = false
 )
 
 data class RequestBodyEntity(
@@ -227,7 +228,7 @@ fun ResultMetaDataEntity.asDto(): MetaDataDto {
         embeddings = this.embeddings,
         lora = this.lora,
         outdir = this.outdir,
-        filePrefix = this.filePrefix,
+        filePrefix = this.filePrefix
     )
 }
 
@@ -250,6 +251,6 @@ fun MetaDataDto.asEntity(): ResultMetaDataEntity {
         embeddings = this.embeddings,
         lora = this.lora,
         outdir = this.outdir,
-        filePrefix = this.filePrefix,
+        filePrefix = this.filePrefix
     )
 }
