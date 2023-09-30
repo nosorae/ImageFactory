@@ -4,13 +4,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.google.gson.Gson
 import com.yessorae.common.Logger
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.util.DatastoreConstants
 import com.yessorae.data.util.LocalDateTimeConverter
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
@@ -22,8 +20,8 @@ class PreferenceService @Inject constructor(
     private val dataStorePreference: DataStore<Preferences>,
     private val localDateTimeConverter: LocalDateTimeConverter
 ) {
-    private val lastTxtToImageRequest = stringPreferencesKey(
-        name = DatastoreConstants.KEY_LAST_TXT_TO_IMG_REQUEST
+    private val lastTxtToImageRequestId = longPreferencesKey(
+        name = DatastoreConstants.KEY_LAST_TXT_TO_IMG_REQUEST_ID
     )
 
     private val lastModelUpdateTime = stringPreferencesKey(
@@ -34,26 +32,29 @@ class PreferenceService @Inject constructor(
         name = DatastoreConstants.KEY_COMPLETE_INIT_PROMPT
     )
 
-    suspend fun setLastTxtToImageRequest(request: TxtToImgRequestBody) {
-        Logger.data(message = "setLastTxtToImageRequest : ${Gson().toJson(request)}", error = true)
+    suspend fun setLastTxtToImageRequestHistoryId(historyId: Long) {
         dataStorePreference.edit { pref ->
-            pref[lastTxtToImageRequest] = Gson().toJson(request)
+            pref[lastTxtToImageRequestId] = historyId
         }
     }
 
-    fun getLastTxtToImageRequest(): Flow<TxtToImgRequestBody?> {
+    suspend fun getLastTxtToImageRequestHistoryId(): Long? {
         return dataStorePreference.data.map { pref ->
-            pref[lastTxtToImageRequest]?.let { jsonString ->
-                Logger.data(message = "getLastTxtToImageRequest ${Gson().fromJson(jsonString, TxtToImgRequestBody::class.java)}", error = true)
-                Gson().fromJson(jsonString, TxtToImgRequestBody::class.java)
-            }
-        }
+            pref[lastTxtToImageRequestId]
+        }.firstOrNull()
     }
 
     suspend fun setLastModelUpdateTime() {
-        Logger.data("setLastModelUpdateTime now : ${localDateTimeConverter.fromLocalDateTime(LocalDateTime.now())}")
+        Logger.data(
+            "setLastModelUpdateTime now : ${
+                localDateTimeConverter.fromLocalDateTime(
+                    LocalDateTime.now()
+                )
+            }"
+        )
         dataStorePreference.edit { pref ->
-            pref[lastModelUpdateTime] = localDateTimeConverter.fromLocalDateTime(LocalDateTime.now())
+            pref[lastModelUpdateTime] =
+                localDateTimeConverter.fromLocalDateTime(LocalDateTime.now())
         }
     }
 

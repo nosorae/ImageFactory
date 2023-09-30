@@ -11,27 +11,29 @@ import com.yessorae.imagefactory.util.TextString
 import javax.inject.Inject
 
 class PublicModelMapper @Inject constructor() {
-    fun mapSDModelOption(dto: List<PublicModelEntity>): List<SDModelOption> {
+    fun mapSDModelOption(dto: List<PublicModelEntity>, lastModelId: String?): List<SDModelOption> {
         return dto.filter { model ->
             isSDModel(model)
-        }.mapIndexed { _, model ->
+        }.mapIndexed { index, model ->
             SDModelOption(
                 id = model.modelId,
                 image = model.screenshots.replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = false,
+                selected = if (lastModelId != null) {
+                    lastModelId == model.modelId
+                } else {
+                    index == 0
+                },
                 generationCount = model.apiCalls
             )
-        }.mapIndexed { index, model ->
-            if (index == 0) {
-                model.copy(selected = true)
-            } else {
-                model
-            }
         }
     }
 
-    fun mapLoRaModelOption(dto: List<PublicModelEntity>): List<LoRaModelOption> {
+    fun mapLoRaModelOption(
+        dto: List<PublicModelEntity>,
+        lastIds: List<String>?
+    ): List<LoRaModelOption> {
+        val lastModelSet = lastIds?.toSet()
         return dto.filter { model ->
             isLoRaModel(model)
         }.mapIndexed { _, model ->
@@ -39,40 +41,33 @@ class PublicModelMapper @Inject constructor() {
                 id = model.modelId,
                 image = model.screenshots.replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = false,
+                selected = lastModelSet?.contains(model.modelId) ?: false,
                 generationCount = model.apiCalls
             )
         }
     }
 
-    fun mapEmbeddingsModelOption(dto: List<PublicModelEntity>): List<EmbeddingsModelOption> {
+    fun mapEmbeddingsModelOption(
+        dto: List<PublicModelEntity>,
+        lastIds: List<String>?
+    ): List<EmbeddingsModelOption> {
+        val lastModelSet = lastIds?.toSet()
         return dto.filter { model ->
             isEmbeddingsModel(model)
-        }.mapIndexed { index, model ->
+        }.mapIndexed { _, model ->
             EmbeddingsModelOption(
                 id = model.modelId,
-                image = model.screenshots, // .replacePubDomain(),
+                image = model.screenshots.replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = false,
+                selected = lastModelSet?.contains(model.modelId) ?: false,
                 generationCount = model.apiCalls
             )
-        }
-    }
-
-    fun printEtc(dto: List<PublicModelEntity>) {
-        dto.forEach {
-            if (isSDModel(it).not() && isLoRaModel(it).not() && isEmbeddingsModel(it).not() && isControlNetModel(
-                    it
-                ).not()
-            ) {
-                Logger.presentation(message = "etc: $it")
-            }
         }
     }
 
     private fun isSDModel(dto: PublicModelEntity): Boolean {
         return dto.modelCategory == Constants.ARG_MODEL_TYPE_STABLE_DIFFUSION ||
-            dto.modelCategory == Constants.ARG_MODEL_TYPE_STABLE_DIFFUSION_XL
+                dto.modelCategory == Constants.ARG_MODEL_TYPE_STABLE_DIFFUSION_XL
     }
 
     private fun isLoRaModel(dto: PublicModelEntity): Boolean {

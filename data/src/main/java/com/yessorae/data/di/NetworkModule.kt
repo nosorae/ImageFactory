@@ -1,7 +1,7 @@
 package com.yessorae.data.di
 
 import com.yessorae.common.Logger
-import com.yessorae.data.util.StableDiffusionConstants
+import com.yessorae.data.util.StableDiffusionApiConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,7 +39,7 @@ class NetworkModule {
     @Singleton
     fun provideStableDiffusionAPIRetrofit(httpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(StableDiffusionConstants.BASE_URL)
+            .baseUrl(StableDiffusionApiConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()

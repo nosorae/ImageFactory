@@ -43,7 +43,7 @@ sealed class TxtToImgDialog {
     }
 
     data class TxtToImgResult(
-        val requestOption: TxtToImgOptionRequest,
+        val requestOption: TxtToImgRequestOption,
         val width: Int,
         val height: Int,
         val result: com.yessorae.imagefactory.ui.model.TxtToImgResult? = null,

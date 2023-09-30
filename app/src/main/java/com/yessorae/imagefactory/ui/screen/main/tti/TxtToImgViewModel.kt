@@ -1,7 +1,9 @@
 package com.yessorae.imagefactory.ui.screen.main.tti
 
+import android.text.style.TtsSpan.TimeBuilder
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yessorae.common.Constants
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
@@ -11,8 +13,6 @@ import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
-import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
-import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
@@ -24,7 +24,6 @@ import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionRequest
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
@@ -57,7 +56,7 @@ class TxtToImgViewModel @Inject constructor(
 
     private val _toast = MutableSharedFlow<StringModel>()
     val toast: SharedFlow<StringModel> = _toast.asSharedFlow()
-    
+
     private val _redirectToWebBrowserEvent = MutableSharedFlow<String>()
     val redirectToWebBrowserEvent = _redirectToWebBrowserEvent.asSharedFlow()
 
@@ -78,9 +77,7 @@ class TxtToImgViewModel @Inject constructor(
     private val sharedEventScope = viewModelScope + Dispatchers.Main
 
     init {
-        getPublicModels()
-        getPositivePrompts()
-        getNegativePrompts()
+        initTxtToImgRequestOption()
     }
 
     /** change value **/
@@ -443,37 +440,85 @@ class TxtToImgViewModel @Inject constructor(
 
 
     /** load  **/
-    private fun getPublicModels() = scope.launch {
+    private fun initTxtToImgRequestOption() = scope.launch {
+        val lastRequest =
+            txtToImgHistoryRepository.getLastTxtToImgHistory()?.request
+        Logger.temp("initTxtToImgRequestOption lastRequest : $lastRequest")
+        getPublicModels(
+            modelId = lastRequest?.modelId?.trim(),
+            loRaModelIds = lastRequest?.loraModel
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.trim()
+                },
+            embeddingsIds = lastRequest?.embeddingsModel
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.trim()
+                }
+        )
+        getPositivePrompts(
+            lastPrompts = lastRequest?.prompt?.split(Constants.SEPARATOR_DEFAULTS)
+        )
+        getNegativePrompts(
+            lastPrompts = lastRequest?.negativePrompt?.split(Constants.SEPARATOR_DEFAULTS)
+        )
+    }
+
+    private fun getPublicModels(
+        modelId: String?,
+        loRaModelIds: List<String>?,
+        embeddingsIds: List<String>?
+    ) = scope.launch {
         val models = publicModelRepository.getPublicModels()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
-                    sdModelOption = publicModelMapper.mapSDModelOption(dto = models),
-                    loRaModelsOptions = publicModelMapper.mapLoRaModelOption(dto = models),
-                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models)
+                    sdModelOption = publicModelMapper.mapSDModelOption(
+                        dto = models,
+                        lastModelId = modelId
+                    ),
+                    loRaModelsOptions = publicModelMapper.mapLoRaModelOption(
+                        dto = models,
+                        lastIds = loRaModelIds
+                    ),
+                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(
+                        dto = models,
+                        lastIds = embeddingsIds
+                    )
                 ),
                 modelLoading = false
             )
         }
     }
 
-    private fun getPositivePrompts() = scope.launch {
+    private fun getPositivePrompts(
+        lastPrompts: List<String>?
+    ) = scope.launch {
         val positive = txtToImgRepository.getPositivePrompts()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
-                    positivePromptOptions = promptMapper.map(dto = positive)
+                    positivePromptOptions = promptMapper.map(
+                        dto = positive,
+                        lastPromptIds = lastPrompts
+                    )
                 )
             )
         }
     }
 
-    private fun getNegativePrompts() = scope.launch {
+    private fun getNegativePrompts(
+        lastPrompts: List<String>?
+    ) = scope.launch {
         val negative = txtToImgRepository.getNegativePrompts()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
-                    negativePromptOptions = promptMapper.map(dto = negative)
+                    negativePromptOptions = promptMapper.map(
+                        dto = negative,
+                        lastPromptIds = lastPrompts
+                    )
                 )
             )
         }
@@ -483,14 +528,13 @@ class TxtToImgViewModel @Inject constructor(
         _toast.emit(message)
     }
 
-    private fun generateImage(requestOptionModel: TxtToImgOptionRequest? = null) = scope.launch {
-        (requestOptionModel ?: uiState.value.request).asTxtToImgRequest(
+    private fun generateImage() = scope.launch {
+        uiState.value.request.asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
             }
         )?.let { request ->
             val requestId = txtToImgHistoryRepository.insertRequestHistory(request)
-            txtToImgRepository.setLastRequest(request = request)
             _navigationEvent.emit(
                 TxtToImgResultDestination.getRouteWithArgs(requestId = requestId.toInt())
             )

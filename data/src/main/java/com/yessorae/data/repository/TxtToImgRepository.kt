@@ -13,7 +13,6 @@ import com.yessorae.data.remote.stablediffusion.api.ModelListApi
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.remote.stablediffusion.model.request.UpscaleRequestBody
-import com.yessorae.data.remote.stablediffusion.model.response.PublicModelDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.remote.stablediffusion.model.response.UpscaleDto
 import com.yessorae.data.util.ImageFactoryException
@@ -27,9 +26,7 @@ import javax.inject.Singleton
 @Singleton
 class TxtToImgRepository @Inject constructor(
     private val txtToImgApi: TxtToImgApi,
-    private val modelListApi: ModelListApi,
     private val imageEditingApi: ImageEditingApi,
-
     private val promptDao: PromptDao,
     private val firebaseStorageService: FireStorageService,
     private val preferenceService: PreferenceService
@@ -40,14 +37,6 @@ class TxtToImgRepository @Inject constructor(
         return txtToImgApi.generateImage(
             request = request
         ).handleResponse()
-    }
-
-    suspend fun setLastRequest(request: TxtToImgRequestBody) {
-        preferenceService.setLastTxtToImageRequest(request = request)
-    }
-
-    fun getLastRequest(): Flow<TxtToImgRequestBody?> {
-        return preferenceService.getLastTxtToImageRequest()
     }
 
     private suspend fun uploadAndGetImageUrl(
@@ -96,10 +85,6 @@ class TxtToImgRepository @Inject constructor(
             path = path,
             name = name
         )
-    }
-
-    suspend fun getPublicModels(usingCache: Boolean = true): PublicModelDto {
-        return modelListApi.getPublicModels().handleResponse()
     }
 
     suspend fun getPositivePrompts(): List<PromptEntity> {

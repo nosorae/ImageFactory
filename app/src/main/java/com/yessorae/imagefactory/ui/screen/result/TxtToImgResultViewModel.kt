@@ -7,7 +7,7 @@ import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.TxtToImgRepository
-import com.yessorae.data.util.StableDiffusionConstants
+import com.yessorae.data.util.StableDiffusionApiConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
@@ -62,15 +62,15 @@ class TxtToImgResultViewModel @Inject constructor(
         onLoading(request = history.request)
 
         when {
-            history.result != null && history.result.status == StableDiffusionConstants.RESPONSE_PROCESSING -> {
+            history.result != null && history.result.status == StableDiffusionApiConstants.RESPONSE_PROCESSING -> {
+                fetchImage(requestId = history.result.id)
+            }
+
+            history.result != null && history.result.status == StableDiffusionApiConstants.RESPONSE_SUCCESS -> {
                 onSdSuccess(
                     request = history.request,
                     result = history.result
                 )
-            }
-
-            history.result != null && history.result.status == StableDiffusionConstants.RESPONSE_SUCCESS -> {
-                fetchImage(requestId = history.result.id)
             }
 
             history.result == null -> {
@@ -158,7 +158,7 @@ class TxtToImgResultViewModel @Inject constructor(
             request = txtToImgRequestMapper.mapToRequestBody(request = request)
         )
 
-        if (dto.status != StableDiffusionConstants.RESPONSE_ERROR) {
+        if (dto.status != StableDiffusionApiConstants.RESPONSE_ERROR) {
             txtToImgHistoryRepository.updateRequestHistory(
                 id = historyId,
                 result = dto.copy(
