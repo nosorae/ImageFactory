@@ -47,13 +47,7 @@ import com.yessorae.imagefactory.ui.components.layout.option.PromptOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.option.RadioOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.option.ZeroToOneSliderOptionLayout
 import com.yessorae.imagefactory.ui.components.layout.option.roundToOneDecimalPlace
-import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreEmbeddingsBottomSheet
-import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreLoRaModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreSDModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAdditionDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialog
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.TextString
@@ -73,7 +67,7 @@ fun TxtToImgScreen(
     val uiState by viewModel.uiState.collectAsState()
     val requestModel = uiState.request
 
-    val dialogState by viewModel.dialogEvent.collectAsState()
+    val dialogState = uiState.dialogState
 
     val singleEvent = rememberDebouncedEvent()
 
@@ -464,7 +458,7 @@ fun TxtToImgScreen(
 
 @Composable
 fun TxtToImgDialog(
-    dialogState: TxtToImgDialogState,
+    dialogState: TxtToImgDialog,
     sdModels: List<SDModelOption>,
     loRaModels: List<LoRaModelOption>,
     embeddingsModels: List<EmbeddingsModelOption>,
@@ -477,21 +471,21 @@ fun TxtToImgDialog(
     onCancelDialog: () -> Unit
 ) {
     when (dialogState) {
-        is PositivePromptAdditionDialog -> {
+        is TxtToImgDialog.PositivePromptAddition -> {
             InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = onAddPositivePrompt
             )
         }
 
-        is NegativePromptOptionAdditionDialog -> {
+        is TxtToImgDialog.NegativePromptOptionAddition -> {
             InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = onAddNegativePrompt
             )
         }
 
-        is MoreSDModelBottomSheet -> {
+        is TxtToImgDialog.MoreSDModelBottomSheet -> {
             FullModelOptionBottomSheet(
                 title = ResString(R.string.common_section_title_model),
                 options = sdModels,
@@ -504,7 +498,7 @@ fun TxtToImgDialog(
             )
         }
 
-        is MoreLoRaModelBottomSheet -> {
+        is TxtToImgDialog.MoreLoRaModelBottomSheet -> {
             FullModelOptionBottomSheet(
                 title = ResString(R.string.common_section_title_model),
                 options = loRaModels,
@@ -517,7 +511,7 @@ fun TxtToImgDialog(
             )
         }
 
-        is MoreEmbeddingsBottomSheet -> {
+        is TxtToImgDialog.MoreEmbeddingsBottomSheet -> {
             FullModelOptionBottomSheet(
                 title = ResString(R.string.common_section_title_lora),
                 options = embeddingsModels,
@@ -530,7 +524,7 @@ fun TxtToImgDialog(
             )
         }
 
-        is SeedChangeDialog -> {
+        is TxtToImgDialog.SeedChange -> {
             InputDialog(
                 onDismissRequest = onCancelDialog,
                 onClickAddButton = {

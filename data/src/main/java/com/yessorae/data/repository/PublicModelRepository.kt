@@ -37,7 +37,7 @@ class PublicModelRepository @Inject constructor(
         }
     }
 
-    fun LocalDateTime.isDaysApartFromNow(
+    private fun LocalDateTime.isDaysApartFromNow(
         day: Int
     ): Boolean {
         val now = LocalDateTime.now()

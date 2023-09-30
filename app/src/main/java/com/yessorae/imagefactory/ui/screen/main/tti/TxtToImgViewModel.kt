@@ -23,15 +23,8 @@ import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
-import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreEmbeddingsBottomSheet
-import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreLoRaModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.main.tti.model.MoreSDModelBottomSheet
-import com.yessorae.imagefactory.ui.screen.main.tti.model.NegativePromptOptionAdditionDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.None
-import com.yessorae.imagefactory.ui.screen.main.tti.model.PositivePromptAdditionDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.SeedChangeDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialogState
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionState
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialog
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionRequest
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
@@ -56,23 +49,15 @@ class TxtToImgViewModel @Inject constructor(
     private val publicModelRepository: PublicModelRepository,
     private val txtToImgHistoryRepository: TxtToImgHistoryRepository,
     private val publicModelMapper: PublicModelMapper,
-    private val promptMapper: PromptMapper,
-    private val txtToImgResultMapper: TxtToImgResultMapper,
-    private val upscaleResultModelMapper: UpscaleResultModelMapper
+    private val promptMapper: PromptMapper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TxtToImgScreenState())
     val uiState = _uiState.asStateFlow()
 
-    private val _dialogEvent = MutableStateFlow<TxtToImgDialogState>(None)
-    val dialogEvent = _dialogEvent.asStateFlow()
-
     private val _toast = MutableSharedFlow<StringModel>()
     val toast: SharedFlow<StringModel> = _toast.asSharedFlow()
-
-    private val _saveImageEvent = MutableSharedFlow<String>()
-    val saveImageEvent = _saveImageEvent.asSharedFlow()
-
+    
     private val _redirectToWebBrowserEvent = MutableSharedFlow<String>()
     val redirectToWebBrowserEvent = _redirectToWebBrowserEvent.asSharedFlow()
 
@@ -366,45 +351,57 @@ class TxtToImgViewModel @Inject constructor(
 
     /** click event **/
     fun onClickAddPositivePrompt() = sharedEventScope.launch {
-        _dialogEvent.emit(PositivePromptAdditionDialog)
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.PositivePromptAddition
+            )
+        }
     }
 
     fun onClickAddNegativePrompt() = sharedEventScope.launch {
-        _dialogEvent.emit(NegativePromptOptionAdditionDialog)
-    }
-
-    fun onClickMorePositivePrompt() = scope.launch {
-    }
-
-    fun onClickMoreNegativePrompt() = scope.launch {
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.NegativePromptOptionAddition
+            )
+        }
     }
 
     fun onClickMoreSDModel() = scope.launch {
-        _dialogEvent.emit(
-            MoreSDModelBottomSheet(
-                options = uiState.value.request.sdModelOption
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.MoreSDModelBottomSheet(
+                    options = uiState.value.request.sdModelOption
+                )
             )
-        )
+        }
     }
 
     fun onClickMoreLoRaModel() = scope.launch {
-        _dialogEvent.emit(
-            MoreLoRaModelBottomSheet(
-                options = uiState.value.request.loRaModelsOptions
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.MoreLoRaModelBottomSheet(
+                    options = uiState.value.request.loRaModelsOptions
+                )
             )
-        )
+        }
     }
 
     fun onClickMoreEmbeddingsModel() = scope.launch {
-        _dialogEvent.emit(
-            MoreEmbeddingsBottomSheet(
-                options = uiState.value.request.embeddingsModelOption
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.MoreEmbeddingsBottomSheet(
+                    options = uiState.value.request.embeddingsModelOption
+                )
             )
-        )
+        }
     }
 
     fun onClickChangeSeed(currentSeed: Long?) = sharedEventScope.launch {
-        _dialogEvent.emit(SeedChangeDialog(currentSeed = currentSeed))
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.SeedChange(currentSeed = currentSeed)
+            )
+        }
     }
 
     fun onClickGenerateImage() {
@@ -437,10 +434,15 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun cancelDialog() = sharedEventScope.launch {
-        _dialogEvent.emit(None)
+        _uiState.update {
+            uiState.value.copy(
+                dialogState = TxtToImgDialog.None
+            )
+        }
     }
 
-    /** load **/
+
+    /** load  **/
     private fun getPublicModels() = scope.launch {
         val models = publicModelRepository.getPublicModels()
         _uiState.update {
@@ -481,7 +483,7 @@ class TxtToImgViewModel @Inject constructor(
         _toast.emit(message)
     }
 
-    private fun generateImage(requestOptionModel: TxtToImgOptionState? = null) = scope.launch {
+    private fun generateImage(requestOptionModel: TxtToImgOptionRequest? = null) = scope.launch {
         (requestOptionModel ?: uiState.value.request).asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
