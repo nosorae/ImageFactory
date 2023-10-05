@@ -448,7 +448,7 @@ class TxtToImgViewModel @Inject constructor(
     private fun initTxtToImgRequestOption() = scope.launch {
         val lastRequest =
             txtToImgHistoryRepository.getLastTxtToImgHistory()?.request
-        Logger.temp("initTxtToImgRequestOption lastRequest : $lastRequest")
+
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
