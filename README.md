@@ -35,7 +35,7 @@ Stable Diffusion API를 사용하여 이미지 생성을 위한 인프라를 관
 - UI Layer는 MVVM 패턴을 사용
 
 ### API
-[stablediffusionapi](https://stablediffusionapi.com/)https://stablediffusionapi.com/ 라는 곳에서 제공하는 API를 사용.
+[stablediffusionapi](https://stablediffusionapi.com/) 라는 곳에서 제공하는 API를 사용.
 #### API 선정 근거 (장점)
 1. 모델 수가 많고 심지어 원하는 모델을 업로드할 수 있음.
 2. 입문 가격이 저렴한 편. (최소금액 월 9$).
@@ -54,7 +54,7 @@ Stable Diffusion API를 사용하여 이미지 생성을 위한 인프라를 관
 - 꼼꼼한 예외사항 필요. 서버 OOM 같은 문서에는 나와있지 않은 에러가 발생하기도 함. 최소한 유저가 지금 어떤 에러가 발생해서 언제쯤 다시 시도할지는 알아야한다고 판단됨.
 - 구독 결제 추가하여 광고 보지않고 이용할 수 있는 기능 추가
 - 전문적인 용어 쉽게 풀어서 설명해주기
-등등...
 
+등등...
 [ImageFactory 개인 프로젝트 문서](https://www.notion.so/Project-Image-Factory-084c9896137a4fc685a1742572ec7098)에 정리하며 개발하고 있습니다.</br>
 일정, 기획 관련 메모, 개발 관련 메모를 관리하는 용도입니다.
