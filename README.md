@@ -2,6 +2,8 @@
 Generate Image</br>
 with Stable Diffusion</br>
 without your own GPU powers
+⚠️ STABLE_DIFFUSION_API_API_KEY를 local.gradle에 추가하셔야 정상작동합니다. [stablediffusionapi](https://stablediffusionapi.com/)에서 키를 발급받아 사용하시면 됩니다.
+
 
 ## 소개
 ### 한 줄 소개
