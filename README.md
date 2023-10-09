@@ -1,7 +1,8 @@
 # ImageFactory
 Generate Image</br>
 with Stable Diffusion</br>
-without your own GPU powers
+without your own GPU powers</br>
+
 ⚠️ STABLE_DIFFUSION_API_API_KEY를 local.gradle에 추가하셔야 정상작동합니다. [stablediffusionapi](https://stablediffusionapi.com/)에서 키를 발급받아 사용하시면 됩니다.
 
 
