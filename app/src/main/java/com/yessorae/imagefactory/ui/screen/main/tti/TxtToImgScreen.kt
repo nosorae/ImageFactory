@@ -420,6 +420,7 @@ fun TxtToImgScreen(
         sdModels = requestModel.sdModelOption,
         loRaModels = requestModel.loRaModelsOptions,
         embeddingsModels = requestModel.embeddingsModelOption,
+        // TODO::Refactor - 단순 콜백들 인터페이스로 해서 파라미터 사이즈 줄이고 가독성 높이기
         onAddPositivePrompt = { prompt ->
             viewModel.onAddPositivePrompt(prompt = prompt)
         },

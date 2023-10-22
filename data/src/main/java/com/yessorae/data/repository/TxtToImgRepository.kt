@@ -98,7 +98,8 @@ class TxtToImgRepository @Inject constructor(
         )
     }
 
-    suspend fun insertPrompt(prompts: PromptEntity) {
-        promptDao.insert(prompts)
+    suspend fun insertPrompt(prompt: PromptEntity): String {
+        promptDao.insert(prompt)
+        return prompt.prompt
     }
 }

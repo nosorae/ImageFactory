@@ -299,21 +299,23 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun addPositivePrompt(prompt: String) = scope.launch {
-        txtToImgRepository.insertPrompt(promptMapper.mapToEntity(prompt = prompt, positive = true))
-        val oldSet = uiState.value.request.positivePromptOptions.associateBy(keySelector = {
-            it.id
-        }, valueTransform = { it })
+        val newPromptId = txtToImgRepository.insertPrompt(
+            prompt = promptMapper.mapToEntity(
+                prompt = prompt,
+                positive = true
+            )
+        )
+        val oldSet = uiState.value.request.positivePromptOptions.associateBy(
+            keySelector = { it.id },
+            valueTransform = { it }
+        )
 
         val newList =
             promptMapper.map(txtToImgRepository.getPositivePrompts()).mapIndexed { _, new ->
                 val old = oldSet[new.id]
-                if (old != null) {
-                    new.copy(
-                        selected = old.selected
-                    )
-                } else {
-                    new
-                }
+                new.copy(
+                    selected = old?.selected == true || new.id == newPromptId
+                )
             }
 
         _uiState.update {
@@ -326,21 +328,23 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun addNegativePrompt(prompt: String) = scope.launch {
-        txtToImgRepository.insertPrompt(promptMapper.mapToEntity(prompt = prompt, positive = false))
-        val oldSet = uiState.value.request.negativePromptOptions.associateBy(keySelector = {
-            it.id
-        }, valueTransform = { it })
+        val newPromptId = txtToImgRepository.insertPrompt(
+            promptMapper.mapToEntity(
+                prompt = prompt,
+                positive = false
+            )
+        )
+        val oldSet = uiState.value.request.negativePromptOptions.associateBy(
+            keySelector = { it.id },
+            valueTransform = { it }
+        )
 
         val newList =
             promptMapper.map(txtToImgRepository.getNegativePrompts()).mapIndexed { _, new ->
                 val old = oldSet[new.id]
-                if (old != null) {
-                    new.copy(
-                        selected = old.selected
-                    )
-                } else {
-                    new
-                }
+                new.copy(
+                    selected = old?.selected == true || new.id == newPromptId
+                )
             }
 
         _uiState.update {
