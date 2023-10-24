@@ -71,7 +71,7 @@ class TxtToImgViewModel @Inject constructor(
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         viewModelScope.launch {
-            _toast.emit(ResString(R.string.common_response_error))
+            _toast.emit(ResString(R.string.common_response_unknown_error))
         }
         Logger.presentation(
             message = throwable.toString(),

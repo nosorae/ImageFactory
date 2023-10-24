@@ -440,8 +440,8 @@ private fun ErrorScreen(
         },
         optionContent = {
             IconWithText(
-                imageVector = Icons.Default.Replay,
-                text = stringResource(id = R.string.result_dialog_option_back),
+                imageVector = state.actionType.imageVector,
+                text = state.actionType.text.getValue(),
                 onClick = {
                     onClickBackState(backState)
                 },
