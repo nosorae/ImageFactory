@@ -49,15 +49,19 @@ fun ImagePagerLayout(
                 modifier = Modifier.fillMaxSize()
             )
         }
-        Margin(margin = Dimen.space_8)
-        PagerIndicator(
-            count = imageCount,
-            dotSize = Dimen.indicator_dot_size,
-            spacedBy = Dimen.space_4,
-            currentPage = pagerState.currentPage,
-            selectedColor = MaterialTheme.colors.primary,
-            unSelectedColor = MaterialTheme.colors.onBackground
-        )
+
+        if (imageCount > 0) {
+            Margin(margin = Dimen.space_8)
+
+            PagerIndicator(
+                count = imageCount,
+                dotSize = Dimen.indicator_dot_size,
+                spacedBy = Dimen.space_4,
+                currentPage = pagerState.currentPage,
+                selectedColor = MaterialTheme.colors.primary,
+                unSelectedColor = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }
 
