@@ -65,9 +65,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-// todo 옵션버튼 바텀패딩 안으로 옮기기
-// todo 이미지 석세스로 가야하는데 안가는 문제 수정
-// todo 스테이터스바 패딩
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TxtToImgResultScreen(
@@ -253,7 +250,7 @@ fun SdSuccessScreen(
         imageContent = {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(horizontal = Dimen.space_16)
                     .aspectRatio(state.ratio)
                     .clip(MaterialTheme.shapes.medium)
@@ -443,8 +440,8 @@ private fun ErrorScreen(
         },
         optionContent = {
             IconWithText(
-                imageVector = Icons.Default.Replay,
-                text = stringResource(id = R.string.result_dialog_option_back),
+                imageVector = state.actionType.imageVector,
+                text = state.actionType.text.getValue(),
                 onClick = {
                     onClickBackState(backState)
                 },

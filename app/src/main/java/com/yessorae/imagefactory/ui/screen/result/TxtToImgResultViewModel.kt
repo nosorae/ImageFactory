@@ -7,7 +7,7 @@ import com.yessorae.common.Logger
 import com.yessorae.common.replaceDomain
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.TxtToImgRepository
-import com.yessorae.data.util.StableDiffusionConstants
+import com.yessorae.data.util.StableDiffusionApiConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
@@ -62,15 +62,15 @@ class TxtToImgResultViewModel @Inject constructor(
         onLoading(request = history.request)
 
         when {
-            history.result != null && history.result.status == StableDiffusionConstants.RESPONSE_PROCESSING -> {
+            history.result != null && history.result.status == StableDiffusionApiConstants.RESPONSE_PROCESSING -> {
+                fetchImage(requestId = history.result.id)
+            }
+
+            history.result != null && history.result.status == StableDiffusionApiConstants.RESPONSE_SUCCESS -> {
                 onSdSuccess(
                     request = history.request,
                     result = history.result
                 )
-            }
-
-            history.result != null && history.result.status == StableDiffusionConstants.RESPONSE_SUCCESS -> {
-                fetchImage(requestId = history.result.id)
             }
 
             history.result == null -> {
@@ -154,11 +154,24 @@ class TxtToImgResultViewModel @Inject constructor(
     /** network request **/
 
     private suspend fun generateImage(request: TxtToImgRequest) {
-        val dto = txtToImgRepository.generateImage(
-            request = txtToImgRequestMapper.mapToRequestBody(request = request)
-        )
+        fun onFail(message: StringModel) {
+            onError(
+                currentState = TxtToImgResultScreenState.Initial,
+                cause = message,
+                actionType = TxtToImgResultScreenState.Error.ActionType.FINISH
+            )
+        }
 
-        if (dto.status != StableDiffusionConstants.RESPONSE_ERROR) {
+        val dto = try {
+            txtToImgRepository.generateImage(
+                request = txtToImgRequestMapper.mapToRequestBody(request = request)
+            )
+        } catch (e: Exception) {
+            onFail(message = ResString(R.string.common_title_error_cause, e.message))
+            return
+        }
+
+        if (dto.status != StableDiffusionApiConstants.RESPONSE_ERROR) {
             txtToImgHistoryRepository.updateRequestHistory(
                 id = historyId,
                 result = dto.copy(
@@ -185,17 +198,32 @@ class TxtToImgResultViewModel @Inject constructor(
                 )
             },
             onError = {
+                Logger.presentation("이미지 생성 에러 발생: $dto")
                 txtToImgHistoryRepository.deleteHistory(id = historyId)
-                _toast.emit(ResString(R.string.common_response_error))
+                onFail(message = ResString(R.string.common_response_unknown_error))
             }
         )
     }
 
     private suspend fun fetchImage(requestId: Int) {
-        val historyEntity = txtToImgHistoryRepository.fetchQueuedImage(
-            id = historyId,
-            requestId = requestId.toString()
-        )
+        fun onFail(message: StringModel) {
+            onError(
+                currentState = TxtToImgResultScreenState.Initial,
+                cause = message,
+                actionType = TxtToImgResultScreenState.Error.ActionType.FINISH
+            )
+        }
+
+        val historyEntity = try {
+            txtToImgHistoryRepository.fetchQueuedImage(
+                id = historyId,
+                requestId = requestId.toString()
+            )
+        } catch (e: Exception) {
+            onFail(message = ResString(R.string.common_title_error_cause, e.message))
+            return
+        }
+
         val history = txtToImgHistoryMapper.map(
             entity = historyEntity
         )
@@ -216,11 +244,12 @@ class TxtToImgResultViewModel @Inject constructor(
                 )
             },
             onError = {
+                Logger.presentation("fetch 에러 발생: $historyEntity")
                 txtToImgHistoryRepository.deleteHistory(id = historyId)
-                _toast.emit(ResString(R.string.common_response_error))
+                onFail(message = ResString(R.string.common_response_unknown_error))
             }
         ) ?: run {
-            // todo 예외발생
+            onFail(message = ResString(R.string.common_response_unknown_error))
         }
     }
 
@@ -260,7 +289,7 @@ class TxtToImgResultViewModel @Inject constructor(
                     onError = {
                         onError(
                             currentState = currentState,
-                            cause = ResString(R.string.common_response_error)
+                            cause = ResString(R.string.common_response_unknown_error)
                         )
                     }
                 )
@@ -304,12 +333,17 @@ class TxtToImgResultViewModel @Inject constructor(
         }
     }
 
-    private fun onError(currentState: TxtToImgResultScreenState, cause: StringModel) {
+    private fun onError(
+        currentState: TxtToImgResultScreenState,
+        cause: StringModel,
+        actionType: TxtToImgResultScreenState.Error.ActionType = TxtToImgResultScreenState.Error.ActionType.NORMAL
+    ) {
         updateState {
             TxtToImgResultScreenState.Error(
                 request = currentState.request,
                 cause = cause,
-                backState = currentState
+                backState = currentState,
+                actionType = actionType
             )
         }
     }

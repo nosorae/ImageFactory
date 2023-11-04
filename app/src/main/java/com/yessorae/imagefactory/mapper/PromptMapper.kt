@@ -7,12 +7,13 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 class PromptMapper @Inject constructor() {
-    fun map(dto: List<PromptEntity>): List<PromptOption> {
+    fun map(dto: List<PromptEntity>, lastPromptIds: List<String>? = null): List<PromptOption> {
+        val lastPromptSet = lastPromptIds?.toSet()
         return dto.map {
             PromptOption(
                 dbId = it.prompt,
                 title = TextString(it.prompt),
-                selected = false
+                selected = lastPromptSet?.contains(element = it.prompt) ?: false
             )
         }
     }

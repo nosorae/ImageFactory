@@ -1,72 +1,77 @@
 package com.yessorae.imagefactory.mapper
 
 import com.yessorae.common.Constants
-import com.yessorae.common.Logger
 import com.yessorae.common.replacePubDomain
 import com.yessorae.data.local.database.model.PublicModelEntity
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
+import com.yessorae.imagefactory.model.LoRaModelOption.Companion.DEFAULT_STRENGTH
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.util.TextString
 import javax.inject.Inject
 
 class PublicModelMapper @Inject constructor() {
-    fun mapSDModelOption(dto: List<PublicModelEntity>): List<SDModelOption> {
+    fun mapSDModelOption(dto: List<PublicModelEntity>, lastModelId: String?): List<SDModelOption> {
         return dto.filter { model ->
             isSDModel(model)
-        }.mapIndexed { _, model ->
+        }.mapIndexed { index, model ->
             SDModelOption(
                 id = model.modelId,
                 image = model.screenshots.replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = false,
+                selected = if (lastModelId != null) {
+                    lastModelId == model.modelId
+                } else {
+                    index == 0
+                },
                 generationCount = model.apiCalls
             )
-        }.mapIndexed { index, model ->
-            if (index == 0) {
-                model.copy(selected = true)
-            } else {
-                model
-            }
         }
     }
 
-    fun mapLoRaModelOption(dto: List<PublicModelEntity>): List<LoRaModelOption> {
+    fun mapLoRaModelOption(
+        dto: List<PublicModelEntity>,
+        lastIds: List<String>?,
+        lastStrength: List<Float>?
+    ): List<LoRaModelOption> {
+        val lastModelSet = lastIds?.toSet()
         return dto.filter { model ->
             isLoRaModel(model)
         }.mapIndexed { _, model ->
+            val contain = lastModelSet?.contains(model.modelId) ?: false
             LoRaModelOption(
                 id = model.modelId,
                 image = model.screenshots.replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = false,
-                generationCount = model.apiCalls
+                selected = contain,
+                generationCount = model.apiCalls,
+                strength = if (contain) {
+                    lastIds?.indexOf(model.modelId)?.let { strengthIndex ->
+                        lastStrength?.getOrNull(strengthIndex)
+                            ?: DEFAULT_STRENGTH
+                    } ?: DEFAULT_STRENGTH
+                } else {
+                    DEFAULT_STRENGTH
+                }
             )
         }
     }
 
-    fun mapEmbeddingsModelOption(dto: List<PublicModelEntity>): List<EmbeddingsModelOption> {
+    fun mapEmbeddingsModelOption(
+        dto: List<PublicModelEntity>,
+        lastIds: List<String>?
+    ): List<EmbeddingsModelOption> {
+        val lastModelSet = lastIds?.toSet()
         return dto.filter { model ->
             isEmbeddingsModel(model)
-        }.mapIndexed { index, model ->
+        }.mapIndexed { _, model ->
             EmbeddingsModelOption(
                 id = model.modelId,
-                image = model.screenshots, // .replacePubDomain(),
+                image = model.screenshots.replacePubDomain(),
                 title = TextString(model.modelName),
-                selected = false,
+                selected = lastModelSet?.contains(model.modelId) ?: false,
                 generationCount = model.apiCalls
             )
-        }
-    }
-
-    fun printEtc(dto: List<PublicModelEntity>) {
-        dto.forEach {
-            if (isSDModel(it).not() && isLoRaModel(it).not() && isEmbeddingsModel(it).not() && isControlNetModel(
-                    it
-                ).not()
-            ) {
-                Logger.presentation(message = "etc: $it")
-            }
         }
     }
 

@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yessorae.common.Constants
-import com.yessorae.data.util.StableDiffusionConstants
+import com.yessorae.data.util.StableDiffusionApiConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.dialog.ConfirmDialog
 import com.yessorae.imagefactory.ui.components.item.common.ImageListItem
@@ -200,7 +200,7 @@ private fun HistoryListItem(
                     .fillMaxWidth()
                     .aspectRatio(history.request.width / history.request.height.toFloat())
             ) {
-                if (history.result?.status == StableDiffusionConstants.RESPONSE_PROCESSING && history.result.imageUrl == null) {
+                if (history.result?.status == StableDiffusionApiConstants.RESPONSE_PROCESSING && history.result.imageUrl == null) {
                     ImageLoadError(
                         modifier = Modifier
                             .fillMaxSize()

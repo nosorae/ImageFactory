@@ -2,29 +2,34 @@ package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yessorae.common.Constants
 import com.yessorae.common.GaConstants
 import com.yessorae.common.GaEventManager
 import com.yessorae.common.Logger
+import com.yessorae.common.trueOrFalse
 import com.yessorae.data.repository.PublicModelRepository
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.data.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
-import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
-import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
 import com.yessorae.imagefactory.model.SchedulerOption
+import com.yessorae.imagefactory.model.initialValues
+import com.yessorae.imagefactory.model.type.SDSizeType
+import com.yessorae.imagefactory.model.type.UpscaleType
 import com.yessorae.imagefactory.model.type.toOptionList
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
 import com.yessorae.imagefactory.ui.components.item.model.Option
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialog
-import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgOptionRequest
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_GUIDANCE_SCALE
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_SAMPLES
+import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_STEP_COUNT
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgScreenState
 import com.yessorae.imagefactory.util.HelpLink
 import com.yessorae.imagefactory.util.ResString
@@ -57,7 +62,7 @@ class TxtToImgViewModel @Inject constructor(
 
     private val _toast = MutableSharedFlow<StringModel>()
     val toast: SharedFlow<StringModel> = _toast.asSharedFlow()
-    
+
     private val _redirectToWebBrowserEvent = MutableSharedFlow<String>()
     val redirectToWebBrowserEvent = _redirectToWebBrowserEvent.asSharedFlow()
 
@@ -66,7 +71,7 @@ class TxtToImgViewModel @Inject constructor(
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         viewModelScope.launch {
-            _toast.emit(ResString(R.string.common_response_error))
+            _toast.emit(ResString(R.string.common_response_unknown_error))
         }
         Logger.presentation(
             message = throwable.toString(),
@@ -78,9 +83,7 @@ class TxtToImgViewModel @Inject constructor(
     private val sharedEventScope = viewModelScope + Dispatchers.Main
 
     init {
-        getPublicModels()
-        getPositivePrompts()
-        getNegativePrompts()
+        initTxtToImgRequestOption()
     }
 
     /** change value **/
@@ -296,21 +299,23 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun addPositivePrompt(prompt: String) = scope.launch {
-        txtToImgRepository.insertPrompt(promptMapper.mapToEntity(prompt = prompt, positive = true))
-        val oldSet = uiState.value.request.positivePromptOptions.associateBy(keySelector = {
-            it.id
-        }, valueTransform = { it })
+        val newPromptId = txtToImgRepository.insertPrompt(
+            prompt = promptMapper.mapToEntity(
+                prompt = prompt,
+                positive = true
+            )
+        )
+        val oldSet = uiState.value.request.positivePromptOptions.associateBy(
+            keySelector = { it.id },
+            valueTransform = { it }
+        )
 
         val newList =
             promptMapper.map(txtToImgRepository.getPositivePrompts()).mapIndexed { _, new ->
                 val old = oldSet[new.id]
-                if (old != null) {
-                    new.copy(
-                        selected = old.selected
-                    )
-                } else {
-                    new
-                }
+                new.copy(
+                    selected = old?.selected == true || new.id == newPromptId
+                )
             }
 
         _uiState.update {
@@ -323,21 +328,23 @@ class TxtToImgViewModel @Inject constructor(
     }
 
     private fun addNegativePrompt(prompt: String) = scope.launch {
-        txtToImgRepository.insertPrompt(promptMapper.mapToEntity(prompt = prompt, positive = false))
-        val oldSet = uiState.value.request.negativePromptOptions.associateBy(keySelector = {
-            it.id
-        }, valueTransform = { it })
+        val newPromptId = txtToImgRepository.insertPrompt(
+            promptMapper.mapToEntity(
+                prompt = prompt,
+                positive = false
+            )
+        )
+        val oldSet = uiState.value.request.negativePromptOptions.associateBy(
+            keySelector = { it.id },
+            valueTransform = { it }
+        )
 
         val newList =
             promptMapper.map(txtToImgRepository.getNegativePrompts()).mapIndexed { _, new ->
                 val old = oldSet[new.id]
-                if (old != null) {
-                    new.copy(
-                        selected = old.selected
-                    )
-                } else {
-                    new
-                }
+                new.copy(
+                    selected = old?.selected == true || new.id == newPromptId
+                )
             }
 
         _uiState.update {
@@ -441,39 +448,119 @@ class TxtToImgViewModel @Inject constructor(
         }
     }
 
-
     /** load  **/
-    private fun getPublicModels() = scope.launch {
+    private fun initTxtToImgRequestOption() = scope.launch {
+        val lastRequest =
+            txtToImgHistoryRepository.getLastTxtToImgHistory()?.request
+
+        _uiState.update {
+            uiState.value.copy(
+                request = uiState.value.request.copy(
+                    enhancePrompt = lastRequest?.enhancePrompt?.trueOrFalse() ?: false,
+                    stepCount = lastRequest?.numInferenceSteps ?: DEFAULT_STEP_COUNT,
+                    safetyChecker = lastRequest?.safetyChecker?.trueOrFalse() ?: false,
+                    sizeOption = SDSizeType.createOptions(
+                        width = lastRequest?.width,
+                        height = lastRequest?.height
+                    ),
+                    seed = lastRequest?.seed?.toLongOrNull(),
+                    guidanceScale = lastRequest?.guidanceScale?.toInt() ?: DEFAULT_GUIDANCE_SCALE,
+                    upscaleOption = UpscaleType.createOptions(lastUpscaleNumber = lastRequest?.upscale?.toIntOrNull()),
+                    samples = lastRequest?.samples ?: DEFAULT_SAMPLES,
+                    schedulerOption = SchedulerOption.initialValues(lastSchedulerId = lastRequest?.scheduler)
+                )
+            )
+        }
+
+        getPublicModels(
+            modelId = lastRequest?.modelId?.trim(),
+            loRaModels = lastRequest?.loraModel
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.trim()
+                },
+            loRaStrength = lastRequest?.loraStrength
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.toFloatOrNull()
+                }
+                ?.filterNotNull(),
+            embeddingsIds = lastRequest?.embeddingsModel
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.trim()
+                }
+        )
+        getPositivePrompts(
+            lastPrompts = lastRequest?.prompt
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map {
+                    it.trim()
+                }
+        )
+        getNegativePrompts(
+            lastPrompts = lastRequest?.negativePrompt
+                ?.split(Constants.SEPARATOR_DEFAULTS)
+                ?.map { it.trim() }
+        )
+    }
+
+    private fun getPublicModels(
+        modelId: String?,
+        loRaModels: List<String>?,
+        loRaStrength: List<Float>?,
+        embeddingsIds: List<String>?
+    ) = scope.launch {
         val models = publicModelRepository.getPublicModels()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
-                    sdModelOption = publicModelMapper.mapSDModelOption(dto = models),
-                    loRaModelsOptions = publicModelMapper.mapLoRaModelOption(dto = models),
-                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(dto = models)
+                    sdModelOption = publicModelMapper.mapSDModelOption(
+                        dto = models,
+                        lastModelId = modelId
+                    ),
+                    loRaModelsOptions = publicModelMapper.mapLoRaModelOption(
+                        dto = models,
+                        lastIds = loRaModels,
+                        lastStrength = loRaStrength
+                    ),
+                    embeddingsModelOption = publicModelMapper.mapEmbeddingsModelOption(
+                        dto = models,
+                        lastIds = embeddingsIds
+                    )
                 ),
                 modelLoading = false
             )
         }
     }
 
-    private fun getPositivePrompts() = scope.launch {
+    private fun getPositivePrompts(
+        lastPrompts: List<String>?
+    ) = scope.launch {
         val positive = txtToImgRepository.getPositivePrompts()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
-                    positivePromptOptions = promptMapper.map(dto = positive)
+                    positivePromptOptions = promptMapper.map(
+                        dto = positive,
+                        lastPromptIds = lastPrompts
+                    )
                 )
             )
         }
     }
 
-    private fun getNegativePrompts() = scope.launch {
+    private fun getNegativePrompts(
+        lastPrompts: List<String>?
+    ) = scope.launch {
         val negative = txtToImgRepository.getNegativePrompts()
         _uiState.update {
             uiState.value.copy(
                 request = uiState.value.request.copy(
-                    negativePromptOptions = promptMapper.map(dto = negative)
+                    negativePromptOptions = promptMapper.map(
+                        dto = negative,
+                        lastPromptIds = lastPrompts
+                    )
                 )
             )
         }
@@ -483,14 +570,13 @@ class TxtToImgViewModel @Inject constructor(
         _toast.emit(message)
     }
 
-    private fun generateImage(requestOptionModel: TxtToImgOptionRequest? = null) = scope.launch {
-        (requestOptionModel ?: uiState.value.request).asTxtToImgRequest(
+    private fun generateImage() = scope.launch {
+        uiState.value.request.asTxtToImgRequest(
             toastEvent = { message ->
                 showToast(message = message)
             }
         )?.let { request ->
             val requestId = txtToImgHistoryRepository.insertRequestHistory(request)
-            txtToImgRepository.setLastRequest(request = request)
             _navigationEvent.emit(
                 TxtToImgResultDestination.getRouteWithArgs(requestId = requestId.toInt())
             )

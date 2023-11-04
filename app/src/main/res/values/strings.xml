@@ -3,6 +3,9 @@
     <string name="app_name">ImageFactory</string>
     <string name="common_watch_ad">광고 시청하기</string>
     <string name="common_button_see_more">더보기</string>
+    <string name="common_button_back_screen">뒤로 가기</string>
+    <string name="common_button_back_state">이전 상태로 돌아가기</string>
+    <string name="common_title_error_cause">에러 원인: %s</string>
     <string name="common_random">랜덤</string>
     <string name="common_add">추가</string>
     <string name="common_input_prompt">프롬프트를 입력해주세요</string>
@@ -48,7 +51,7 @@
     <string name="common_state_error_redirect_web_browser">에러 발생, 웹브라우저 앱이 있는지 확인해주세요</string>
     <string name="common_response_sd_processing">이미지가 백그라운드에서 처리되고 있어요. 잠시 후 히스토리 탭에서 확인해보세요.</string>
     <string name="common_response_upscale_processing">이미지가 백그라운드에서 처리되고 있어요. 5초 후 다시 시도해보세요.</string>
-    <string name="common_response_error">예상하지 못한 에러가 발생했어요.\n인터넷 연결을 확인하시고, 잠시 후 다시 시도해주세요.</string>
+    <string name="common_response_unknown_error">예상하지 못한 에러가 발생했어요.\n인터넷 연결을 확인하시고, 재발생 시 개발자에게 문의해주세요</string>
 
     <!-- common dialog -->
     <string name="common_dialog_title_delete_history">기록을 삭제합니다</string>

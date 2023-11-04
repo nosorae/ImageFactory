@@ -19,6 +19,28 @@ enum class UpscaleType(val value: String) {
                 override val selected: Boolean = index == 0
             }
         }
+
+        fun createOptions(
+            lastUpscaleNumber: Int? // API의 응답에 의해서 1, 2, 3
+        ): List<Option> {
+            return if (lastUpscaleNumber != null) {
+                val lastUpscaleType = when (lastUpscaleNumber) {
+                    1 -> None
+                    2 -> Twice
+                    else -> Triple
+                }
+                UpscaleType.values().map { type ->
+                    object : Option {
+                        override val id: String = type.name
+                        override val title: StringModel =
+                            ResString(R.string.common_n_value_upscale, type.value)
+                        override val selected: Boolean = lastUpscaleType == type
+                    }
+                }
+            } else {
+                defaultOptions
+            }
+        }
     }
 }
 

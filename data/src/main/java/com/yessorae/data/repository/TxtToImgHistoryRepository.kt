@@ -8,6 +8,7 @@ import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
 import com.yessorae.data.local.database.model.asEntity
 import com.yessorae.data.local.database.model.asHistoryEntity
 import com.yessorae.data.local.database.model.asResultEntity
+import com.yessorae.data.local.preference.PreferenceService
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestBody
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
@@ -21,16 +22,19 @@ import javax.inject.Inject
 
 class TxtToImgHistoryRepository @Inject constructor(
     private val txtToImgApi: TxtToImgApi,
-    private val txtToImgHistoryDao: TxtToImgHistoryDao
+    private val txtToImgHistoryDao: TxtToImgHistoryDao,
+    private val preferenceService: PreferenceService
 ) {
     suspend fun insertRequestHistory(
         requestBody: TxtToImgRequestBody
     ): Long {
         Logger.data("TxtToImgHistoryRepository - insert - requestBody $requestBody")
         Logger.data("TxtToImgHistoryRepository - insert - requestBody.asHistoryEntity() ${requestBody.asHistoryEntity()}")
-        return txtToImgHistoryDao.insert(
+        val historyId = txtToImgHistoryDao.insert(
             entity = requestBody.asHistoryEntity()
         )
+        preferenceService.setLastTxtToImageRequestHistoryId(historyId = historyId)
+        return historyId
     }
 
     suspend fun updateRequestHistory(
@@ -52,6 +56,13 @@ class TxtToImgHistoryRepository @Inject constructor(
         id: Int
     ): TxtToImgHistoryEntity {
         return txtToImgHistoryDao.getTxtToImgHistoryModel(id = id)
+    }
+
+    suspend fun getLastTxtToImgHistory(): TxtToImgHistoryEntity? {
+        val historyId = preferenceService.getLastTxtToImageRequestHistoryId()
+        return historyId?.toInt()?.let { id ->
+            getTxtToImgHistory(id = id)
+        }
     }
 
     fun getHistories(): Flow<List<TxtToImgHistoryEntity>> {

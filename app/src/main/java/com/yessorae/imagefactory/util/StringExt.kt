@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.util
 
-import com.yessorae.data.util.StableDiffusionConstants
+import com.yessorae.data.util.StableDiffusionApiConstants
 
 fun String.isMultiLanguage(): Boolean {
     val regex = Regex("^[a-zA-Z0-9!@#\\$%^&*()_+\\-=\\[\\]{};':\",.<>\\/?\\s]*$")
@@ -13,13 +13,13 @@ suspend fun String.handleSdResponse(
     onError: suspend () -> Unit
 ) {
     when (this) {
-        StableDiffusionConstants.RESPONSE_SUCCESS -> {
+        StableDiffusionApiConstants.RESPONSE_SUCCESS -> {
             onSuccess()
         }
-        StableDiffusionConstants.RESPONSE_PROCESSING -> {
+        StableDiffusionApiConstants.RESPONSE_PROCESSING -> {
             onProcessing()
         }
-        StableDiffusionConstants.RESPONSE_ERROR -> {
+        StableDiffusionApiConstants.RESPONSE_ERROR -> {
             onError()
         }
     }

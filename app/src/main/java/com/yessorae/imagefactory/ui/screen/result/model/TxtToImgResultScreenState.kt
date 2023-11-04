@@ -1,8 +1,14 @@
 package com.yessorae.imagefactory.ui.screen.result.model
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.SettingsBackupRestore
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.model.TxtToImgRequest
 import com.yessorae.imagefactory.ui.model.TxtToImgResult
 import com.yessorae.imagefactory.ui.model.UpscaleResultModel
+import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 
 sealed class TxtToImgResultScreenState(
@@ -48,9 +54,17 @@ sealed class TxtToImgResultScreenState(
     data class Error(
         override val request: TxtToImgRequest?,
         val cause: StringModel,
-        val backState: TxtToImgResultScreenState
-    ) : TxtToImgResultScreenState(request = request)
+        val backState: TxtToImgResultScreenState,
+        val actionType: ActionType = ActionType.NORMAL
+    ) : TxtToImgResultScreenState(request = request) {
+        enum class ActionType(val text: StringModel, val imageVector: ImageVector) {
+            FINISH(ResString(R.string.common_button_back_screen), Icons.Default.ArrowBack),
+            NORMAL(ResString(R.string.common_button_back_state), Icons.Default.SettingsBackupRestore)
+        }
+    }
 }
+
+
 
 interface Result<out T> {
     val result: T

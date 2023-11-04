@@ -22,21 +22,21 @@ import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 
-data class TxtToImgOptionRequest(
+data class TxtToImgRequestOption(
     val positivePromptOptions: List<PromptOption> = listOf(),
     val negativePromptOptions: List<PromptOption> = listOf(),
     val sdModelOption: List<SDModelOption> = listOf(),
     val enhancePrompt: Boolean = true,
     val loRaModelsOptions: List<LoRaModelOption> = listOf(),
     val embeddingsModelOption: List<EmbeddingsModelOption> = listOf(),
-    val stepCount: Int = 1,
+    val stepCount: Int = DEFAULT_STEP_COUNT,
     val safetyChecker: Boolean = false,
     val sizeOption: List<Option> = SDSizeType.defaultOptions,
     val seed: Long? = null,
     // Scale for classifier-free guidance (minimum: 1; maximum: 20)
-    val guidanceScale: Int = 10, // todo 적정값 찾기
+    val guidanceScale: Int = DEFAULT_GUIDANCE_SCALE, // todo 적정값 찾기
     val upscaleOption: List<Option> = UpscaleType.defaultOptions,
-    val samples: Int = 1,
+    val samples: Int = DEFAULT_SAMPLES,
     val schedulerOption: List<SchedulerOption> = SchedulerOption.initialValues()
 ) {
     private val multiLingual: Boolean by lazy {
@@ -99,5 +99,8 @@ data class TxtToImgOptionRequest(
 
     companion object {
         const val PREVIEW_COUNT = 10
+        const val DEFAULT_GUIDANCE_SCALE = 10
+        const val DEFAULT_SAMPLES = 1
+        const val DEFAULT_STEP_COUNT = 1
     }
 }
