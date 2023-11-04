@@ -64,8 +64,6 @@ sealed class TxtToImgResultScreenState(
     }
 }
 
-
-
 interface Result<out T> {
     val result: T
 }
