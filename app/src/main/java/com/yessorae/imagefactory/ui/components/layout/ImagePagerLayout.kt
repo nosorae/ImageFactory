@@ -34,7 +34,8 @@ fun ImagePagerLayout(
     val pagerState = rememberPagerState()
     val imageCount = images.size
     Column(
-        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HorizontalPager(
             modifier = Modifier
@@ -85,7 +86,8 @@ private fun PagerIndicator(
                             selectedColor
                         } else {
                             unSelectedColor
-                        }, shape = CircleShape
+                        },
+                        shape = CircleShape
                     )
             )
         }
@@ -103,5 +105,4 @@ fun ImagePagerLayoutPreview() {
             MockData.MOCK_IMAGE_URL
         )
     )
-
 }
