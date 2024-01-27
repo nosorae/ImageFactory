@@ -7,4 +7,5 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
     id("com.google.gms.google-services") version "4.3.15" apply false
     id("com.google.firebase.crashlytics") version "2.9.9" apply false
+    id("org.jetbrains.kotlin.jvm") version "1.8.10" apply false
 }
