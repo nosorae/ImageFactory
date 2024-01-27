@@ -55,4 +55,6 @@ object Dimen {
     val title_padding_modifier = Modifier
         .padding(horizontal = Dimen.space_16)
         .padding(top = Dimen.space_24, bottom = Dimen.space_4)
+
+    val indicator_dot_size = 4.dp
 }
