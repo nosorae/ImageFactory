@@ -7,7 +7,7 @@ fun <T> Response<T>.handleResponse(): T {
     errorBody()?.let {
         val json = it.string()
         val errorDto = Gson().fromJson(json, ErrorDto::class.java)
-        throw ImageFactoryException.StableDiffusionApiException(errorDto.toString())
+        throw com.yessorae.domain.util.ImageFactoryException.StableDiffusionApiException(errorDto.toString())
     } ?: run {
         return body()!!
     }
