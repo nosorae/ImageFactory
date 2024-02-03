@@ -1,3 +1,5 @@
+# [WIP] ⚠️ 빠른 런칭을 위해 전술적 프로그래밍한 부분을 개선하는 중입니다. 기획을 바꾸고 재단장하는 김에 함께 진행중입니다.
+
 # ImageFactory
 Generate Image</br>
 with Stable Diffusion</br>
