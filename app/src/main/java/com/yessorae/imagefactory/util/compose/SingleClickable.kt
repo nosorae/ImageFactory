@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.semantics.Role
-import com.yessorae.common.Constants
+import com.yessorae.domain.util.Constants
 
 fun Modifier.debouncedClickable(
     interval: Long = Constants.DEFAULT_SAFE_CLICK_INTERVAL,

@@ -4,15 +4,13 @@ import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
-import com.yessorae.common.replaceDomain
-import com.yessorae.data.repository.TxtToImgHistoryRepository
-import com.yessorae.data.repository.TxtToImgRepository
-import com.yessorae.data.util.StableDiffusionApiConstants
+import com.yessorae.data.util.replaceDomain
+import com.yessorae.data.repository.TxtToImgHistoryRepositoryImpl
+import com.yessorae.domain.repository.TxtToImgRepository
+import com.yessorae.domain.util.StableDiffusionApiConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
-import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
-import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
 import com.yessorae.domain.model.TxtToImgRequest
 import com.yessorae.domain.model.TxtToImgResult
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
@@ -21,7 +19,7 @@ import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.TextString
 import com.yessorae.imagefactory.util.base.BaseScreenViewModel
-import com.yessorae.imagefactory.util.handleSdResponse
+import com.yessorae.domain.util.handleSdResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -32,7 +30,7 @@ import javax.inject.Inject
 class TxtToImgResultViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val txtToImgRepository: TxtToImgRepository,
-    private val txtToImgHistoryRepository: TxtToImgHistoryRepository,
+    private val txtToImgHistoryRepository: TxtToImgHistoryRepositoryImpl,
     private val txtToImgRequestMapper: TxtToImgRequestMapper,
     private val resultMapper: TxtToImgResultMapper,
     private val upscaleResultModelMapper: UpscaleResultModelMapper,

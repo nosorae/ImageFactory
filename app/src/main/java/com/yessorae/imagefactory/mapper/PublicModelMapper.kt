@@ -1,12 +1,12 @@
 package com.yessorae.imagefactory.mapper
 
-import com.yessorae.common.Constants
-import com.yessorae.common.replacePubDomain
+import com.yessorae.domain.util.Constants
+import com.yessorae.data.util.replacePubDomain
 import com.yessorae.data.local.database.model.PublicModelEntity
-import com.yessorae.imagefactory.model.EmbeddingsModelOption
-import com.yessorae.imagefactory.model.LoRaModelOption
-import com.yessorae.imagefactory.model.LoRaModelOption.Companion.DEFAULT_STRENGTH
-import com.yessorae.imagefactory.model.SDModelOption
+import com.yessorae.domain.model.option.EmbeddingsModelOption
+import com.yessorae.domain.model.option.LoRaModelOption
+import com.yessorae.domain.model.option.LoRaModelOption.Companion.DEFAULT_STRENGTH
+import com.yessorae.domain.model.option.SDModelOption
 import com.yessorae.imagefactory.util.TextString
 import javax.inject.Inject
 

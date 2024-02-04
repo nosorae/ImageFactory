@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.yessorae.data.util.DBConstants
+import com.yessorae.domain.model.option.PromptOption
 import java.time.LocalDateTime
 
 @Entity(tableName = DBConstants.TABLE_PROMPT)
@@ -39,4 +40,21 @@ data class PromptEntity(
             )
         }
     }
+}
+
+fun PromptEntity.asDomainModel(): PromptOption {
+    return PromptOption(
+        dbId = prompt,
+        isPositive = positive,
+        title = prompt
+    )
+}
+
+fun PromptOption.asEntityModel(): PromptEntity {
+    return PromptEntity(
+        prompt = id,
+        positive = isPositive,
+        createdAt = LocalDateTime.now(),
+        updatedAt = LocalDateTime.now()
+    )
 }

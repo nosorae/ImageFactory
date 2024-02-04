@@ -3,9 +3,8 @@ package com.yessorae.data.local.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yessorae.common.trueOrFalse
-import com.yessorae.data.remote.stablediffusion.model.response.PublicModelItem
 import com.yessorae.data.util.DBConstants
+import com.yessorae.domain.model.PublicModel
 
 @Entity(tableName = DBConstants.TABLE_PUBLIC_MODEL)
 data class PublicModelEntity(
@@ -36,22 +35,20 @@ data class PublicModelEntity(
     val serverSync: Boolean = false
 )
 
-fun PublicModelItem.mapToEntity(): PublicModelEntity {
-    return PublicModelEntity(
-        modelId = this.modelId,
-        status = this.status,
-        createdAt = this.createdAt?.toString(),
-        instancePrompt = this.instancePrompt,
-        apiCalls = try {
-            this.apiCalls?.toLong()
-        } catch (e: Exception) {
-            null
-        },
-        modelCategory = this.modelCategory,
-        isNsfw = this.isNsfw?.trueOrFalse(),
-        featured = this.featured?.trueOrFalse(),
-        modelName = this.modelName,
-        description = this.description,
-        screenshots = this.screenshots
+fun PublicModelEntity.asDomainModel(): PublicModel {
+    return PublicModel(
+        modelId = modelId,
+        status = status,
+        createdAt = createdAt,
+        instancePrompt = instancePrompt,
+        apiCalls = apiCalls,
+        modelCategory = modelCategory,
+        isNsfw = isNsfw,
+        featured = featured,
+        modelName = modelName,
+        description = description,
+        screenshots = screenshots
     )
 }
+
+

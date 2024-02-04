@@ -2,29 +2,29 @@ package com.yessorae.imagefactory.ui.screen.main.tti
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yessorae.common.Constants
-import com.yessorae.common.GaConstants
-import com.yessorae.common.GaEventManager
+import com.yessorae.domain.util.Constants
+import com.yessorae.domain.util.GaConstants
+import com.yessorae.imagefactory.util.GaEventManager
 import com.yessorae.common.Logger
-import com.yessorae.common.trueOrFalse
-import com.yessorae.data.repository.PublicModelRepository
-import com.yessorae.data.repository.TxtToImgHistoryRepository
-import com.yessorae.data.repository.TxtToImgRepository
+import com.yessorae.domain.util.trueOrFalse
+import com.yessorae.domain.repository.PublicModelRepository
+import com.yessorae.data.repository.TxtToImgHistoryRepositoryImpl
+import com.yessorae.domain.repository.TxtToImgRepository
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.mapper.PromptMapper
 import com.yessorae.imagefactory.mapper.PublicModelMapper
-import com.yessorae.imagefactory.model.EmbeddingsModelOption
-import com.yessorae.imagefactory.model.LoRaModelOption
-import com.yessorae.imagefactory.model.PromptOption
-import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.model.SchedulerOption
-import com.yessorae.imagefactory.model.initialValues
-import com.yessorae.imagefactory.model.type.SDSizeType
+import com.yessorae.domain.model.option.EmbeddingsModelOption
+import com.yessorae.domain.model.option.LoRaModelOption
+import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.option.SDModelOption
+import com.yessorae.domain.model.option.SchedulerOption
+import com.yessorae.domain.model.option.initialValues
+import com.yessorae.domain.model.type.SDSizeType
 import com.yessorae.imagefactory.model.type.UpscaleType
 import com.yessorae.imagefactory.model.type.toOptionList
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
-import com.yessorae.imagefactory.ui.components.item.model.Option
+import com.yessorae.domain.model.option.Option
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgDialog
 import com.yessorae.imagefactory.ui.screen.main.tti.model.TxtToImgRequestOption.Companion.DEFAULT_GUIDANCE_SCALE
@@ -52,7 +52,7 @@ import javax.inject.Inject
 class TxtToImgViewModel @Inject constructor(
     private val txtToImgRepository: TxtToImgRepository,
     private val publicModelRepository: PublicModelRepository,
-    private val txtToImgHistoryRepository: TxtToImgHistoryRepository,
+    private val txtToImgHistoryRepository: TxtToImgHistoryRepositoryImpl,
     private val publicModelMapper: PublicModelMapper,
     private val promptMapper: PromptMapper
 ) : ViewModel() {

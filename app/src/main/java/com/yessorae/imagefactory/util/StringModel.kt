@@ -41,7 +41,7 @@ sealed class StringModel {
 }
 
 class ResString(
-    @StringRes val resId: Int,
+    val resId: Int,
     vararg val args: Any?
 ) : StringModel()
 

@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.yessorae.imagefactory.model.SizeOption
-import com.yessorae.imagefactory.model.mock
+import com.yessorae.domain.model.option.SizeOption
+import com.yessorae.domain.model.option.mock
 import com.yessorae.imagefactory.ui.components.item.RadioTextButton
-import com.yessorae.imagefactory.ui.components.item.model.Option
+import com.yessorae.domain.model.option.Option
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.compose.ColumnPreview
 

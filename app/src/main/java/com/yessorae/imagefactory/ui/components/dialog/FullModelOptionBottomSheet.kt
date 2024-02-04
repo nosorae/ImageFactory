@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.item.ImageFactoryTextField
-import com.yessorae.imagefactory.ui.components.item.model.CoverOption
+import com.yessorae.domain.model.option.CoverOption
 import com.yessorae.imagefactory.ui.components.layout.option.FullModelsLayout
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString

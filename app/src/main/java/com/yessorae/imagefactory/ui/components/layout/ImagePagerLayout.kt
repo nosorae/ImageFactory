@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.yessorae.imagefactory.ui.components.item.common.ImageListItem
 import com.yessorae.imagefactory.ui.theme.Dimen
-import com.yessorae.imagefactory.util.MockData
+import com.yessorae.domain.util.MockData
 import com.yessorae.imagefactory.util.compose.Margin
 
 @OptIn(ExperimentalFoundationApi::class)

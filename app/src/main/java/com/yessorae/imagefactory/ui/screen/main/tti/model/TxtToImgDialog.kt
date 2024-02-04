@@ -1,12 +1,11 @@
 package com.yessorae.imagefactory.ui.screen.main.tti.model
 
-import com.yessorae.domain.model.TxtToImgResult
 import com.yessorae.imagefactory.R
-import com.yessorae.imagefactory.model.EmbeddingsModelOption
-import com.yessorae.imagefactory.model.LoRaModelOption
-import com.yessorae.imagefactory.model.PromptOption
-import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.domain.model.UpscaleResultModel
+import com.yessorae.domain.model.option.EmbeddingsModelOption
+import com.yessorae.domain.model.option.LoRaModelOption
+import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.option.SDModelOption
+import com.yessorae.domain.model.UpscaleResult
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.TextString
@@ -48,7 +47,7 @@ sealed class TxtToImgDialog {
         val width: Int,
         val height: Int,
         val result: com.yessorae.domain.model.TxtToImgResult? = null,
-        val upscaleResultModel: UpscaleResultModel? = null,
+        val upscaleResult: UpscaleResult? = null,
         val fail: Boolean = false
     ) : TxtToImgDialog() {
         val ratio: Float = width / height.toFloat()

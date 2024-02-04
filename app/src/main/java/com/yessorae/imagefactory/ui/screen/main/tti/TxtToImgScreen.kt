@@ -29,11 +29,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yessorae.imagefactory.R
-import com.yessorae.imagefactory.model.EmbeddingsModelOption
-import com.yessorae.imagefactory.model.LoRaModelOption
-import com.yessorae.imagefactory.model.PromptOption
-import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.model.SchedulerOption
+import com.yessorae.domain.model.option.EmbeddingsModelOption
+import com.yessorae.domain.model.option.LoRaModelOption
+import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.option.SDModelOption
+import com.yessorae.domain.model.option.SchedulerOption
 import com.yessorae.imagefactory.ui.components.dialog.FullModelOptionBottomSheet
 import com.yessorae.imagefactory.ui.components.dialog.InputDialog
 import com.yessorae.imagefactory.ui.components.item.ActionButton

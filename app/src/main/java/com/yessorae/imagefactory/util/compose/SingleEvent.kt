@@ -2,7 +2,7 @@ package com.yessorae.imagefactory.util.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.yessorae.common.Constants
+import com.yessorae.domain.util.Constants
 
 interface SingleEvent {
     fun processEvent(event: () -> Unit)

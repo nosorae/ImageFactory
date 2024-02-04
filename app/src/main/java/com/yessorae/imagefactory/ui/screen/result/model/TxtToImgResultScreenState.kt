@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.yessorae.imagefactory.R
 import com.yessorae.domain.model.TxtToImgRequest
 import com.yessorae.domain.model.TxtToImgResult
-import com.yessorae.domain.model.UpscaleResultModel
+import com.yessorae.domain.model.UpscaleResult
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 
@@ -37,7 +37,7 @@ sealed class TxtToImgResultScreenState(
     data class UpscaleSuccess(
         override val request: TxtToImgRequest,
         val sdResult: TxtToImgResult,
-        val upscaleResult: UpscaleResultModel
+        val upscaleResult: UpscaleResult
     ) : TxtToImgResultScreenState(request = request), Result<TxtToImgResult> {
         val ratio = request.width / request.height.toFloat()
         val beforeImageUrl: String? = sdResult.imageUrl

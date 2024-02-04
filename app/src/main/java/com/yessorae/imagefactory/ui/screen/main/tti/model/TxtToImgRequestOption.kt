@@ -1,24 +1,24 @@
 package com.yessorae.imagefactory.ui.screen.main.tti.model
 
-import com.yessorae.common.yesOrNo
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
+import com.yessorae.domain.util.yesOrNo
+import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestDto
 import com.yessorae.imagefactory.R
-import com.yessorae.imagefactory.model.EmbeddingsModelOption
-import com.yessorae.imagefactory.model.LoRaModelOption
-import com.yessorae.imagefactory.model.PromptOption
-import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.model.SchedulerOption
-import com.yessorae.imagefactory.model.initialValues
-import com.yessorae.imagefactory.model.isMultiLingual
-import com.yessorae.imagefactory.model.toLoRaModelPrompt
-import com.yessorae.imagefactory.model.toLoRaStrengthPrompt
-import com.yessorae.imagefactory.model.toPrompt
-import com.yessorae.imagefactory.model.type.SDSizeType
+import com.yessorae.domain.model.option.EmbeddingsModelOption
+import com.yessorae.domain.model.option.LoRaModelOption
+import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.option.SDModelOption
+import com.yessorae.domain.model.option.SchedulerOption
+import com.yessorae.domain.model.option.initialValues
+import com.yessorae.domain.model.option.isMultiLingual
+import com.yessorae.domain.model.option.toLoRaModelPrompt
+import com.yessorae.domain.model.option.toLoRaStrengthPrompt
+import com.yessorae.domain.model.option.toPrompt
+import com.yessorae.domain.model.type.SDSizeType
 import com.yessorae.imagefactory.model.type.UpscaleType
 import com.yessorae.imagefactory.model.type.toSDSizeType
 import com.yessorae.imagefactory.model.type.toUpscaleType
-import com.yessorae.imagefactory.ui.components.item.model.Option
-import com.yessorae.imagefactory.ui.components.item.model.getSelectedOption
+import com.yessorae.domain.model.option.Option
+import com.yessorae.domain.model.option.getSelectedOption
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 
@@ -57,7 +57,7 @@ data class TxtToImgRequestOption(
 
     fun asTxtToImgRequest(
         toastEvent: (StringModel) -> Unit
-    ): TxtToImgRequestBody? {
+    ): TxtToImgRequestDto? {
         if (positivePromptOptions.count { it.selected } == 0) {
             toastEvent(ResString(R.string.common_warning_input_prompt))
             return null
@@ -75,7 +75,7 @@ data class TxtToImgRequestOption(
             return null
         }
 
-        return TxtToImgRequestBody(
+        return TxtToImgRequestDto(
             modelId = modelId,
             prompt = positivePromptOptions.toPrompt(),
             negativePrompt = negativePromptOptions.toPrompt(),

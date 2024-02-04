@@ -34,8 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.yessorae.common.Constants
-import com.yessorae.data.util.StableDiffusionApiConstants
+import com.yessorae.domain.util.Constants
+import com.yessorae.domain.util.StableDiffusionApiConstants
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.ui.components.dialog.ConfirmDialog
 import com.yessorae.imagefactory.ui.components.item.common.ImageListItem

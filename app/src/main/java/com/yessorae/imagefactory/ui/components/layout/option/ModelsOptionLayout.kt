@@ -9,11 +9,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.model.mock
+import com.yessorae.domain.model.option.SDModelOption
+import com.yessorae.domain.model.option.mock
 import com.yessorae.imagefactory.ui.components.item.ModelCover
 import com.yessorae.imagefactory.ui.components.item.ModelCoverPlaceholder
-import com.yessorae.imagefactory.ui.components.item.model.CoverOption
+import com.yessorae.domain.model.option.CoverOption
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.compose.ColumnPreview
 

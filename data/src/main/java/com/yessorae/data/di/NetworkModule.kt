@@ -1,7 +1,7 @@
 package com.yessorae.data.di
 
 import com.yessorae.common.Logger
-import com.yessorae.data.util.StableDiffusionApiConstants
+import com.yessorae.domain.util.StableDiffusionApiConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

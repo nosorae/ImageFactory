@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.model.type
 
-import com.yessorae.imagefactory.ui.components.item.model.Option
+import com.yessorae.domain.model.option.Option
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.TextString
 
