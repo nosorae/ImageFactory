@@ -5,9 +5,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.yessorae.imagefactory.R
-import com.yessorae.imagefactory.ui.model.TxtToImgRequest
-import com.yessorae.imagefactory.ui.model.TxtToImgResult
-import com.yessorae.imagefactory.ui.model.UpscaleResultModel
+import com.yessorae.domain.model.TxtToImgRequest
+import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.UpscaleResultModel
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 

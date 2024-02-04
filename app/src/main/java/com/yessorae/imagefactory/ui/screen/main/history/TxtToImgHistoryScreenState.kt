@@ -1,6 +1,6 @@
 package com.yessorae.imagefactory.ui.screen.main.history
 
-import com.yessorae.imagefactory.ui.model.TxtToImgHistory
+import com.yessorae.domain.model.TxtToImgHistory
 
 sealed class TxtToImgHistoryScreenState {
     object Loading : TxtToImgHistoryScreenState()

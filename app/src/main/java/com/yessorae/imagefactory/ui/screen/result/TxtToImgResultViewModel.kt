@@ -13,8 +13,8 @@ import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
 import com.yessorae.imagefactory.mapper.TxtToImgRequestMapper
 import com.yessorae.imagefactory.mapper.TxtToImgResultMapper
 import com.yessorae.imagefactory.mapper.UpscaleResultModelMapper
-import com.yessorae.imagefactory.ui.model.TxtToImgRequest
-import com.yessorae.imagefactory.ui.model.TxtToImgResult
+import com.yessorae.domain.model.TxtToImgRequest
+import com.yessorae.domain.model.TxtToImgResult
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.ui.screen.result.model.TxtToImgResultScreenState
 import com.yessorae.imagefactory.util.ResString

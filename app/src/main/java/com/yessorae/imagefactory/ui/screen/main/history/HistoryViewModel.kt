@@ -3,7 +3,7 @@ package com.yessorae.imagefactory.ui.screen.main.history
 import com.yessorae.common.Logger
 import com.yessorae.data.repository.TxtToImgHistoryRepository
 import com.yessorae.imagefactory.mapper.TxtToImgHistoryMapper
-import com.yessorae.imagefactory.ui.model.TxtToImgHistory
+import com.yessorae.domain.model.TxtToImgHistory
 import com.yessorae.imagefactory.ui.navigation.destination.TxtToImgResultDestination
 import com.yessorae.imagefactory.util.base.BaseScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

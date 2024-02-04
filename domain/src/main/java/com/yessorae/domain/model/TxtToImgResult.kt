@@ -1,4 +1,4 @@
-package com.yessorae.imagefactory.ui.model
+package com.yessorae.domain.model
 
 data class TxtToImgResult(
     val id: Int,

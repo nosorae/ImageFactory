@@ -1,7 +1,7 @@
 package com.yessorae.imagefactory.mapper
 
 import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
-import com.yessorae.imagefactory.ui.model.TxtToImgHistory
+import com.yessorae.domain.model.TxtToImgHistory
 import javax.inject.Inject
 
 class TxtToImgHistoryMapper @Inject constructor(

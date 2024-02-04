@@ -14,7 +14,7 @@ import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBod
 import com.yessorae.data.remote.stablediffusion.model.request.UpscaleRequestBody
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.remote.stablediffusion.model.response.UpscaleDto
-import com.yessorae.data.util.ImageFactoryException
+import com.yessorae.domain.util.ImageFactoryException
 import com.yessorae.data.util.handleResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -48,7 +48,7 @@ class TxtToImgRepository @Inject constructor(
             path = path,
             name = name
         ).firstOrNull()?.uri?.toString()
-            ?: throw ImageFactoryException.FirebaseStorageException("downloadUrl is null")
+            ?: throw com.yessorae.domain.util.ImageFactoryException.FirebaseStorageException("downloadUrl is null")
     }
 
     suspend fun upscaleImage(

@@ -1,11 +1,12 @@
 package com.yessorae.imagefactory.ui.screen.main.tti.model
 
+import com.yessorae.domain.model.TxtToImgResult
 import com.yessorae.imagefactory.R
 import com.yessorae.imagefactory.model.EmbeddingsModelOption
 import com.yessorae.imagefactory.model.LoRaModelOption
 import com.yessorae.imagefactory.model.PromptOption
 import com.yessorae.imagefactory.model.SDModelOption
-import com.yessorae.imagefactory.ui.model.UpscaleResultModel
+import com.yessorae.domain.model.UpscaleResultModel
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.StringModel
 import com.yessorae.imagefactory.util.TextString
@@ -46,7 +47,7 @@ sealed class TxtToImgDialog {
         val requestOption: TxtToImgRequestOption,
         val width: Int,
         val height: Int,
-        val result: com.yessorae.imagefactory.ui.model.TxtToImgResult? = null,
+        val result: com.yessorae.domain.model.TxtToImgResult? = null,
         val upscaleResultModel: UpscaleResultModel? = null,
         val fail: Boolean = false
     ) : TxtToImgDialog() {

@@ -6,9 +6,9 @@ import com.yessorae.data.local.database.model.ResultMetaDataEntity
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
 import com.yessorae.data.remote.stablediffusion.model.response.MetaDataDto
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
-import com.yessorae.imagefactory.ui.model.TxtToImgRequest
-import com.yessorae.imagefactory.ui.model.TxtToImgResult
-import com.yessorae.imagefactory.ui.model.TxtToImgResultMetaData
+import com.yessorae.domain.model.TxtToImgRequest
+import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.TxtToImgResultMetaData
 import javax.inject.Inject
 
 class TxtToImgResultMapper @Inject constructor() {

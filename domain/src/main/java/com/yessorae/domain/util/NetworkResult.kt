@@ -1,4 +1,4 @@
-package com.yessorae.data.util
+package com.yessorae.domain.util
 
 sealed class NetworkResult<T : Any> {
     object Loading : NetworkResult<Nothing>()

@@ -43,7 +43,7 @@ import com.yessorae.imagefactory.ui.components.item.common.ImageLoadError
 import com.yessorae.imagefactory.ui.components.layout.DEFAULT_IMAGE_LIST_COLUMN
 import com.yessorae.imagefactory.ui.components.layout.DefaultLoadingLayout
 import com.yessorae.imagefactory.ui.components.layout.EmptyListLayout
-import com.yessorae.imagefactory.ui.model.TxtToImgHistory
+import com.yessorae.domain.model.TxtToImgHistory
 import com.yessorae.imagefactory.ui.theme.Dimen
 import com.yessorae.imagefactory.util.ResString
 import com.yessorae.imagefactory.util.compose.Margin

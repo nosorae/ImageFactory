@@ -2,7 +2,7 @@ package com.yessorae.imagefactory.mapper
 
 import com.yessorae.data.local.database.model.RequestBodyEntity
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestBody
-import com.yessorae.imagefactory.ui.model.TxtToImgRequest
+import com.yessorae.domain.model.TxtToImgRequest
 import javax.inject.Inject
 
 class TxtToImgRequestMapper @Inject constructor() {
