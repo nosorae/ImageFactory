@@ -1,5 +1,7 @@
 package com.yessorae.domain.repository
 
+import com.yessorae.domain.model.FetchQueuedImgResponse
+import com.yessorae.domain.model.TxtToImgHistory
 import com.yessorae.domain.model.TxtToImgRequest
 import com.yessorae.domain.model.TxtToImgResult
 import com.yessorae.domain.model.UpscaleResult
@@ -13,4 +15,8 @@ interface TxtToImgRepository {
     suspend fun generateImage(
         request: TxtToImgRequest
     ): TxtToImgResult
+
+    suspend fun fetchQueuedImage(
+        requestId: String
+    ): FetchQueuedImgResponse
 }

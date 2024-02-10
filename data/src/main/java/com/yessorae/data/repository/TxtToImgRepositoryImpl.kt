@@ -1,11 +1,17 @@
 package com.yessorae.data.repository
 
+import com.yessorae.common.Logger
+import com.yessorae.data.local.database.model.ResultEntity
+import com.yessorae.data.local.database.model.asDomainModel
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
-import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestDto
+import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestDto
 import com.yessorae.data.remote.stablediffusion.model.request.asRequestDto
-import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
+import com.yessorae.data.remote.stablediffusion.model.response.FetchQueuedImgResponseDto
 import com.yessorae.data.remote.stablediffusion.model.response.asDomainModel
 import com.yessorae.data.util.handleResponse
+import com.yessorae.data.util.replaceDomain
+import com.yessorae.domain.model.FetchQueuedImgResponse
+import com.yessorae.domain.model.TxtToImgHistory
 import com.yessorae.domain.model.TxtToImgRequest
 import com.yessorae.domain.model.TxtToImgResult
 import com.yessorae.domain.repository.TxtToImgRepository
@@ -22,6 +28,19 @@ class TxtToImgRepositoryImpl @Inject constructor(
         return txtToImgApi
             .generateImage(
                 request = request.asRequestDto()
+            )
+            .handleResponse()
+            .asDomainModel()
+    }
+
+    override suspend fun fetchQueuedImage(
+        requestId: String
+    ): FetchQueuedImgResponse {
+        return txtToImgApi
+            .fetchQueuedImage(
+                request = FetchQueuedImageRequestDto(
+                    requestId = requestId
+                )
             )
             .handleResponse()
             .asDomainModel()

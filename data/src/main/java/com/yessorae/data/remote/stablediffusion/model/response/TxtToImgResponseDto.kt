@@ -9,7 +9,7 @@ data class TxtToImgDto(
     @SerializedName("generationTime") val generationTime: Double,
     @SerializedName("id") val id: Int,
     @SerializedName("output") val output: List<String>,
-    @SerializedName("meta") val meta: MetaDataResponseDto
+    @SerializedName("meta") val meta: TxtToImgMetaDataResponseDto
 )
 
 fun TxtToImgDto.asDomainModel(): TxtToImgResult {
@@ -17,7 +17,8 @@ fun TxtToImgDto.asDomainModel(): TxtToImgResult {
         id = id,
         outputUrls = output.map { it.replaceDomain() },
         status = status,
-        generationTime = generationTime
+        generationTime = generationTime,
+        metaData = meta.asDomain()
     )
 }
 

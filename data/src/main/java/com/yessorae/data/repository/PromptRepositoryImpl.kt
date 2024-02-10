@@ -4,295 +4,39 @@ import com.yessorae.data.local.database.dao.PromptDao
 import com.yessorae.data.local.database.model.PromptEntity
 import com.yessorae.data.local.database.model.asDomainModel
 import com.yessorae.data.local.database.model.asEntityModel
-import com.yessorae.data.local.preference.PreferenceDataStore
-import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.parameter.Prompt
 import com.yessorae.domain.repository.PromptRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PromptRepositoryImpl @Inject constructor(
     private val promptDao: PromptDao,
-    private val preferenceDataStore: PreferenceDataStore
+    private val preferenceRepositoryImpl: PreferenceRepositoryImpl
 ) : PromptRepository {
 
-    override suspend fun getPositivePrompts(): List<PromptOption> {
+    override fun getPositivePrompts(): Flow<List<Prompt>> {
         return promptDao.getPromptsOrderedByCreatedAt(
             isPositive = true
         ).map {
-            it.asDomainModel()
+            it.map(PromptEntity::asDomainModel)
         }
     }
 
-    override suspend fun getNegativePrompts(): List<PromptOption> {
+    override fun getNegativePrompts(): Flow<List<Prompt>> {
         return promptDao.getPromptsOrderedByCreatedAt(
             isPositive = false
         ).map {
-            it.asDomainModel()
+            it.map(PromptEntity::asDomainModel)
         }
     }
 
-    override suspend fun insertPrompt(prompt: PromptOption): String {
+    override suspend fun insertPrompt(prompt: Prompt): String {
         promptDao.insert(prompt.asEntityModel())
-        return prompt.id
+        return prompt.asEntityModel().prompt
     }
 
-    /**
-     * [civitai 프롬프트 통계](https://rentry.org/toptokens#20-most-common-samplers) 에 기반한 프롬프트 셋
-     * 긍정 및 부정 각각 1~100위씩 미리 세팅해준다.
-     * 주석처리 된 프롬프트는 19금이거나 화질관련 또는 중복이 심하거나 너무 쓸데없어 보이는 경우.
-     */
-    override suspend fun processInitialPromptData() {
-        if (checkNeedInitData()) {
-            insertInitialPrompt()
-            setCompleteInitData()
-        }
-    }
-
-    private suspend fun insertInitialPrompt() {
-        val positivePrompts = listOf(
-            PromptEntity.createPositive(prompt = "masterpiece"),
-            PromptEntity.createPositive(prompt = "best quality"),
-            PromptEntity.createPositive(prompt = "1girl"),
-            PromptEntity.createPositive(prompt = "solo"),
-            PromptEntity.createPositive(prompt = "looking at viewer"),
-            PromptEntity.createPositive(prompt = "realistic"),
-            PromptEntity.createPositive(prompt = "sharp focus"),
-            PromptEntity.createPositive(prompt = "photorealistic"),
-            PromptEntity.createPositive(prompt = "long hair"),
-            PromptEntity.createPositive(prompt = "smile"),
-            PromptEntity.createPositive(prompt = "full body"),
-            PromptEntity.createPositive(prompt = "highres"),
-            PromptEntity.createPositive(prompt = "highly detailed"),
-            PromptEntity.createPositive(prompt = "ultra-detailed"),
-            PromptEntity.createPositive(prompt = "intricate"), // 뒤얽힌
-            PromptEntity.createPositive(prompt = "illustration"),
-            PromptEntity.createPositive(prompt = "standing"),
-            PromptEntity.createPositive(prompt = "blush"),
-            PromptEntity.createPositive(prompt = "cinematic lighting"),
-            PromptEntity.createPositive(prompt = "bangs"),
-            PromptEntity.createPositive(prompt = "hdr"),
-            PromptEntity.createPositive(prompt = "intricate details"),
-            PromptEntity.createPositive(prompt = "depth of field"),
-            PromptEntity.createPositive(prompt = "extremely detailed"),
-            PromptEntity.createPositive(prompt = "hdr"),
-            PromptEntity.createPositive(prompt = "depth of field"),
-            PromptEntity.createPositive(prompt = "intricate details"),
-            PromptEntity.createPositive(prompt = "extremely detailed"),
-            PromptEntity.createPositive(prompt = "absurdres"),
-            PromptEntity.createPositive(prompt = "high quality"),
-            PromptEntity.createPositive(prompt = "upper body"),
-            PromptEntity.createPositive(prompt = "raw photo"),
-            PromptEntity.createPositive(prompt = "detailed eyes"),
-            PromptEntity.createPositive(prompt = "short hair"),
-            PromptEntity.createPositive(prompt = "black hair"),
-            PromptEntity.createPositive(prompt = "detailed face"),
-            PromptEntity.createPositive(prompt = "outdoors"),
-            PromptEntity.createPositive(prompt = "detailed"),
-            PromptEntity.createPositive(prompt = "ultra high res"),
-            PromptEntity.createPositive(prompt = "trending on artstation"),
-            PromptEntity.createPositive(prompt = "portrait"),
-            PromptEntity.createPositive(prompt = "jewelry"),
-            PromptEntity.createPositive(prompt = "cowboy shot"),
-            PromptEntity.createPositive(prompt = "night"),
-            PromptEntity.createPositive(prompt = "beautiful face"),
-            PromptEntity.createPositive(prompt = "shiny skin"),
-            PromptEntity.createPositive(prompt = "1boy"),
-            PromptEntity.createPositive(prompt = "soft lighting"),
-            PromptEntity.createPositive(prompt = "film grain"),
-            PromptEntity.createPositive(prompt = "perfect face"),
-            PromptEntity.createPositive(prompt = "blonde hair"),
-            PromptEntity.createPositive(prompt = "white hair"),
-            PromptEntity.createPositive(prompt = "red eyes"),
-            PromptEntity.createPositive(prompt = "sitting"),
-            PromptEntity.createPositive(prompt = "hair ornament"),
-            PromptEntity.createPositive(prompt = "beautiful"),
-            PromptEntity.createPositive(prompt = "beautiful detailed eyes"),
-            PromptEntity.createPositive(prompt = "cute"),
-            PromptEntity.createPositive(prompt = "earrings"),
-            PromptEntity.createPositive(prompt = "dramatic"),
-            PromptEntity.createPositive(prompt = "navel"), // 배꼽
-            PromptEntity.createPositive(prompt = "open mouth"),
-            PromptEntity.createPositive(prompt = "volumetric lighting"),
-            PromptEntity.createPositive(prompt = "closed mouth"),
-            PromptEntity.createPositive(prompt = "highest quality"),
-            PromptEntity.createPositive(prompt = "photo-realistic"),
-            PromptEntity.createPositive(prompt = "bokeh"), // 뭉개진 빛들
-            PromptEntity.createPositive(prompt = "bare shoulders"),
-            PromptEntity.createPositive(prompt = "ultra detailed"),
-            PromptEntity.createPositive(prompt = "artstation"),
-            PromptEntity.createPositive(prompt = "brown hair"),
-            PromptEntity.createPositive(prompt = "dress"),
-            PromptEntity.createPositive(prompt = "1 girl"),
-            PromptEntity.createPositive(prompt = "huge breasts"),
-            PromptEntity.createPositive(prompt = "concept art"),
-            PromptEntity.createPositive(prompt = "cinematic"),
-            PromptEntity.createPositive(prompt = "green eyes"),
-            PromptEntity.createPositive(prompt = "indoors"),
-            PromptEntity.createPositive(prompt = "8k uhd"),
-            PromptEntity.createPositive(prompt = "gloves"),
-            PromptEntity.createPositive(prompt = "official art"),
-            PromptEntity.createPositive(prompt = "thighhighs"),
-            PromptEntity.createPositive(prompt = "simple background"),
-            PromptEntity.createPositive(prompt = "detailed background"),
-            PromptEntity.createPositive(prompt = "skirt"),
-            PromptEntity.createPositive(prompt = "smiling"),
-            PromptEntity.createPositive(prompt = "smooth"),
-            PromptEntity.createPositive(prompt = "long_hair"),
-            PromptEntity.createPositive(prompt = "very long hair"),
-            PromptEntity.createPositive(prompt = "shirt"),
-            PromptEntity.createPositive(prompt = "perfect lighting"),
-            PromptEntity.createPositive(prompt = "amazing"),
-            PromptEntity.createPositive(prompt = "long sleeves"),
-            PromptEntity.createPositive(prompt = "dynamic pose"),
-            PromptEntity.createPositive(prompt = "fantasy"),
-            PromptEntity.createPositive(prompt = "dslr"),
-            PromptEntity.createPositive(prompt = "mature female"),
-            PromptEntity.createPositive(prompt = "choker"),
-            PromptEntity.createPositive(prompt = "digital painting"),
-            PromptEntity.createPositive(prompt = "intricate detail"),
-            PromptEntity.createPositive(prompt = "modelshoot style"),
-            PromptEntity.createPositive(prompt = "collarbone")
-//                PromptEntity.createPositive(prompt = "8k"),
-//                PromptEntity.createPositive(prompt = "nsfw"),
-//                PromptEntity.createPositive(prompt = "breasts"),
-//                PromptEntity.createPositive(prompt = "large breasts"),
-//                PromptEntity.createPositive(prompt = "absurdres"),
-//                PromptEntity.createPositive(prompt = "4k"),
-//                PromptEntity.createPositive(prompt = "blue eyes"),
-//                PromptEntity.createPositive(prompt = "extremely detailed cg unity 8k wallpaper"),
-//                PromptEntity.createPositive(prompt = "cleavage"),
-//                PromptEntity.createPositive(prompt = "medium breasts"),
-//                PromptEntity.createPositive(prompt = "small breasts"),
-//                PromptEntity.createPositive(prompt = "nipples"),
-//                PromptEntity.createPositive(prompt = "pussy"),
-//                PromptEntity.createPositive(prompt = "sexy"),
-//                PromptEntity.createPositive(prompt = "looking_at_viewer"),
-        )
-
-        val negativePrompt = listOf(
-            PromptEntity.createNegative(prompt = "low quality"),
-            PromptEntity.createNegative(prompt = "blurry"),
-            PromptEntity.createNegative(prompt = "bad anatomy"),
-            PromptEntity.createNegative(prompt = "worst quality"),
-            PromptEntity.createNegative(prompt = "text"),
-            PromptEntity.createNegative(prompt = "watermark"),
-            PromptEntity.createNegative(prompt = "normal quality"),
-            PromptEntity.createNegative(prompt = "ugly"),
-            PromptEntity.createNegative(prompt = "signature"),
-            PromptEntity.createNegative(prompt = "lowres"),
-            PromptEntity.createNegative(prompt = "deformed"),
-            PromptEntity.createNegative(prompt = "extra limbs"),
-            PromptEntity.createNegative(prompt = "disfigured"),
-            PromptEntity.createNegative(prompt = "cropped"),
-            PromptEntity.createNegative(prompt = "jpeg artifacts"),
-            PromptEntity.createNegative(prompt = "bad hands"),
-            PromptEntity.createNegative(prompt = "error"),
-            PromptEntity.createNegative(prompt = "mutation"),
-            PromptEntity.createNegative(prompt = "missing fingers"),
-            PromptEntity.createNegative(prompt = "username"),
-            PromptEntity.createNegative(prompt = "poorly drawn hands"),
-            PromptEntity.createNegative(prompt = "poorly drawn face"),
-            PromptEntity.createNegative(prompt = "monochrome"),
-            PromptEntity.createNegative(prompt = "extra digit"),
-            PromptEntity.createNegative(prompt = "fewer digits"),
-            PromptEntity.createNegative(prompt = "out of frame"),
-            PromptEntity.createNegative(prompt = "extra fingers"),
-            PromptEntity.createNegative(prompt = "mutated hands"),
-            PromptEntity.createNegative(prompt = "extra legs"),
-            PromptEntity.createNegative(prompt = "extra arms"),
-            PromptEntity.createNegative(prompt = "bad proportions"),
-            PromptEntity.createNegative(prompt = "long neck"),
-            PromptEntity.createNegative(prompt = "fused fingers"),
-            PromptEntity.createNegative(prompt = "missing arms"),
-            PromptEntity.createNegative(prompt = "duplicate"),
-            PromptEntity.createNegative(prompt = "mutated"),
-            PromptEntity.createNegative(prompt = "missing legs"),
-            PromptEntity.createNegative(prompt = "too many fingers"),
-            PromptEntity.createNegative(prompt = "mutilated"),
-            PromptEntity.createNegative(prompt = "malformed limbs"),
-            PromptEntity.createNegative(prompt = "3d"),
-            PromptEntity.createNegative(prompt = "artist name"),
-            PromptEntity.createNegative(prompt = "gross proportions"),
-            PromptEntity.createNegative(prompt = "cloned face"),
-            PromptEntity.createNegative(prompt = "morbid"),
-            PromptEntity.createNegative(prompt = "bad art"),
-            PromptEntity.createNegative(prompt = "cartoon"),
-            PromptEntity.createNegative(prompt = "grayscale"),
-            PromptEntity.createNegative(prompt = "logo"),
-            PromptEntity.createNegative(prompt = "nsfw"),
-            PromptEntity.createNegative(prompt = "poorly drawn"),
-            PromptEntity.createNegative(prompt = "sketches"),
-            PromptEntity.createNegative(prompt = "skin blemishes"),
-            PromptEntity.createNegative(prompt = "skin spots"),
-            PromptEntity.createNegative(prompt = "censored"),
-            PromptEntity.createNegative(prompt = "acnes"),
-            PromptEntity.createNegative(prompt = "close up"),
-            PromptEntity.createNegative(prompt = "mutated hands and fingers"),
-            PromptEntity.createNegative(prompt = "malformed hands"),
-            PromptEntity.createNegative(prompt = "long body"),
-            PromptEntity.createNegative(prompt = "child"),
-            PromptEntity.createNegative(prompt = "paintings"),
-            PromptEntity.createNegative(prompt = "missing limb"),
-            PromptEntity.createNegative(prompt = "loli"),
-            PromptEntity.createNegative(prompt = "age spot"),
-            PromptEntity.createNegative(prompt = "extra limb"),
-            PromptEntity.createNegative(prompt = "fat"),
-            PromptEntity.createNegative(prompt = "bad feet"),
-            PromptEntity.createNegative(prompt = "anime"),
-            PromptEntity.createNegative(prompt = "b&w"),
-            PromptEntity.createNegative(prompt = "sketch"),
-            PromptEntity.createNegative(prompt = "greyscale"),
-            PromptEntity.createNegative(prompt = "floating limbs"),
-            PromptEntity.createNegative(prompt = "disconnected limbs"),
-            PromptEntity.createNegative(prompt = "poorly drawn feet"),
-            PromptEntity.createNegative(prompt = "tiling"),
-            PromptEntity.createNegative(prompt = "body out of frame"),
-            PromptEntity.createNegative(prompt = "glans"),
-            PromptEntity.createNegative(prompt = "out of focus"),
-            PromptEntity.createNegative(prompt = "3d render"),
-            PromptEntity.createNegative(prompt = "cross-eye"),
-            PromptEntity.createNegative(prompt = "disgusting"),
-            PromptEntity.createNegative(prompt = "drawing"),
-            PromptEntity.createNegative(prompt = "bad body"),
-            PromptEntity.createNegative(prompt = "multiple views"),
-            PromptEntity.createNegative(prompt = "malformed"),
-            PromptEntity.createNegative(prompt = "nude"),
-            PromptEntity.createNegative(prompt = "photoshop"),
-            PromptEntity.createNegative(prompt = "simple background"),
-            PromptEntity.createNegative(prompt = "video game"),
-            PromptEntity.createNegative(prompt = "oversaturated"),
-            PromptEntity.createNegative(prompt = "futa"),
-            PromptEntity.createNegative(prompt = "fewer fingers"),
-            PromptEntity.createNegative(prompt = "pubic hair"),
-            PromptEntity.createNegative(prompt = "depth of field"),
-            PromptEntity.createNegative(prompt = "black and white"),
-            PromptEntity.createNegative(prompt = "painting"),
-            PromptEntity.createNegative(prompt = "extra digits"),
-            PromptEntity.createNegative(prompt = "render"),
-            PromptEntity.createNegative(prompt = "old"),
-            PromptEntity.createNegative(prompt = "nipples"),
-            PromptEntity.createNegative(prompt = "extra hands"),
-            PromptEntity.createNegative(prompt = "more than 2 nipples")
-//                PromptEntity.createNegative(prompt = "easynegative"), // embeddings 이름
-//                PromptEntity.createNegative(prompt = "bad_prompt_version2"),
-//                PromptEntity.createNegative(prompt = "bad-hands-5"),
-//                PromptEntity.createNegative(prompt = "ng_deepnegative_v1_75t"),
-//                PromptEntity.createNegative(prompt = "bad_prompt"),
-//                PromptEntity.createNegative(prompt = "bad-artist"),
-        )
-
-        promptDao.insertAll(
-            positivePrompts
-        )
-
-        promptDao.insertAll(
-            negativePrompt
-        )
-    }
-
-    private suspend fun checkNeedInitData(): Boolean =
-        preferenceDataStore.getCompleteInitPromptData().not()
-
-    private suspend fun setCompleteInitData() {
-        preferenceDataStore.setCompleteInitPromptData()
+    override suspend fun insertPrompts(prompts: List<Prompt>) {
+        promptDao.insertAll(prompts.map(Prompt::asEntityModel))
     }
 }

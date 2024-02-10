@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":common"))
     implementation(project(":domain"))
+    implementation(project(":presentation"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation(platform("androidx.compose:compose-bom:2023.06.01"))

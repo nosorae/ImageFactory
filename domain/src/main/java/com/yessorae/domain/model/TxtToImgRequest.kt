@@ -1,5 +1,7 @@
 package com.yessorae.domain.model
 
+import com.yessorae.domain.util.Constants
+
 data class TxtToImgRequest(
     val prompt: String,
     val modelId: String,
@@ -18,6 +20,6 @@ data class TxtToImgRequest(
     val lora: String?,
     val loraStrength: String?,
     val scheduler: String,
-    val safetyChecker: String,
-    val enhancePrompt: String
+    val safetyChecker: String = Constants.ARG_NO,
+    val enhancePrompt: String = Constants.ARG_NO
 )

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.yessorae.imagefactory.ui.screen.ImageFactoryAppScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

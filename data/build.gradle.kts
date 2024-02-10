@@ -97,6 +97,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-config")
 
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")

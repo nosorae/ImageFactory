@@ -1,12 +1,14 @@
 package com.yessorae.domain.repository
 
-import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.parameter.Prompt
+import kotlinx.coroutines.flow.Flow
 
 interface PromptRepository {
-    suspend fun processInitialPromptData()
-    suspend fun getPositivePrompts(): List<PromptOption>
+    fun getPositivePrompts(): Flow<List<Prompt>>
 
-    suspend fun getNegativePrompts(): List<PromptOption>
+    fun getNegativePrompts(): Flow<List<Prompt>>
 
-    suspend fun insertPrompt(prompt: PromptOption): String
+    suspend fun insertPrompt(prompt: Prompt): String
+
+    suspend fun insertPrompts(prompts: List<Prompt>)
 }

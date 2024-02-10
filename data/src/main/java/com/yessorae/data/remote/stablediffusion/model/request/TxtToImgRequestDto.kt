@@ -4,9 +4,8 @@ import com.google.gson.annotations.SerializedName
 import com.yessorae.domain.util.Constants
 import com.yessorae.data.util.replaceDomain
 import com.yessorae.data.BuildConfig
-import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
+import com.yessorae.data.local.database.model.TxtToImgEntity
 import com.yessorae.data.local.database.model.TxtToImgRequestEntity
-import com.yessorae.data.local.database.model.asEntity
 import com.yessorae.domain.model.TxtToImgRequest
 import com.yessorae.domain.model.TxtToImgResult
 import java.time.LocalDateTime
@@ -105,8 +104,8 @@ fun TxtToImgRequestDto.asResultDomainModel(
     )
 }
 
-fun TxtToImgRequestDto.asHistoryEntity(): TxtToImgHistoryEntity {
-    return TxtToImgHistoryEntity(
+fun TxtToImgRequestDto.asHistoryEntity(): TxtToImgEntity {
+    return TxtToImgEntity(
         createdAt = LocalDateTime.now(),
         request = this.asEntity()
     )

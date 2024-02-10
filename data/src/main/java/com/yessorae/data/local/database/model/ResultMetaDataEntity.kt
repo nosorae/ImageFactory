@@ -1,7 +1,7 @@
 package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
-import com.yessorae.data.remote.stablediffusion.model.response.MetaDataResponseDto
+import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgMetaDataResponseDto
 import com.yessorae.domain.model.TxtToImgResultMetaData
 
 data class ResultMetaDataEntity(
@@ -90,8 +90,8 @@ fun TxtToImgResultMetaData.asEntity(): ResultMetaDataEntity {
     )
 }
 
-fun ResultMetaDataEntity.asDto(): MetaDataResponseDto {
-    return MetaDataResponseDto(
+fun ResultMetaDataEntity.asDto(): TxtToImgMetaDataResponseDto {
+    return TxtToImgMetaDataResponseDto(
         prompt = this.prompt,
         modelId = this.modelId,
         negativePrompt = this.negativePrompt,

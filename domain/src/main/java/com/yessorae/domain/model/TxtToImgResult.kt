@@ -4,7 +4,8 @@ data class TxtToImgResult(
     val id: Int,
     val outputUrls: List<String>,
     val status: String,
-    val generationTime: Double?
+    val generationTime: Double?,
+    val metaData: TxtToImgResultMetaData? = null
 ) {
-    val imageUrl: String? = outputUrls.firstOrNull()
+    val firstImgUrl = outputUrls.firstOrNull()
 }

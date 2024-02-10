@@ -3,6 +3,7 @@ package com.yessorae.data.local.database.model
 import androidx.room.ColumnInfo
 import com.yessorae.data.util.replaceDomain
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
+import com.yessorae.data.remote.stablediffusion.model.response.asEntity
 import com.yessorae.domain.model.TxtToImgResult
 
 data class ResultEntity(
@@ -13,7 +14,9 @@ data class ResultEntity(
     @ColumnInfo(name = "id")
     val id: Int,
     @ColumnInfo(name = "output")
-    val output: List<String>
+    val output: List<String>,
+    @ColumnInfo(name = "result_meta_data")
+    val metaData: ResultMetaDataEntity?
 )
 
 fun ResultEntity.asDomainModel(): TxtToImgResult {
@@ -30,7 +33,8 @@ fun TxtToImgResult.asEntity(): ResultEntity {
         id = id,
         output = outputUrls,
         status = status,
-        generationTime = generationTime ?: 0.0 // TODO:: check
+        generationTime = generationTime ?: 0.0, // TODO:: check
+        metaData = metaData?.asEntity()
     )
 }
 
@@ -39,7 +43,8 @@ fun TxtToImgDto.asResultEntity(): ResultEntity {
         status = this.status,
         generationTime = this.generationTime,
         id = this.id,
-        output = this.output
+        output = this.output,
+        metaData = meta.asEntity()
     )
 }
 

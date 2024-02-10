@@ -12,14 +12,14 @@ import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
 import com.yessorae.data.local.database.dao.TxtToImgUpscaleHistoryDao
 import com.yessorae.data.local.database.model.PromptEntity
 import com.yessorae.data.local.database.model.PublicModelEntity
-import com.yessorae.data.local.database.model.TxtToImgHistoryEntity
+import com.yessorae.data.local.database.model.TxtToImgEntity
 import com.yessorae.data.local.database.model.TxtToImgUpscaleHistoryEntity
 
 @Database(
     entities = [
         PromptEntity::class,
         PublicModelEntity::class,
-        TxtToImgHistoryEntity::class,
+        TxtToImgEntity::class,
         TxtToImgUpscaleHistoryEntity::class
     ],
     version = 1,

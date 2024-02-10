@@ -2,7 +2,10 @@ package com.yessorae.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -21,4 +24,17 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideFirebaseStorageReference(): StorageReference = Firebase.storage.reference
+
+    @Provides
+    @Singleton
+    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        remoteConfig.setConfigSettingsAsync(
+            FirebaseRemoteConfigSettings
+                .Builder()
+                .setMinimumFetchIntervalInSeconds(3600L)
+                .build()
+        )
+        return remoteConfig
+    }
 }

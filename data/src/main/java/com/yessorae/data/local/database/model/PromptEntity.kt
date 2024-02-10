@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.yessorae.data.util.DBConstants
-import com.yessorae.domain.model.option.PromptOption
+import com.yessorae.domain.model.parameter.Prompt
 import java.time.LocalDateTime
 
 @Entity(tableName = DBConstants.TABLE_PROMPT)
@@ -18,42 +18,21 @@ data class PromptEntity(
     @ColumnInfo(name = DBConstants.COL_CREATED_AT) val createdAt: LocalDateTime,
     @ColumnInfo(name = DBConstants.COL_UPDATED_AT) val updatedAt: LocalDateTime,
     @ColumnInfo(name = DBConstants.COL_SERVER_SYNC) val serverSync: Boolean = false
-) {
-    companion object {
-        fun createPositive(prompt: String, nsfw: Boolean = false): PromptEntity {
-            return PromptEntity(
-                prompt = prompt,
-                positive = true,
-                nsfw = nsfw,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
-            )
-        }
+)
 
-        fun createNegative(prompt: String, nsfw: Boolean = false): PromptEntity {
-            return PromptEntity(
-                prompt = prompt,
-                positive = false,
-                nsfw = nsfw,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
-            )
-        }
-    }
-}
-
-fun PromptEntity.asDomainModel(): PromptOption {
-    return PromptOption(
-        dbId = prompt,
-        isPositive = positive,
-        title = prompt
+fun PromptEntity.asDomainModel(): Prompt {
+    return Prompt(
+        positive = positive,
+        prompt = prompt,
+        nsfw = nsfw
     )
 }
 
-fun PromptOption.asEntityModel(): PromptEntity {
+fun Prompt.asEntityModel(): PromptEntity {
     return PromptEntity(
-        prompt = id,
-        positive = isPositive,
+        prompt = prompt,
+        positive = positive,
+        nsfw = nsfw,
         createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now()
     )
