@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ImageFactory</string>
+
+    <string name="common_watch_ad">광고 시청하기</string>
+    <string name="common_button_see_more">더보기</string>
+    <string name="common_button_back_screen">뒤로 가기</string>
+    <string name="common_button_back_state">이전 상태로 돌아가기</string>
+    <string name="common_title_error_cause">에러 원인: %s</string>
+    <string name="common_random">랜덤</string>
+    <string name="common_add">추가</string>
+    <string name="common_model_added">모델을 추가 했어요</string>
+    <string name="common_input_prompt">프롬프트를 입력해주세요</string>
+    <string name="common_warning_input_prompt">프롬프트를 입력해주세요</string>
+    <string name="common_warning_select_model">모델을 선택해주세요!</string>
+    <string name="common_warning_select_size">이미지 비율을 선택해주세요!</string>
+    <string name="common_warning_select_scheduler">스케줄러를 선택해주세요!</string>
+
+    <string name="common_title_txt_to_img">Text-to-Image</string>
+    <string name="common_section_title_positive_prompt">긍정 프롬프트</string>
+    <string name="common_section_title_negative_prompt">부정 프롬프트</string>
+    <string name="common_section_button_custom_prompt">직접 입력하기</string>
+    <string name="common_section_title_prompt_enhancement">프롬프트 자동 개선</string>
+    <string name="common_section_title_prompt_strength">프롬프트 강도 · %d</string>
+    <string name="common_section_title_size_type">이미지 비율</string>
+    <string name="common_section_title_model">모델 선택</string>
+    <string name="common_section_title_lora">로라 선택 (중복 선택 가능)</string>
+    <string name="common_section_title_lora_strength">%s 로라 강도 · %s</string>
+    <string name="common_section_title_embeddings">임베딩 모델 선택</string>
+    <string name="common_section_title_step_count">스텝 수 · %d</string>
+    <string name="common_section_title_seed">시드</string>
+    <string name="common_section_placeholder_input_seed">시드입력 (숫자로 입력하세요)</string>
+    <string name="common_section_title_nsfw">후방주의 사진 활성화</string>
+    <string name="common_section_title_upscale">업스케일</string>
+    <string name="common_section_title_scheduler">스케쥴러 선택</string>
+    <string name="common_button_generate_image">이미지 생성</string>
+
+    <string name="common_error_not_watch_image_your_country">해당 국가에선 볼 수 없는 이미지입니다</string>
+    <string name="common_error_not_download_image_your_country">해당 국가에선 저장할 수 없는 이미지입니다</string>
+
+
+    <string name="common_n_value_upscale">%s배 업스케일</string>
+
+    <string name="common_placeholder_search">검색어 입력</string>
+
+    <string name="common_state_generate_image">이미지 생성중</string>
+    <string name="common_state_load_image">이미지 로딩중</string>
+    <string name="common_state_still_load_image">아직 이미지를 불러오는 중입니다</string>
+    <string name="common_state_download_image">이미지 다운로드중…</string>
+    <string name="common_state_complete_save_image">이미지 저장 완료</string>
+
+    <string name="common_state_load_image_failed">이미지 로딩 실패.\n개발자에게 문의해주세요 🙏</string>
+    <string name="common_state_error_redirect_web_browser">에러 발생, 웹브라우저 앱이 있는지 확인해주세요</string>
+    <string name="common_response_sd_processing">이미지가 백그라운드에서 처리되고 있어요. 잠시 후 히스토리 탭에서 확인해보세요.</string>
+    <string name="common_response_upscale_processing">이미지가 백그라운드에서 처리되고 있어요. 5초 후 다시 시도해보세요.</string>
+    <string name="common_response_unknown_error">예상하지 못한 에러가 발생했어요.\n인터넷 연결을 확인하시고, 재발생 시 개발자에게 문의해주세요</string>
+
+    <!-- common dialog -->
+    <string name="common_dialog_title_delete_history">기록을 삭제합니다</string>
+    <string name="common_dialog_body_delete_history">정말 삭제하시겠습니까?\n다시 복구할 수 없어요.</string>
+    <string name="common_dialog_button_confirm">예</string>
+    <string name="common_dialog_button_no">아니오</string>
+
+    <!-- 결과 화면 -->
+    <string name="result_dialog_option_retry">재시도</string>
+    <string name="result_dialog_option_back">이전 상태로 돌아가기</string>
+    <string name="result_dialog_option_save">저장</string>
+    <string name="result_dialog_option_upscale">화질 개선</string>
+    <string name="result_before">전</string>
+    <string name="result_after">후</string>
+
+    <!-- 히스토리 화면 -->
+    <string name="history_cover_error_message">이미지가 백그라운드에서 생성되고 있어요.\클릭해서 가져오기.</string>
+    <string name="history_list_empty">저장된 이미지가 없어요\n이미지를 생성하면 자동으로 여기에 저장되어요</string>
+
+
+    <string name="common_work_in_progress_function">아직 작업중이에요, 기대해주세요!</string>
+</resources>

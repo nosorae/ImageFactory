@@ -16,7 +16,7 @@ localPropertiesFile.close()
 
 android {
     namespace = "com.yessorae.data"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -61,6 +61,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
     implementation(project(":common"))
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -96,6 +97,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-config")
 
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")

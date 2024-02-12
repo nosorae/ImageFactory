@@ -23,6 +23,14 @@ object DBConstants {
     const val COL_DESCRIPTION = "description"
     const val COL_SCREENSHOTS = "screenshots"
 
+    // models
+    const val TABLE_SD_MODEL = "sd_model"
+    const val TABLE_LORA_MODEL = "lora_model"
+    const val TABLE_EMBEDDINGS_MODEL = "embeddings_model"
+    const val COL_IMG_URL = "img_url"
+    const val COL_DISPLAY_NAME = "display_name"
+    const val COL_USED_AT = "used_at"
+
     // Txt to Img History Model
     const val TABLE_TXT_TO_IMG_HISTORY = "txt_to_img_history"
     const val PREFIX_REQUEST = "request_"

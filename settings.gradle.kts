@@ -17,3 +17,5 @@ rootProject.name = "ImageFactory"
 include(":app")
 include(":data")
 include(":common")
+include(":domain")
+include(":presentation")
