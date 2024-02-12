@@ -41,7 +41,7 @@ fun ModelCover(
             }
     ) {
         SelectableImage(
-            model = model.model,
+            model = model.model.imgUrl ?: "",
             modifier = Modifier
                 .size(Dimen.cover_size),
             selected = model.selected
@@ -112,7 +112,7 @@ fun GridModelCover(
             }
     ) {
         SelectableImage(
-            model = model.model,
+            model = model.model.imgUrl ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),

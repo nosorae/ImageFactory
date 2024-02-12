@@ -1,22 +1,18 @@
 package com.yessorae.presentation.ui.components.item.common
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.SubcomposeAsyncImage
-import com.yessorae.common.Logger
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.yessorae.presentation.ui.theme.Dimen
 import com.yessorae.presentation.ui.theme.PrimaryBrush
 
@@ -25,31 +21,19 @@ fun ImageListItem(
     model: Any?,
     modifier: Modifier
 ) {
-    val context = LocalContext.current
-    // AsyncImage로 전환
-    // Subcomposition is less performant than regular composition
-    // so this composable may not be suitable for parts of your UI where high performance is critical (e.g. lists).
-    SubcomposeAsyncImage(
-        model = model,
-        contentDescription = null,
-        imageLoader = ImageLoader.Builder(context)
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(model)
+            .size(256, 256) // Set the target size to load the image at.
             .crossfade(true)
-            .build(),
-        loading = {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(modifier = Modifier.size(size = 24.dp)) // todo replace
-            }
-        },
-        error = {
-            ImageLoadError(
-                modifier = Modifier
-                    .size(Dimen.small_icon_size)
-            )
-        },
-        onError = { error ->
-            Logger.recordException(error.result.throwable)
-        },
-        modifier = modifier.clip(shape = MaterialTheme.shapes.medium),
+            .build()
+    )
+    Image(
+        painter = painter,
+        modifier = modifier
+            .clip(shape = MaterialTheme.shapes.medium)
+            .background(color = MaterialTheme.colorScheme.outline),
+        contentDescription = null,
         contentScale = ContentScale.Crop
     )
 }
