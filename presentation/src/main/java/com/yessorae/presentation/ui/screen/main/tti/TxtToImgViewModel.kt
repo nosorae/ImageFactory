@@ -17,6 +17,9 @@ import com.yessorae.domain.usecase.GetNegativePromptsFlowUseCase
 import com.yessorae.domain.usecase.GetPositivePromptsFlowUseCase
 import com.yessorae.domain.usecase.InsertPromptUseCase
 import com.yessorae.domain.usecase.InsertTxtToImgHistoryUseCase
+import com.yessorae.domain.usecase.InsertUsedEmbeddingsModelUseCase
+import com.yessorae.domain.usecase.InsertUsedLoRaModelUseCase
+import com.yessorae.domain.usecase.InsertUsedSDModelUseCase
 import com.yessorae.domain.util.GaConstants
 import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.domain.util.StableDiffusionConstants.ARG_NO
@@ -68,6 +71,9 @@ class TxtToImgViewModel @Inject constructor(
     private val getAllSDModelsUseCase: GetAllSDModelsUseCase,
     private val getAllLoRaModelsUseCase: GetAllLoRaModelsUseCase,
     private val getAllEmbeddingsModelsUseCase: GetAllEmbeddingsModelsUseCase,
+    private val insertUsedSDModelUseCase: InsertUsedSDModelUseCase,
+    private val insertUsedLoRaModelUseCase: InsertUsedLoRaModelUseCase,
+    private val insertUsedEmbeddingsModelUseCase: InsertUsedEmbeddingsModelUseCase,
     private val insertTxtToImgHistoryUseCase: InsertTxtToImgHistoryUseCase,
     private val stringResourceProvider: StringResourceProvider
 ) : ViewModel() {
@@ -268,12 +274,14 @@ class TxtToImgViewModel @Inject constructor(
     fun clickFeaturedSDModel(clickedOption: SDModelOption) {
         _featuredSDModelOptions.update { list ->
             list.map { option ->
-                if (clickedOption.model.id == clickedOption.model.id) {
+                if (clickedOption.model.id == option.model.id) {
                     option.copy(
                         selected = option.selected.not()
                     )
                 } else {
-                    option
+                    option.copy(
+                        selected = false
+                    )
                 }
             }
         }
@@ -282,8 +290,18 @@ class TxtToImgViewModel @Inject constructor(
     fun clickLoRaModel(clickedOption: LoRaModelOption) {
         _featuredLoRaModelOptions.update { list ->
             list.map { option ->
-                option.copy(selected = clickedOption.model.id == option.model.id)
+                if (clickedOption.model.id == option.model.id) {
+                    option.copy(
+                        selected = option.selected.not()
+                    )
+                } else {
+                    option
+                }
             }
+        }
+
+        _featuredSelectedLoRaModelOptions.update { _ ->
+            featuredLoRaModelOptions.value.filter { it.selected }
         }
     }
 
@@ -306,7 +324,15 @@ class TxtToImgViewModel @Inject constructor(
     fun clickEmbeddingsModel(clickedOption: EmbeddingsModelOption) {
         _featuredEmbeddingsModelOptions.update { list ->
             list.map { option ->
-                option.copy(selected = clickedOption.model.id == option.model.id)
+                if (clickedOption.model.id == option.model.id) {
+                    option.copy(
+                        selected = option.selected.not()
+                    )
+                } else {
+                    option.copy(
+                        selected = false
+                    )
+                }
             }
         }
     }
@@ -365,16 +391,31 @@ class TxtToImgViewModel @Inject constructor(
         }
     }
 
+    fun clickMoreSDModel(model: SDModelOption) = scope.launch {
+        insertUsedSDModelUseCase(model.model)
+        showToast(message = stringResourceProvider.getString(R.string.common_model_added))
+    }
+
     fun clickMoreLoRaModel() = scope.launch {
         _dialog.update {
             TxtToImgDialog.MoreLoRaModelBottomSheet
         }
     }
 
+    fun clickMoreLoRaModel(model: LoRaModelOption) = scope.launch {
+        insertUsedLoRaModelUseCase(model.model)
+        showToast(message = stringResourceProvider.getString(R.string.common_model_added))
+    }
+
     fun clickMoreEmbeddingsModel() = scope.launch {
         _dialog.update {
             TxtToImgDialog.MoreEmbeddingsBottomSheet
         }
+    }
+
+    fun clickMoreEmbeddingsModel(model: EmbeddingsModelOption) = scope.launch {
+        insertUsedEmbeddingsModelUseCase(model.model)
+        showToast(message = stringResourceProvider.getString(R.string.common_model_added))
     }
 
     fun clickGenerateImage() {

@@ -9,6 +9,7 @@
     <string name="common_title_error_cause">에러 원인: %s</string>
     <string name="common_random">랜덤</string>
     <string name="common_add">추가</string>
+    <string name="common_model_added">모델을 추가 했어요</string>
     <string name="common_input_prompt">프롬프트를 입력해주세요</string>
     <string name="common_warning_input_prompt">프롬프트를 입력해주세요</string>
     <string name="common_warning_select_model">모델을 선택해주세요!</string>

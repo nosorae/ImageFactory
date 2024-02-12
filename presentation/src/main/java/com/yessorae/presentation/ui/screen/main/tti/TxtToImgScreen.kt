@@ -289,9 +289,9 @@ fun TxtToImgScreen(
         embeddingsModelsState = viewModel.allEmbeddingsModelOptions,
         onAddPositivePrompt = viewModel::clickAddPositivePrompt,
         onAddNegativePrompt = viewModel::clickAddNegativePrompt,
-        onSelectSDModel = viewModel::clickFeaturedSDModel,
-        onSelectLoRaModel = viewModel::clickLoRaModel,
-        onSelectEmbeddingsModelOption = viewModel::clickEmbeddingsModel,
+        onSelectSDModel = viewModel::clickMoreSDModel,
+        onSelectLoRaModel = viewModel::clickMoreLoRaModel,
+        onSelectEmbeddingsModelOption = viewModel::clickMoreEmbeddingsModel,
         onClickDeletePrompt = viewModel::clickDeletePrompt,
         onCancelDialog = viewModel::clickCancelDialog
     )

@@ -20,4 +20,8 @@ interface ModelRepository {
     fun getRecentlyUsedLoRaModels(): Flow<List<LoRaModel>>
 
     fun getRecentlyUsedEmbeddingsModels(): Flow<List<EmbeddingsModel>>
+
+    suspend fun insertSDModel(model: SDModel): Long
+    suspend fun insertLoRaModel(model: LoRaModel): Long
+    suspend fun insertEmbeddingsModel(model: EmbeddingsModel): Long
 }

@@ -63,9 +63,8 @@ class TxtToImgResultViewModel @Inject constructor(
     /** init **/
     private fun initRequest() = ioScope.launch {
         val history = getTxtToImgHistoryUseCase(id = historyId)
+        Logger.temp("TxtToImgResultViewModel initRequest : ${history}")
         val historyResult = history.result
-        Logger.presentation(message = "id : ${history.id}", true)
-        Logger.presentation(message = "${this::class.java.simpleName} - history $history")
 
         onLoading(request = history.request)
 
@@ -169,6 +168,7 @@ class TxtToImgResultViewModel @Inject constructor(
 
         try {
             val result = requestTxtToImgUseCase(historyId)
+            Logger.temp("TxtToImgResultViewModel result: $result")
             when (result.status) {
                 StableDiffusionConstants.RESPONSE_SUCCESS -> {
                     onSdSuccess(

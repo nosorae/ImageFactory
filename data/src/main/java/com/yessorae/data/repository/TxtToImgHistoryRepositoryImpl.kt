@@ -18,11 +18,10 @@ class TxtToImgHistoryRepositoryImpl @Inject constructor(
     override suspend fun insertRequestHistory(
         requestBody: TxtToImgHistory
     ): Long {
-        Logger.data("TxtToImgHistoryRepository - insert - requestBody $requestBody")
-        Logger.data("TxtToImgHistoryRepository - insert - requestBody.asHistoryEntity() ${requestBody.asEntity()}")
         val historyId = txtToImgHistoryDao.insert(
             entity = requestBody.asEntity()
         )
+        Logger.temp("TxtToImgHistoryRepositoryImpl 요청 : ${requestBody.asEntity()}")
         preferenceRepositoryImpl.setLastTxtToImageRequestHistoryId(historyId = historyId)
         return historyId
     }

@@ -10,6 +10,7 @@ import com.yessorae.data.local.database.model.LoRaModelEntity
 import com.yessorae.data.local.database.model.PublicModelEntity
 import com.yessorae.data.local.database.model.SDModelEntity
 import com.yessorae.data.local.database.model.asDomainModel
+import com.yessorae.data.local.database.model.asEntity
 import com.yessorae.data.remote.firebase.config.FirebaseRemoteConfigDataSource
 import com.yessorae.data.remote.firebase.config.model.Model
 import com.yessorae.data.remote.firebase.config.model.asEmbeddingsModel
@@ -40,12 +41,6 @@ class ModelRepositoryImpl @Inject constructor(
     private val preferenceRepositoryImpl: PreferenceRepositoryImpl,
     private val firebaseRemoteConfigDataSource: FirebaseRemoteConfigDataSource
 ) : ModelRepository {
-//    private val _allModelsFlow = MutableStateFlow<List<PublicModel>>(listOf())
-//    val allModelsFlow: StateFlow<List<PublicModel>> = _allModelsFlow.asStateFlow().onSubscription {
-//        // TODO:: SR-N getSyncedAllPublicModels 를 private으로 변경
-//        _allModelsFlow.value = getSyncedAllPublicModels()
-//    }
-
     private var cachedPublicModel: List<PublicModelEntity>? = null
 
     override suspend fun getSyncedAllPublicModels(): List<PublicModel> {
@@ -56,13 +51,13 @@ class ModelRepositoryImpl @Inject constructor(
                 cachedPublicModel ?: listOf()
             }
         val lastUpdateTime = preferenceRepositoryImpl.getLastModelUpdateTime()
-
+        Logger.data("$oldEntities")
         return if (oldEntities.isEmpty() || lastUpdateTime?.isDaysApartFromNow(day = 3) != false) {
             val remoteData = modelListApi.getPublicModels().handleResponse()
-//            Logger.data("$remoteData")
             val newEntities = remoteData.map {
                 it.asEntity()
             }
+
 
             publicModelDao.insertAll(newEntities)
 
@@ -98,6 +93,18 @@ class ModelRepositoryImpl @Inject constructor(
     override fun getRecentlyUsedEmbeddingsModels(): Flow<List<EmbeddingsModel>> {
         return embeddingsModelDao.getEmbeddingsModelsByCallCounts()
             .map { it.map(EmbeddingsModelEntity::asDomainModel) }
+    }
+
+    override suspend fun insertSDModel(model: SDModel): Long {
+        return sdModelDao.insert(model.asEntity())
+    }
+
+    override suspend fun insertLoRaModel(model: LoRaModel): Long {
+        return loRaModelDao.insert(model.asEntity())
+    }
+
+    override suspend fun insertEmbeddingsModel(model: EmbeddingsModel): Long {
+        return embeddingsModelDao.insert(model.asEntity())
     }
 
     companion object {
