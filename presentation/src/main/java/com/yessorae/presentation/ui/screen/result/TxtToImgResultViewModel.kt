@@ -18,7 +18,7 @@ import com.yessorae.domain.util.ProcessingErrorException
 import com.yessorae.presentation.R
 import com.yessorae.presentation.navigation.destination.TxtToImgResultDestination
 import com.yessorae.presentation.ui.screen.result.model.TxtToImgResultScreenState
-import com.yessorae.presentation.util.StringResourceProvider
+import com.yessorae.presentation.util.helper.StringResourceHelper
 import com.yessorae.presentation.util.base.BaseScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -41,7 +41,7 @@ class TxtToImgResultViewModel @Inject constructor(
     private val requestTxtToImgUseCase: RequestTxtToImgUseCase,
     private val upscaleImgUseCase: UpscaleImgUseCase,
     private val requestFetchProcessingTxtToImgUseCase: RequestFetchProcessingTxtToImgUseCase,
-    private val stringResourceProvider: StringResourceProvider
+    private val stringResourceHelper: StringResourceHelper
 ) : BaseScreenViewModel() {
     private val historyId: Int =
         checkNotNull(savedStateHandle[TxtToImgResultDestination.requestIdArg])
@@ -116,7 +116,7 @@ class TxtToImgResultViewModel @Inject constructor(
             }
 
             else -> {
-                showToast(stringResourceProvider.getString(R.string.common_state_still_load_image))
+                showToast(stringResourceHelper.getString(R.string.common_state_still_load_image))
             }
         }
     }
@@ -147,11 +147,11 @@ class TxtToImgResultViewModel @Inject constructor(
     }
 
     fun onSaveComplete() = viewModelScope.launch {
-        _toast.emit(stringResourceProvider.getString(R.string.common_state_complete_save_image))
+        _toast.emit(stringResourceHelper.getString(R.string.common_state_complete_save_image))
     }
 
     fun onSaveFailed(error: Throwable) = viewModelScope.launch {
-        _toast.emit(stringResourceProvider.getString(R.string.common_error_not_download_image_your_country))
+        _toast.emit(stringResourceHelper.getString(R.string.common_error_not_download_image_your_country))
         Logger.recordException(error = error)
     }
 
@@ -192,7 +192,7 @@ class TxtToImgResultViewModel @Inject constructor(
             when (e) {
                 is ProcessingErrorException -> {
                     onFail(
-                        message = stringResourceProvider.getString(
+                        message = stringResourceHelper.getString(
                             R.string.common_title_error_cause,
                             e.message
                         )
@@ -201,7 +201,7 @@ class TxtToImgResultViewModel @Inject constructor(
 
                 else -> {
                     onFail(
-                        message = stringResourceProvider.getString(
+                        message = stringResourceHelper.getString(
                             R.string.common_response_unknown_error
                         )
                     )
@@ -244,14 +244,14 @@ class TxtToImgResultViewModel @Inject constructor(
                 }
 
                 else -> {
-                    onFail(message = stringResourceProvider.getString(R.string.common_response_unknown_error))
+                    onFail(message = stringResourceHelper.getString(R.string.common_response_unknown_error))
                 }
             }
         } catch (e: Exception) {
             when (e) {
                 is ProcessingErrorException -> {
                     onFail(
-                        message = stringResourceProvider.getString(
+                        message = stringResourceHelper.getString(
                             R.string.common_title_error_cause,
                             e.message
                         )
@@ -259,7 +259,7 @@ class TxtToImgResultViewModel @Inject constructor(
                 }
 
                 else -> {
-                    onFail(message = stringResourceProvider.getString(R.string.common_response_unknown_error))
+                    onFail(message = stringResourceHelper.getString(R.string.common_response_unknown_error))
                 }
             }
             return
@@ -293,7 +293,7 @@ class TxtToImgResultViewModel @Inject constructor(
                     StableDiffusionConstants.RESPONSE_PROCESSING -> {
                         onError(
                             currentState = currentState,
-                            cause = stringResourceProvider.getString(R.string.common_response_upscale_processing)
+                            cause = stringResourceHelper.getString(R.string.common_response_upscale_processing)
                         )
                     }
 
@@ -306,7 +306,7 @@ class TxtToImgResultViewModel @Inject constructor(
                     is ProcessingErrorException -> {
                         onError(
                             currentState = currentState,
-                            cause = stringResourceProvider.getString(R.string.common_response_unknown_error)
+                            cause = stringResourceHelper.getString(R.string.common_response_unknown_error)
                         )
                     }
 
@@ -319,7 +319,7 @@ class TxtToImgResultViewModel @Inject constructor(
                 }
             }
         } ?: run {
-            showToast(stringResourceProvider.getString(R.string.common_state_still_load_image))
+            showToast(stringResourceHelper.getString(R.string.common_state_still_load_image))
         }
     }
 
@@ -347,7 +347,7 @@ class TxtToImgResultViewModel @Inject constructor(
             TxtToImgResultScreenState.Processing(
                 request = request,
                 sdResult = response,
-                message = stringResourceProvider.getString(R.string.common_response_sd_processing)
+                message = stringResourceHelper.getString(R.string.common_response_sd_processing)
             )
         }
     }

@@ -1,8 +1,10 @@
 package com.yessorae.presentation.di
 
 import android.content.Context
-import com.yessorae.presentation.util.StringResourceProvider
-import com.yessorae.presentation.util.StringResourceProviderImpl
+import com.yessorae.presentation.util.helper.ImageHelper
+import com.yessorae.presentation.util.helper.ImageHelperImpl
+import com.yessorae.presentation.util.helper.StringResourceHelper
+import com.yessorae.presentation.util.helper.StringResourceHelperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,9 +15,16 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object UtilModule {
     @Provides
-    fun provideStringResourceProvider(
-        @ApplicationContext context: Context,
-    ): StringResourceProvider {
-        return StringResourceProviderImpl(context = context)
+    fun provideStringResourceHelper(
+        @ApplicationContext context: Context
+    ): StringResourceHelper {
+        return StringResourceHelperImpl(context = context)
+    }
+
+    @Provides
+    fun provideImageHelper(
+        @ApplicationContext context: Context
+    ): ImageHelper {
+        return ImageHelperImpl(context = context)
     }
 }

@@ -59,7 +59,7 @@ import com.yessorae.presentation.ui.components.layout.StableDiffusionLoadingLayo
 import com.yessorae.presentation.ui.components.layout.UpscaleLoadingLayout
 import com.yessorae.presentation.ui.screen.result.model.TxtToImgResultScreenState
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.downloadImageByUrl
+import com.yessorae.presentation.util.downloadImage
 import com.yessorae.presentation.util.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -85,7 +85,7 @@ fun TxtToImgResultScreen(
         launch(Dispatchers.IO) {
             viewModel.saveImageEvent.collectLatest { url ->
                 try {
-                    context.downloadImageByUrl(url = url)
+                    context.downloadImage(url = url)
                     viewModel.onSaveComplete()
                 } catch (e: Exception) {
                     viewModel.onSaveFailed(error = e)

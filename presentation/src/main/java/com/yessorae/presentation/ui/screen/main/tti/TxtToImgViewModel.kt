@@ -34,7 +34,7 @@ import com.yessorae.presentation.ui.screen.main.tti.model.PromptOption
 import com.yessorae.presentation.ui.screen.main.tti.model.EmbeddingsModelOption
 import com.yessorae.presentation.ui.screen.main.tti.model.SDModelOption
 import com.yessorae.presentation.ui.screen.main.tti.model.SchedulerOption
-import com.yessorae.presentation.util.StringResourceProvider
+import com.yessorae.presentation.util.helper.StringResourceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +52,6 @@ import com.yessorae.presentation.util.GaEventManager
 import com.yessorae.presentation.util.HelpLink
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
@@ -75,7 +74,7 @@ class TxtToImgViewModel @Inject constructor(
     private val insertUsedLoRaModelUseCase: InsertUsedLoRaModelUseCase,
     private val insertUsedEmbeddingsModelUseCase: InsertUsedEmbeddingsModelUseCase,
     private val insertTxtToImgHistoryUseCase: InsertTxtToImgHistoryUseCase,
-    private val stringResourceProvider: StringResourceProvider
+    private val stringResourceHelper: StringResourceHelper
 ) : ViewModel() {
     /** state field */
     private val _positivePromptOptions = MutableStateFlow<List<PromptOption>>(listOf())
@@ -216,7 +215,7 @@ class TxtToImgViewModel @Inject constructor(
     private val ceh = CoroutineExceptionHandler { _, throwable ->
 
         viewModelScope.launch {
-            _toast.emit(stringResourceProvider.getString(R.string.common_response_unknown_error))
+            _toast.emit(stringResourceHelper.getString(R.string.common_response_unknown_error))
         }
         Logger.presentation(
             message = throwable.toString(),
@@ -259,7 +258,7 @@ class TxtToImgViewModel @Inject constructor(
     fun longClickPrompt(clickedOption: PromptOption) = scope.launch {
         _dialog.update {
             TxtToImgDialog.PromptDeletionConfirmation(
-                title = stringResourceProvider.getString(R.string.common_dialog_button_confirm),
+                title = stringResourceHelper.getString(R.string.common_dialog_button_confirm),
                 promptOption = clickedOption
             )
         }
@@ -393,7 +392,7 @@ class TxtToImgViewModel @Inject constructor(
 
     fun clickMoreSDModel(model: SDModelOption) = scope.launch {
         insertUsedSDModelUseCase(model.model)
-        showToast(message = stringResourceProvider.getString(R.string.common_model_added))
+        showToast(message = stringResourceHelper.getString(R.string.common_model_added))
     }
 
     fun clickMoreLoRaModel() = scope.launch {
@@ -404,7 +403,7 @@ class TxtToImgViewModel @Inject constructor(
 
     fun clickMoreLoRaModel(model: LoRaModelOption) = scope.launch {
         insertUsedLoRaModelUseCase(model.model)
-        showToast(message = stringResourceProvider.getString(R.string.common_model_added))
+        showToast(message = stringResourceHelper.getString(R.string.common_model_added))
     }
 
     fun clickMoreEmbeddingsModel() = scope.launch {
@@ -415,7 +414,7 @@ class TxtToImgViewModel @Inject constructor(
 
     fun clickMoreEmbeddingsModel(model: EmbeddingsModelOption) = scope.launch {
         insertUsedEmbeddingsModelUseCase(model.model)
-        showToast(message = stringResourceProvider.getString(R.string.common_model_added))
+        showToast(message = stringResourceHelper.getString(R.string.common_model_added))
     }
 
     fun clickGenerateImage() {
@@ -443,7 +442,7 @@ class TxtToImgViewModel @Inject constructor(
     /** complete event */
 
     fun onFailRedirectToWebBrowser() = sharedEventScope.launch {
-        showToast(stringResourceProvider.getString(R.string.common_state_error_redirect_web_browser))
+        showToast(stringResourceHelper.getString(R.string.common_state_error_redirect_web_browser))
     }
 
     /** request, load ..  */
@@ -570,7 +569,7 @@ class TxtToImgViewModel @Inject constructor(
 
         if (positivePrompts.isEmpty()) {
             showToast(
-                message = stringResourceProvider.getString(
+                message = stringResourceHelper.getString(
                     resourceId = R.string.common_warning_input_prompt
                 )
             )
@@ -579,7 +578,7 @@ class TxtToImgViewModel @Inject constructor(
 
         if (sdModelId == null) {
             showToast(
-                message = stringResourceProvider.getString(
+                message = stringResourceHelper.getString(
                     resourceId = R.string.common_warning_select_model
                 )
             )
@@ -588,7 +587,7 @@ class TxtToImgViewModel @Inject constructor(
 
         if (schedulerId == null) {
             showToast(
-                message = stringResourceProvider.getString(
+                message = stringResourceHelper.getString(
                     resourceId = R.string.common_warning_select_scheduler
                 )
             )
