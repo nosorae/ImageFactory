@@ -58,7 +58,6 @@ class ModelRepositoryImpl @Inject constructor(
                 it.asEntity()
             }
 
-
             publicModelDao.insertAll(newEntities)
 
             preferenceRepositoryImpl.setLastModelUpdateTime()
@@ -117,4 +116,3 @@ class ModelRepositoryImpl @Inject constructor(
         }
     }
 }
-

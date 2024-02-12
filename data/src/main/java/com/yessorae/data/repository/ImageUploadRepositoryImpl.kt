@@ -2,7 +2,6 @@ package com.yessorae.data.repository
 
 import com.google.firebase.storage.StorageReference
 import com.yessorae.common.Logger
-import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
 import com.yessorae.domain.repository.ImageUploadRepository
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.FileInputStream

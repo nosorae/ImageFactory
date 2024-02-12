@@ -2,9 +2,8 @@ package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
-import com.yessorae.data.util.replaceDomain
-import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.remote.stablediffusion.model.response.asEntity
+import com.yessorae.data.util.replaceDomain
 import com.yessorae.domain.model.TxtToImgResult
 
 data class ResultEntity(

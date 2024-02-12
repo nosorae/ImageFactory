@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.yessorae.data.util.replaceDomain
 import com.yessorae.domain.model.TxtToImgResult
 
-data class TxtToImgDto(
+data class TxtToImgResponseDto(
     @SerializedName("status") val status: String,
     @SerializedName("generationTime") val generationTime: Double,
     @SerializedName("id") val id: Int,
@@ -12,7 +12,7 @@ data class TxtToImgDto(
     @SerializedName("meta") val meta: TxtToImgMetaDataResponseDto
 )
 
-fun TxtToImgDto.asDomainModel(): TxtToImgResult {
+fun TxtToImgResponseDto.asDomainModel(): TxtToImgResult {
     return TxtToImgResult(
         id = id,
         outputUrls = output.map { it.replaceDomain() },
@@ -21,4 +21,3 @@ fun TxtToImgDto.asDomainModel(): TxtToImgResult {
         metaData = meta.asDomain()
     )
 }
-

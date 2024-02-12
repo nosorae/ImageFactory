@@ -30,4 +30,3 @@ class ImageEditingRepositoryImpl @Inject constructor(
             .asDomainModel()
     }
 }
-

@@ -20,7 +20,7 @@ import javax.inject.Singleton
 class PreferenceRepositoryImpl @Inject constructor(
     private val dataStorePreference: DataStore<Preferences>,
     private val localDateTimeConverter: LocalDateTimeConverter
-): PreferenceRepository {
+) : PreferenceRepository {
     private val lastTxtToImageRequestId = longPreferencesKey(
         name = DatastoreConstants.KEY_LAST_TXT_TO_IMG_REQUEST_ID
     )
@@ -79,5 +79,3 @@ class PreferenceRepositoryImpl @Inject constructor(
         }.firstOrNull() ?: false
     }
 }
-
-

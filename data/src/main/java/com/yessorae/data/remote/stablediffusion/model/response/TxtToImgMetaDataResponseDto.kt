@@ -94,7 +94,6 @@ fun TxtToImgMetaDataResponseDto.asDomain(): TxtToImgResultMetaData {
     )
 }
 
-
 fun TxtToImgResultMetaData.asDto(): TxtToImgMetaDataResponseDto {
     return TxtToImgMetaDataResponseDto(
         prompt = this.prompt,

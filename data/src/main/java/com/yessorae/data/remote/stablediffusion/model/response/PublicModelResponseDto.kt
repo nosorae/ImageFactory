@@ -2,7 +2,6 @@ package com.yessorae.data.remote.stablediffusion.model.response
 
 import com.google.gson.annotations.SerializedName
 import com.yessorae.data.local.database.model.PublicModelEntity
-import com.yessorae.domain.model.parameter.Model
 import com.yessorae.domain.util.trueOrFalse
 
 class PublicModelDto : ArrayList<PublicModelItemDto>()

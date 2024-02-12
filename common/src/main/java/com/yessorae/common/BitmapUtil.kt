@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import java.io.ByteArrayOutputStream
 
-
 fun Bitmap.bitmapToByteArray(): ByteArray? {
     val stream = ByteArrayOutputStream()
     compress(Bitmap.CompressFormat.PNG, 100, stream)

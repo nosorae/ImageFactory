@@ -40,4 +40,3 @@ class TxtToImgRepositoryImpl @Inject constructor(
             .asDomainModel()
     }
 }
-

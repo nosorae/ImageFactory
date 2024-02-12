@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.yessorae.data.util.replaceDomain
 import com.yessorae.domain.model.UpscaleResult
 
-data class UpscaleResultDto(
+data class UpscaleResponseDto(
     @SerializedName("status")
     val status: String, // success
     @SerializedName("generationTime")
@@ -15,7 +15,7 @@ data class UpscaleResultDto(
     val output: String // https://pub-8b49af329fa499aa563997f5d4068a4.r2.dev/generations/1675767485_out.png
 )
 
-fun UpscaleResultDto.asDomainModel(): UpscaleResult {
+fun UpscaleResponseDto.asDomainModel(): UpscaleResult {
     return UpscaleResult(
         id = id,
         outputUrl = output.replaceDomain(),

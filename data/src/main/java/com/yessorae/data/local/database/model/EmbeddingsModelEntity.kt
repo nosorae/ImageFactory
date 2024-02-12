@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.yessorae.data.util.DBConstants
 import com.yessorae.domain.model.parameter.EmbeddingsModel
-import com.yessorae.domain.model.parameter.LoRaModel
 import java.time.LocalDateTime
 
 @Entity(tableName = DBConstants.TABLE_EMBEDDINGS_MODEL)

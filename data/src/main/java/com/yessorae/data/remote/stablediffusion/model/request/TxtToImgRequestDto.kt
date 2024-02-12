@@ -1,13 +1,13 @@
 package com.yessorae.data.remote.stablediffusion.model.request
 
 import com.google.gson.annotations.SerializedName
-import com.yessorae.domain.util.StableDiffusionConstants
-import com.yessorae.data.util.replaceDomain
 import com.yessorae.data.BuildConfig
 import com.yessorae.data.local.database.model.TxtToImgEntity
 import com.yessorae.data.local.database.model.TxtToImgRequestEntity
+import com.yessorae.data.util.replaceDomain
 import com.yessorae.domain.model.TxtToImgRequest
 import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.util.StableDiffusionConstants
 import java.time.LocalDateTime
 
 data class TxtToImgRequestDto(
@@ -88,7 +88,6 @@ fun TxtToImgRequestDto.asRequestDomainModel(): TxtToImgRequest {
         enhancePrompt = enhancePrompt
     )
 }
-
 
 fun TxtToImgRequestDto.asResultDomainModel(
     id: Int,

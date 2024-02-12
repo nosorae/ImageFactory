@@ -28,7 +28,7 @@ fun TxtToImgEntity.asDomainModel(): TxtToImgHistory {
         id = id,
         createdAt = createdAt,
         request = request.asDomainModel(),
-        result = result?.asDomainModel(),
+        result = result?.asDomainModel()
     )
 }
 
@@ -37,6 +37,6 @@ fun TxtToImgHistory.asEntity(): TxtToImgEntity {
         id = id,
         createdAt = createdAt,
         request = request.asEntity(),
-        result = result?.asEntity(),
+        result = result?.asEntity()
     )
 }

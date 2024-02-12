@@ -1,9 +1,9 @@
 package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
-import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestDto
 import com.yessorae.domain.model.TxtToImgRequest
+import com.yessorae.domain.util.StableDiffusionConstants
 
 data class TxtToImgRequestEntity(
     @ColumnInfo(name = "model_id")
@@ -135,4 +135,3 @@ fun TxtToImgRequest.asEntity(): TxtToImgRequestEntity {
         enhancePrompt = enhancePrompt
     )
 }
-

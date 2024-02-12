@@ -66,7 +66,6 @@ fun ResultMetaDataEntity.asDomainModel(): TxtToImgResultMetaData {
     )
 }
 
-
 fun TxtToImgResultMetaData.asEntity(): ResultMetaDataEntity {
     return ResultMetaDataEntity(
         prompt = prompt,
