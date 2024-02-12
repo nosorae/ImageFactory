@@ -1,7 +1,7 @@
 package com.yessorae.data.remote.stablediffusion.model.request
 
 import com.google.gson.annotations.SerializedName
-import com.yessorae.domain.util.Constants
+import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.data.util.replaceDomain
 import com.yessorae.data.BuildConfig
 import com.yessorae.data.local.database.model.TxtToImgEntity
@@ -31,16 +31,16 @@ data class TxtToImgRequestDto(
     @SerializedName("scheduler") val scheduler: String,
     @SerializedName("clip_skip") val clipSkip: Int = 2,
     @SerializedName("safety_checker_type") val safetyCheckerType: String = "blur",
-    @SerializedName("tomesd") val tomesd: String = Constants.ARG_YES,
-    @SerializedName("use_karras_sigmas") val useKarrasSigmas: String = Constants.ARG_YES,
+    @SerializedName("tomesd") val tomesd: String = StableDiffusionConstants.ARG_YES,
+    @SerializedName("use_karras_sigmas") val useKarrasSigmas: String = StableDiffusionConstants.ARG_YES,
     @SerializedName("algorithm_type") val algorithmType: String = "sde-dpmsolver++",
     @SerializedName("vae") val vae: String? = null,
-    @SerializedName("panorama") val panorama: String = Constants.ARG_NO,
-    @SerializedName("self_attention") val selfAttention: String = Constants.ARG_YES,
-    @SerializedName("base64") val base64: String = Constants.ARG_NO,
+    @SerializedName("panorama") val panorama: String = StableDiffusionConstants.ARG_NO,
+    @SerializedName("self_attention") val selfAttention: String = StableDiffusionConstants.ARG_YES,
+    @SerializedName("base64") val base64: String = StableDiffusionConstants.ARG_NO,
     @SerializedName("webhook") val webhook: String? = null,
     @SerializedName("track_id") val trackId: String? = null,
-    @SerializedName("temp") val temp: String = Constants.ARG_YES
+    @SerializedName("temp") val temp: String = StableDiffusionConstants.ARG_YES
 )
 
 fun TxtToImgRequestDto.asEntity(): TxtToImgRequestEntity {

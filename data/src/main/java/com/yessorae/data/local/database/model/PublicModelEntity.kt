@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 import com.yessorae.data.util.DBConstants
 import com.yessorae.domain.model.PublicModel
 
+// TODO:: SR-N SD 모델, LoRa 모델, Embeddings 모델 테이블 추가 분리
+// 서버에서 받아온 데이터 그대로 저장되어있는 데이블
 @Entity(tableName = DBConstants.TABLE_PUBLIC_MODEL)
 data class PublicModelEntity(
     @PrimaryKey
@@ -50,5 +52,3 @@ fun PublicModelEntity.asDomainModel(): PublicModel {
         screenshots = screenshots
     )
 }
-
-

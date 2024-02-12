@@ -1,6 +1,7 @@
 package com.yessorae.domain.model.parameter
 
 import com.yessorae.domain.util.MockData
+import com.yessorae.domain.util.StableDiffusionConstants.DEFAULT_LORA_STRENGTH
 
 sealed class Model(
     open val id: String,
@@ -35,7 +36,8 @@ data class SDModel(
 data class LoRaModel(
     override val id: String,
     override val imgUrl: String?,
-    override val displayName: String
+    override val displayName: String,
+    val strength: Float = DEFAULT_LORA_STRENGTH
 ): Model(id = id, imgUrl = imgUrl, displayName = displayName)
 
 data class EmbeddingsModel(

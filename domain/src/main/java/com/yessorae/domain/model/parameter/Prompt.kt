@@ -3,10 +3,10 @@ package com.yessorae.domain.model.parameter
 data class Prompt(
     val prompt: String,
     val positive: Boolean,
-    val nsfw: Boolean
+    val nsfw: Boolean = false
 ) {
     companion object {
-        fun Prompt.Companion.mock(): List<Prompt> {
+        fun mock(): List<Prompt> {
             val words = listOf(
                 "Apple", "Banana", "Cherry", "Dog", "Elephant", "Fox", "Grapes",
                 "Horse", "Igloo", "Jazz", "Kite", "Lion", "Monkey", "Nest", "Owl", "Penguin",
@@ -20,6 +20,13 @@ data class Prompt(
                     nsfw = index % 3 == 0
                 )
             }
+        }
+
+        fun create(prompt: String, positive: Boolean): Prompt {
+            return Prompt(
+                prompt = prompt,
+                positive = positive
+            )
         }
     }
 }

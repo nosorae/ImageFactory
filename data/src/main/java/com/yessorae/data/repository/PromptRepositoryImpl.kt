@@ -16,7 +16,7 @@ class PromptRepositoryImpl @Inject constructor(
 ) : PromptRepository {
 
     override fun getPositivePrompts(): Flow<List<Prompt>> {
-        return promptDao.getPromptsOrderedByCreatedAt(
+        return promptDao.getPromptsOrderedByUpdatedAt(
             isPositive = true
         ).map {
             it.map(PromptEntity::asDomainModel)
@@ -24,7 +24,7 @@ class PromptRepositoryImpl @Inject constructor(
     }
 
     override fun getNegativePrompts(): Flow<List<Prompt>> {
-        return promptDao.getPromptsOrderedByCreatedAt(
+        return promptDao.getPromptsOrderedByUpdatedAt(
             isPositive = false
         ).map {
             it.map(PromptEntity::asDomainModel)
@@ -38,5 +38,9 @@ class PromptRepositoryImpl @Inject constructor(
 
     override suspend fun insertPrompts(prompts: List<Prompt>) {
         promptDao.insertAll(prompts.map(Prompt::asEntityModel))
+    }
+
+    override suspend fun deletePrompt(prompt: Prompt) {
+        promptDao.delete(entity = prompt.asEntityModel())
     }
 }

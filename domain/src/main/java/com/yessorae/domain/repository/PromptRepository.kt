@@ -11,4 +11,6 @@ interface PromptRepository {
     suspend fun insertPrompt(prompt: Prompt): String
 
     suspend fun insertPrompts(prompts: List<Prompt>)
+
+    suspend fun deletePrompt(prompt: Prompt)
 }

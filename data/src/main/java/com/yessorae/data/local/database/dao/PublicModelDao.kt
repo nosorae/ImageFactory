@@ -14,3 +14,5 @@ interface PublicModelDao : BaseDao<PublicModelEntity> {
     )
     suspend fun getPublicModelByCallCounts(): List<PublicModelEntity>
 }
+
+

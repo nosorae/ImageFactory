@@ -1,6 +1,8 @@
 package com.yessorae.domain.util
 
-fun String.isMultiLanguage(): Boolean {
+fun String?.isMultiLanguage(): Boolean {
+    if (isNullOrEmpty()) return false
+
     val regex = Regex("^[a-zA-Z0-9!@#\\$%^&*()_+\\-=\\[\\]{};':\",.<>\\/?\\s]*$")
     return !regex.matches(this)
 }
@@ -11,13 +13,13 @@ suspend fun String.handleSdResponse(
     onError: suspend () -> Unit
 ) {
     when (this) {
-        StableDiffusionApiConstants.RESPONSE_SUCCESS -> {
+        StableDiffusionConstants.RESPONSE_SUCCESS -> {
             onSuccess()
         }
-        StableDiffusionApiConstants.RESPONSE_PROCESSING -> {
+        StableDiffusionConstants.RESPONSE_PROCESSING -> {
             onProcessing()
         }
-        StableDiffusionApiConstants.RESPONSE_ERROR -> {
+        StableDiffusionConstants.RESPONSE_ERROR -> {
             onError()
         }
     }

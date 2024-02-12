@@ -1,14 +1,9 @@
 package com.yessorae.data.repository
 
 import com.yessorae.common.Logger
-import com.yessorae.data.util.replaceDomain
 import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
-import com.yessorae.data.local.database.model.ResultEntity
 import com.yessorae.data.local.database.model.asDomainModel
 import com.yessorae.data.local.database.model.asEntity
-import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
-import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestDto
-import com.yessorae.data.util.handleResponse
 import com.yessorae.domain.model.TxtToImgHistory
 import com.yessorae.domain.repository.TxtToImgHistoryRepository
 import kotlinx.coroutines.flow.Flow

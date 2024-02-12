@@ -2,6 +2,7 @@ package com.yessorae.data.remote.stablediffusion.model.response
 
 import com.google.gson.annotations.SerializedName
 import com.yessorae.data.local.database.model.PublicModelEntity
+import com.yessorae.domain.model.parameter.Model
 import com.yessorae.domain.util.trueOrFalse
 
 class PublicModelDto : ArrayList<PublicModelItemDto>()
@@ -31,7 +32,7 @@ data class PublicModelItemDto(
     val screenshots: String // https://d1okzptojspljx.cloudfront.net/generations/14853540911669470514.png
 )
 
-fun PublicModelItemDto.mapToEntity(): PublicModelEntity {
+fun PublicModelItemDto.asEntity(): PublicModelEntity {
     return PublicModelEntity(
         modelId = this.modelId,
         status = this.status,

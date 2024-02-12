@@ -21,11 +21,4 @@ interface PromptDao : BaseDao<PromptEntity> {
     """
     )
     fun getPromptsOrderedByUpdatedAt(isPositive: Boolean): Flow<List<PromptEntity>>
-
-    @Query(
-        """
-        SELECT * FROM ${DBConstants.TABLE_PROMPT} WHERE ${DBConstants.COLPOSITIVE} = :isPositive ORDER BY ${DBConstants.COL_CREATED_AT} DESC LIMIT 50
-    """
-    )
-    fun getPromptsOrderedByCreatedAt(isPositive: Boolean): Flow<List<PromptEntity>>
 }

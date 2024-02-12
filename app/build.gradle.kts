@@ -17,7 +17,7 @@ localPropertiesFile.close()
 
 android {
     namespace = "com.yessorae.imagefactory"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.yessorae.ImageFactoryApplication"

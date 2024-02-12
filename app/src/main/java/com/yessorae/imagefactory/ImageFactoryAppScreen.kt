@@ -6,7 +6,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.yessorae.imagefactory.navigation.navhost.ImageFactoryNavHost
+import com.yessorae.presentation.navigation.navhost.ImageFactoryNavHost
 import com.yessorae.presentation.ui.theme.ImageFactoryTheme
 
 @Composable

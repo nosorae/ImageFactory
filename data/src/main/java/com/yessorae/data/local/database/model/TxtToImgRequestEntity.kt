@@ -1,7 +1,7 @@
 package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
-import com.yessorae.domain.util.Constants
+import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestDto
 import com.yessorae.domain.model.TxtToImgRequest
 
@@ -45,25 +45,25 @@ data class TxtToImgRequestEntity(
     @ColumnInfo(name = "safety_checker_type")
     val safetyCheckerType: String = "blur",
     @ColumnInfo(name = "tomesd")
-    val tomesd: String = Constants.ARG_YES,
+    val tomesd: String = StableDiffusionConstants.ARG_YES,
     @ColumnInfo(name = "use_karras_sigmas")
-    val useKarrasSigmas: String = Constants.ARG_YES,
+    val useKarrasSigmas: String = StableDiffusionConstants.ARG_YES,
     @ColumnInfo(name = "algorithm_type")
     val algorithmType: String = "sde-dpmsolver++",
     @ColumnInfo(name = "vae")
     val vae: String? = null,
     @ColumnInfo(name = "panorama")
-    val panorama: String = Constants.ARG_NO,
+    val panorama: String = StableDiffusionConstants.ARG_NO,
     @ColumnInfo(name = "self_attention")
-    val selfAttention: String = Constants.ARG_YES,
+    val selfAttention: String = StableDiffusionConstants.ARG_YES,
     @ColumnInfo(name = "base64")
-    val base64: String = Constants.ARG_NO,
+    val base64: String = StableDiffusionConstants.ARG_NO,
     @ColumnInfo(name = "webhook")
     val webhook: String? = null,
     @ColumnInfo(name = "track_id")
     val trackId: String? = null,
     @ColumnInfo(name = "temp")
-    val temp: String = Constants.ARG_YES
+    val temp: String = StableDiffusionConstants.ARG_YES
 )
 
 fun TxtToImgRequestEntity.asRequestBody(): TxtToImgRequestDto {

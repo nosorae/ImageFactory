@@ -1,6 +1,7 @@
 package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import com.yessorae.data.util.replaceDomain
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgDto
 import com.yessorae.data.remote.stablediffusion.model.response.asEntity
@@ -15,7 +16,7 @@ data class ResultEntity(
     val id: Int,
     @ColumnInfo(name = "output")
     val output: List<String>,
-    @ColumnInfo(name = "result_meta_data")
+    @Embedded(prefix = "result_meta_data")
     val metaData: ResultMetaDataEntity?
 )
 
@@ -37,24 +38,3 @@ fun TxtToImgResult.asEntity(): ResultEntity {
         metaData = metaData?.asEntity()
     )
 }
-
-fun TxtToImgDto.asResultEntity(): ResultEntity {
-    return ResultEntity(
-        status = this.status,
-        generationTime = this.generationTime,
-        id = this.id,
-        output = this.output,
-        metaData = meta.asEntity()
-    )
-}
-
-fun ResultEntity.asDto(metaDataDto: ResultMetaDataEntity): TxtToImgDto {
-    return TxtToImgDto(
-        status = this.status,
-        generationTime = this.generationTime,
-        id = this.id,
-        output = this.output,
-        meta = metaDataDto.asDto()
-    )
-}
-

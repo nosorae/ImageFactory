@@ -15,7 +15,6 @@ data class PromptEntity(
     @ColumnInfo(name = DBConstants.COLPOSITIVE) val positive: Boolean = true,
     @ColumnInfo(name = DBConstants.COL_NSFW) val nsfw: Boolean = false,
     @ColumnInfo(name = DBConstants.COL_SELECT_COUNT) val selectCount: Int = 0,
-    @ColumnInfo(name = DBConstants.COL_CREATED_AT) val createdAt: LocalDateTime,
     @ColumnInfo(name = DBConstants.COL_UPDATED_AT) val updatedAt: LocalDateTime,
     @ColumnInfo(name = DBConstants.COL_SERVER_SYNC) val serverSync: Boolean = false
 )
@@ -33,7 +32,6 @@ fun Prompt.asEntityModel(): PromptEntity {
         prompt = prompt,
         positive = positive,
         nsfw = nsfw,
-        createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now()
     )
 }

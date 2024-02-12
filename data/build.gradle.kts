@@ -16,7 +16,7 @@ localPropertiesFile.close()
 
 android {
     namespace = "com.yessorae.data"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -61,8 +61,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
     implementation(project(":domain"))
+    implementation(project(":common"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
