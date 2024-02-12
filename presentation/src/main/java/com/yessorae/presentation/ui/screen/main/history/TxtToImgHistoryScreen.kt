@@ -159,6 +159,9 @@ private fun HistoryListLayout(
                 items = histories,
                 contentType = { _, _ ->
                     TxtToImgHistory::class.java.simpleName
+                },
+                key = { _, item ->
+                    item.id
                 }
             ) { _, item ->
                 HistoryListItem(

@@ -31,7 +31,15 @@ fun FullModelsLayout(
         contentPadding = Dimen.grid_padding_values,
         horizontalArrangement = Arrangement.spacedBy(Dimen.space_4)
     ) {
-        itemsIndexed(items = models) { _, item ->
+        itemsIndexed(
+            items = models,
+            contentType = { _, _ ->
+                ModelOption::class.java
+            },
+            key = { _, item ->
+                item.model.id
+            }
+        ) { _, item ->
             GridModelCover(
                 model = item,
                 onClick = { onClick(item) },

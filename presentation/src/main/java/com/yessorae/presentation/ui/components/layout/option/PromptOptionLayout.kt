@@ -46,7 +46,13 @@ fun PromptOptionLayout(
         horizontalItemSpacing = Dimen.space_4
     ) {
         itemsIndexed(
-            items = prompts()
+            items = prompts(),
+            contentType = { _, _ ->
+                PromptOption::class.java
+            },
+            key = { _, item ->
+                item.prompt
+            }
         ) { _, item ->
             PromptChip(
                 model = item,

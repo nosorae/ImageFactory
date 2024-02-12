@@ -40,7 +40,15 @@ fun ModelsLayout(
                 }
             }
         } else {
-            itemsIndexed(items = models()) { _, item ->
+            itemsIndexed(
+                items = models(),
+                contentType = { _, _ ->
+                    ModelOption::class.java
+                },
+                key = { _, item ->
+                    item.model.id
+                }
+            ) { _, item ->
                 ModelCover(
                     model = item,
                     onClick = { onClick(item) }
