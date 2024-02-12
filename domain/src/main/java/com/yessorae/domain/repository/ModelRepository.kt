@@ -16,6 +16,8 @@ interface ModelRepository {
     suspend fun getFeaturedEmbeddingsModels(): List<EmbeddingsModel>
 
     fun getRecentlyUsedSDModels(): Flow<List<SDModel>>
+
     fun getRecentlyUsedLoRaModels(): Flow<List<LoRaModel>>
+
     fun getRecentlyUsedEmbeddingsModels(): Flow<List<EmbeddingsModel>>
 }

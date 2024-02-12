@@ -30,7 +30,7 @@ data class PublicModelEntity(
     @ColumnInfo(name = DBConstants.COL_MODEL_NAME)
     val modelName: String, // MidJourney V4
     @ColumnInfo(name = DBConstants.COL_DESCRIPTION)
-    val description: String, // Openjourney is an open source Stable Diffusion fine tuned model on Midjourney images, by PromptHero
+    val description: String?, // Openjourney is an open source Stable Diffusion fine tuned model on Midjourney images, by PromptHero
     @ColumnInfo(name = DBConstants.COL_SCREENSHOTS)
     val screenshots: String, // https://d1okzptojspljx.cloudfront.net/generations/14853540911669470514.png
     @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)

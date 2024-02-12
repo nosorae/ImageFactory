@@ -21,13 +21,13 @@ data class PublicModelItemDto(
     @SerializedName("model_category")
     val modelCategory: String, // stable_diffusion
     @SerializedName("is_nsfw")
-    val isNsfw: String, // yes || no
+    val isNsfw: String?, // yes || no || null
     @SerializedName("featured")
     val featured: String, // yes || no
     @SerializedName("model_name")
     val modelName: String, // MidJourney V4
     @SerializedName("description")
-    val description: String, // Openjourney is an open source Stable Diffusion fine tuned model on Midjourney images, by PromptHero
+    val description: String?, // Openjourney is an open source Stable Diffusion fine tuned model on Midjourney images, by PromptHero
     @SerializedName("screenshots")
     val screenshots: String // https://d1okzptojspljx.cloudfront.net/generations/14853540911669470514.png
 )

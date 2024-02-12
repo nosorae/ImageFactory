@@ -1,5 +1,6 @@
 package com.yessorae.data.repository
 
+import com.yessorae.common.Logger
 import com.yessorae.data.local.database.dao.EmbeddingsModelDao
 import com.yessorae.data.local.database.dao.LoRaModelDao
 import com.yessorae.data.local.database.dao.PublicModelDao
@@ -52,12 +53,13 @@ class ModelRepositoryImpl @Inject constructor(
             if (cachedPublicModel.isNullOrEmpty()) {
                 publicModelDao.getPublicModelByCallCounts()
             } else {
-                cachedPublicModel!!
+                cachedPublicModel ?: listOf()
             }
         val lastUpdateTime = preferenceRepositoryImpl.getLastModelUpdateTime()
 
         return if (oldEntities.isEmpty() || lastUpdateTime?.isDaysApartFromNow(day = 3) != false) {
             val remoteData = modelListApi.getPublicModels().handleResponse()
+//            Logger.data("$remoteData")
             val newEntities = remoteData.map {
                 it.asEntity()
             }

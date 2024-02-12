@@ -9,6 +9,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.yessorae.data.BuildConfig
 import com.yessorae.data.local.database.ImageFactoryDatabase
 import com.yessorae.data.util.DBConstants
 import dagger.Module
@@ -32,7 +33,9 @@ object FirebaseModule {
         remoteConfig.setConfigSettingsAsync(
             FirebaseRemoteConfigSettings
                 .Builder()
-                .setMinimumFetchIntervalInSeconds(3600L)
+                .setMinimumFetchIntervalInSeconds(
+                    if (BuildConfig.DEBUG) 0L  else 3600L
+                )
                 .build()
         )
         return remoteConfig

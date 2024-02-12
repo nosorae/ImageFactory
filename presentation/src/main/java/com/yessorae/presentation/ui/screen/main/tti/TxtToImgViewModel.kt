@@ -49,6 +49,7 @@ import com.yessorae.presentation.util.GaEventManager
 import com.yessorae.presentation.util.HelpLink
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
@@ -77,7 +78,7 @@ class TxtToImgViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = listOf() // TODO:: SR-N check
+        initialValue = listOf()
     )
 
     private val _negativePromptOptions = MutableStateFlow<List<PromptOption>>(listOf())
@@ -86,7 +87,7 @@ class TxtToImgViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = listOf() // TODO:: SR-N check
+        initialValue = listOf()
     )
 
     // TODO:: SR-N 더보기 모델 선택 시 featured 모델로 올라와야함
@@ -96,7 +97,7 @@ class TxtToImgViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = listOf() // TODO:: SR-N check
+        initialValue = listOf()
     )
 
     private val _featuredLoRaModelOptions = MutableStateFlow<List<LoRaModelOption>>(listOf())
@@ -207,6 +208,7 @@ class TxtToImgViewModel @Inject constructor(
         }
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
+
         viewModelScope.launch {
             _toast.emit(stringResourceProvider.getString(R.string.common_response_unknown_error))
         }
