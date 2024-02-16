@@ -78,7 +78,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
 //    implementation("com.google.mediapipe:tasks-vision:0.20230731")
-    implementation("com.google.mediapipe:tasks-vision:0.10.0")
+    implementation("com.google.mediapipe:tasks-vision:0.10.9")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
