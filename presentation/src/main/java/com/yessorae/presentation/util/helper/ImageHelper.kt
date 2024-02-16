@@ -9,9 +9,15 @@ interface ImageHelper {
 
     fun downloadImage(bitmap: Bitmap): String
 
-    fun uriToBitmap(uri: Uri): Bitmap?
+    fun uriToBitmap(uri: Uri): Bitmap
+
     fun uriToBitmapWithSizeLimit512(uri: Uri): Bitmap
+
 
     fun toMultiPartBody(bitmap: Bitmap, name: String): MultipartBody.Part
 }
 
+
+interface SegmentationHelper {
+
+}

@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import com.yessorae.common.Logger
@@ -24,7 +26,7 @@ import java.util.Date
 import java.util.Locale
 
 // TODO:: SR-N data 레이어로 옮기기
-fun Context.downloadImageByUrl(
+fun Context.downloadImage(
     url: String
 ) {
     val dateText = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -46,7 +48,7 @@ fun Context.downloadImageByUrl(
     downloadManager.enqueue(request)
 }
 
-fun Context.downloadImageByBitmap(
+fun Context.downloadImage(
     bitmap: Bitmap
 ): String {
     val directory = filesDir
@@ -92,6 +94,37 @@ fun Context.uriToBitmap(
         Logger.recordException(e)
         e.printStackTrace()
         null
+    }
+}
+
+/**
+ * Converts Uri to Bitmap.
+ * If a Bitmap is not of the ARGB_8888 type, it needs to be converted to
+ * that type because the interactive segmentation helper requires that
+ * specific Bitmap type.
+ */
+fun Uri.toBitmap(context: Context): Bitmap {
+    val maxWidth = 512f
+    var bitmap = if (Build.VERSION.SDK_INT < 28) {
+        MediaStore.Images.Media.getBitmap(context.contentResolver, this)
+    } else {
+        val source = ImageDecoder.createSource(context.contentResolver, this)
+        ImageDecoder.decodeBitmap(source)
+    }
+    // reduce the size of image if it larger than maxWidth
+    if (bitmap.width > maxWidth) {
+        val scaleFactor = maxWidth / bitmap.width
+        bitmap = Bitmap.createScaledBitmap(
+            bitmap,
+            (bitmap.width * scaleFactor).toInt(),
+            (bitmap.height * scaleFactor).toInt(),
+            false
+        )
+    }
+    return if (bitmap.config == Bitmap.Config.ARGB_8888) {
+        bitmap
+    } else {
+        bitmap.copy(Bitmap.Config.ARGB_8888, false)
     }
 }
 

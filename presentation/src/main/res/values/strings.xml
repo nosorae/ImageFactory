@@ -15,8 +15,12 @@
     <string name="common_warning_select_model">모델을 선택해주세요!</string>
     <string name="common_warning_select_size">이미지 비율을 선택해주세요!</string>
     <string name="common_warning_select_scheduler">스케줄러를 선택해주세요!</string>
+    <string name="common_add_image">이미지 추가 하기</string>
+    <string name="common_add_image_from_camera">촬영으로 이미지 추가하기</string>
+    <string name="common_add_image_from_album">앨범에서 이미지 추가하기</string>
 
     <string name="common_title_txt_to_img">Text-to-Image</string>
+    <string name="common_title_inpainting">Inpainting</string>
     <string name="common_section_title_positive_prompt">긍정 프롬프트</string>
     <string name="common_section_title_negative_prompt">부정 프롬프트</string>
     <string name="common_section_button_custom_prompt">직접 입력하기</string>

@@ -77,6 +77,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
+//    implementation("com.google.mediapipe:tasks-vision:0.20230731")
+    implementation("com.google.mediapipe:tasks-vision:0.10.0")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

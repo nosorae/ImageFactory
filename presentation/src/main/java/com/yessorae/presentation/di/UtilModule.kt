@@ -3,6 +3,8 @@ package com.yessorae.presentation.di
 import android.content.Context
 import com.yessorae.presentation.util.helper.ImageHelper
 import com.yessorae.presentation.util.helper.ImageHelperImpl
+import com.yessorae.presentation.util.helper.ImageSegmentationHelper
+import com.yessorae.presentation.util.helper.ImageSegmentationHelperImpl
 import com.yessorae.presentation.util.helper.StringResourceHelper
 import com.yessorae.presentation.util.helper.StringResourceHelperImpl
 import dagger.Module
@@ -26,5 +28,12 @@ object UtilModule {
         @ApplicationContext context: Context
     ): ImageHelper {
         return ImageHelperImpl(context = context)
+    }
+
+    @Provides
+    fun provideImageSegmentationHelper(
+        @ApplicationContext context: Context
+    ): ImageSegmentationHelper {
+        return ImageSegmentationHelperImpl(context = context)
     }
 }

@@ -11,6 +11,7 @@ import com.yessorae.presentation.navigation.destination.InpaintingBottomTabDesti
 import com.yessorae.presentation.navigation.destination.MainBottomTabDestination
 import com.yessorae.presentation.navigation.destination.TxtToImgBottomTabDestination
 import com.yessorae.presentation.ui.screen.main.history.TxtToImgHistoryScreen
+import com.yessorae.presentation.ui.screen.main.inpainting.InPaintingScreen
 import com.yessorae.presentation.ui.screen.main.tti.TxtToImgScreen
 import com.yessorae.presentation.util.compose.ReadyScreen
 
@@ -39,7 +40,9 @@ fun MainBottomNavHost(
         composable(
             route = InpaintingBottomTabDestination.route
         ) {
-            ReadyScreen(InpaintingBottomTabDestination.route)
+            InPaintingScreen(
+                onNavOutEvent = onNavOutEvent
+            )
         }
 
         composable(

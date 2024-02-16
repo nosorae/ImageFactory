@@ -12,6 +12,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -106,5 +108,51 @@ fun FullModelOptionBottomSheet(
             models = options,
             onClick = onSelectModelOption
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ImageAddOptionBottomSheet(
+    onCancelDialog: () -> Unit,
+    onSelectTakePicture: () -> Unit,
+    onSelectPickImage: () -> Unit
+) {
+    val windowInsets = BottomSheetDefaults.windowInsets
+    val scope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
+
+    val focusManager = LocalFocusManager.current
+
+    fun cancel() {
+        scope.launch {
+            bottomSheetState.hide()
+            focusManager.clearFocus()
+        }.invokeOnCompletion {
+            onCancelDialog()
+        }
+    }
+
+    ModalBottomSheet(
+        onDismissRequest = {
+            cancel()
+        },
+        sheetState = bottomSheetState,
+        windowInsets = windowInsets,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = Dimen.bottom_sheet_top_padding)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            TextButton(onClick = onSelectTakePicture, modifier = Modifier.fillMaxWidth()) {
+                Text(text = stringResource(id = R.string.common_add_image_from_camera))
+            }
+
+            TextButton(onClick = onSelectPickImage, modifier = Modifier.fillMaxWidth()) {
+                Text(text = stringResource(id = R.string.common_add_image_from_album))
+            }
+        }
     }
 }

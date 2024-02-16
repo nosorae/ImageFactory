@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.core.content.FileProvider
 import com.yessorae.common.Logger
 import com.yessorae.presentation.R
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,6 +28,7 @@ import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// TODO:: SR-N Memory leak 예상됨. 해결 해보기
 @Singleton
 class ImageHelperImpl @Inject constructor(
     @ApplicationContext private val context: Context
@@ -62,38 +64,50 @@ class ImageHelperImpl @Inject constructor(
         return file.absolutePath
     }
 
-    override fun uriToBitmap(uri: Uri): Bitmap? {
-        return try {
-            val parcelFileDescriptor =
-                context.contentResolver.openFileDescriptor(uri, "r")
-            val fileDescriptor = parcelFileDescriptor?.fileDescriptor
-            var image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-
-            // 이미지의 회전 정보를 읽어옵니다.
-            val inputStream = context.contentResolver.openInputStream(uri)
-            val exif = ExifInterface(inputStream!!)
-            val orientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
+    override fun uriToBitmap(uri: Uri): Bitmap {
+        // convert Uri to bitmap image.
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(
+                context.contentResolver, uri
             )
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(
+                context.contentResolver, uri
+            )
+        }.copy(Bitmap.Config.ARGB_8888, true)
 
-            // 필요한 경우 이미지를 회전시킵니다.
-            val matrix = Matrix()
-            when (orientation) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
-                ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
-                ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
-            }
-            image = Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, true)
-
-            parcelFileDescriptor?.close()
-            inputStream.close()
-            image
-        } catch (e: IOException) {
-            Logger.recordException(e)
-            e.printStackTrace()
-            null
-        }
+//        return try {
+//            val parcelFileDescriptor =
+//                context.contentResolver.openFileDescriptor(uri, "r")
+//            val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+//            var image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+//
+//            // 이미지의 회전 정보를 읽어옵니다.
+//            val inputStream = context.contentResolver.openInputStream(uri)
+//            val exif = ExifInterface(inputStream!!)
+//            val orientation = exif.getAttributeInt(
+//                ExifInterface.TAG_ORIENTATION,
+//                ExifInterface.ORIENTATION_NORMAL
+//            )
+//
+//            // 필요한 경우 이미지를 회전시킵니다.
+//            val matrix = Matrix()
+//            when (orientation) {
+//                ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+//                ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+//                ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+//            }
+//            image = Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, true)
+//
+//            parcelFileDescriptor?.close()
+//            inputStream.close()
+//            image
+//        } catch (e: IOException) {
+//            Logger.recordException(e)
+//            e.printStackTrace()
+//            null
+//        }
     }
 
     override fun uriToBitmapWithSizeLimit512(uri: Uri): Bitmap {
