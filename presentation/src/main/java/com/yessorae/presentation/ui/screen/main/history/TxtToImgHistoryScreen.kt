@@ -46,7 +46,7 @@ import com.yessorae.presentation.ui.components.layout.EmptyListLayout
 import com.yessorae.presentation.ui.screen.main.history.model.HistoryDialogState
 import com.yessorae.presentation.ui.screen.main.history.model.TxtToImgHistoryScreenState
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 import com.yessorae.presentation.util.compose.debouncedClickable
 import com.yessorae.presentation.util.compose.rememberDebouncedEvent
 import kotlinx.coroutines.flow.collectLatest
@@ -225,7 +225,7 @@ private fun HistoryListItem(
                 }
             }
 
-            Padding(margin = Dimen.space_4)
+            Margin(margin = Dimen.space_4)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -238,7 +238,7 @@ private fun HistoryListItem(
                     textAlign = TextAlign.Center
                 )
             }
-            Padding(margin = Dimen.space_4)
+            Margin(margin = Dimen.space_4)
         }
 
         IconButton(

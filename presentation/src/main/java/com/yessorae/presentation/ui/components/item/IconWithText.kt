@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @Composable
 fun IconWithText(
@@ -30,7 +30,7 @@ fun IconWithText(
             )
     ) {
         Icon(imageVector = imageVector, contentDescription = null)
-        Padding(margin = Dimen.space_2)
+        Margin(margin = Dimen.space_2)
         Text(text = text)
     }
 }

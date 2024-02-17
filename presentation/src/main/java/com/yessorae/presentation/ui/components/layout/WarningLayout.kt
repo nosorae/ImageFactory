@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.presentation.ui.theme.AlertRed
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @Composable
 fun WarningLayout(
@@ -24,7 +24,7 @@ fun WarningLayout(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(imageVector = Icons.Default.Warning, contentDescription = null, tint = Color.Yellow)
-        Padding(margin = Dimen.space_8)
+        Margin(margin = Dimen.space_8)
         Text(text = text, color = AlertRed)
     }
 }

@@ -49,7 +49,7 @@ import com.yessorae.presentation.ui.screen.main.tti.model.SDModelOption
 import com.yessorae.presentation.ui.screen.main.tti.model.SchedulerOption
 import com.yessorae.presentation.ui.screen.main.tti.model.TxtToImgDialog
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 import com.yessorae.presentation.util.compose.rememberDebouncedEvent
 import com.yessorae.presentation.util.getSettingsLocale
 import com.yessorae.presentation.util.redirectToWebBrowser
@@ -278,7 +278,7 @@ fun TxtToImgScreen(
                 }
             )
 
-            Padding(margin = Dimen.lazy_col_bottom_padding)
+            Margin(margin = Dimen.lazy_col_bottom_padding)
         }
     }
 

@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.yessorae.presentation.ui.screen.main.tti.model.TextOption
 import com.yessorae.presentation.ui.theme.Dimen
 import com.yessorae.presentation.util.compose.ColumnPreview
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @Composable
 fun RadioTextButton(
@@ -23,7 +23,7 @@ fun RadioTextButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(selected = model.selected, onClick = onClick)
-        Padding(margin = Dimen.space_4)
+        Margin(margin = Dimen.space_4)
         Text(text = model.displayName)
     }
 }

@@ -21,7 +21,7 @@ import com.yessorae.presentation.ui.components.item.ImageFactoryTextField
 import com.yessorae.presentation.ui.components.item.common.BaseDialog
 import com.yessorae.presentation.ui.components.item.common.BaseDialogScreen
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -51,7 +51,7 @@ fun InputDialog(
                 keyboardOptions = keyboardOptions
             )
 
-            Padding(margin = Dimen.dialog_content_button_padding)
+            Margin(margin = Dimen.dialog_content_button_padding)
 
             ActionButton(
                 modifier = Modifier.fillMaxWidth(),

@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun ColumnScope.Padding(margin: Dp) {
+fun ColumnScope.Margin(margin: Dp) {
     Spacer(modifier = Modifier.height(margin))
 }
 
 @Composable
-fun RowScope.Padding(margin: Dp) {
+fun RowScope.Margin(margin: Dp) {
     Spacer(modifier = Modifier.width(margin))
 }

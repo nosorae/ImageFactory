@@ -24,7 +24,7 @@ import com.yessorae.presentation.ui.screen.main.tti.model.asOption
 import com.yessorae.presentation.ui.theme.Dimen
 import com.yessorae.presentation.ui.theme.Gray200
 import com.yessorae.presentation.util.compose.ColumnPreview
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @Composable
 fun ModelCover(
@@ -47,7 +47,7 @@ fun ModelCover(
             selected = model.selected
         )
 
-        Padding(margin = Dimen.space_4)
+        Margin(margin = Dimen.space_4)
 
         Text(
             text = model.model.displayName,
@@ -56,7 +56,7 @@ fun ModelCover(
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center
         )
-        Padding(margin = Dimen.space_2)
+        Margin(margin = Dimen.space_2)
     }
 }
 
@@ -78,7 +78,7 @@ fun ModelCoverPlaceholder(
                 )
                 .size(Dimen.cover_size)
         )
-        Padding(margin = Dimen.space_4)
+        Margin(margin = Dimen.space_4)
 
         Text(
             text = "",
@@ -93,7 +93,7 @@ fun ModelCoverPlaceholder(
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center
         )
-        Padding(margin = Dimen.space_2)
+        Margin(margin = Dimen.space_2)
     }
 }
 
@@ -119,7 +119,7 @@ fun GridModelCover(
             selected = model.selected
         )
 
-        Padding(margin = Dimen.space_4)
+        Margin(margin = Dimen.space_4)
 
         Text(
             text = model.model.displayName,
@@ -127,7 +127,7 @@ fun GridModelCover(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Padding(margin = Dimen.space_2)
+        Margin(margin = Dimen.space_2)
     }
 }
 

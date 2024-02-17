@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 import com.yessorae.domain.util.MockData
 import com.yessorae.presentation.ui.components.item.common.ImageListItem
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -52,7 +52,7 @@ fun ImagePagerLayout(
         }
 
         if (imageCount > 0) {
-            Padding(margin = Dimen.space_8)
+            Margin(margin = Dimen.space_8)
 
             PagerIndicator(
                 count = imageCount,

@@ -14,7 +14,7 @@ import com.yessorae.presentation.ui.components.item.OutlinedActionButton
 import com.yessorae.presentation.ui.components.item.common.BaseDialog
 import com.yessorae.presentation.ui.components.item.common.BaseDialogScreen
 import com.yessorae.presentation.ui.theme.Dimen
-import com.yessorae.presentation.util.compose.Padding
+import com.yessorae.presentation.util.compose.Margin
 
 @Composable
 fun ConfirmDialog(
@@ -35,7 +35,7 @@ fun ConfirmDialog(
             )
 
             if (body.isNotEmpty()) {
-                Padding(margin = Dimen.dialog_content_padding)
+                Margin(margin = Dimen.dialog_content_padding)
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = body,
@@ -44,14 +44,14 @@ fun ConfirmDialog(
                 )
             }
 
-            Padding(margin = Dimen.dialog_bottom_padding)
+            Margin(margin = Dimen.dialog_bottom_padding)
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedActionButton(
                     modifier = Modifier.weight(1f),
                     text = cancelText,
                     onClick = onCancel
                 )
-                Padding(margin = Dimen.dialog_content_padding)
+                Margin(margin = Dimen.dialog_content_padding)
                 ActionButton(
                     modifier = Modifier.weight(1f),
                     text = confirmText,
