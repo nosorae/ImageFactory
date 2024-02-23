@@ -6,9 +6,11 @@ import com.google.mediapipe.framework.image.MPImage
 sealed class InPaintingUiState {
     object Initial: InPaintingUiState()
 
-    data class Image(
-        val initialBitmap: Bitmap
-    ): InPaintingUiState()
+    object Loading: InPaintingUiState()
+
+//    data class Image(
+//        val initialBitmap: Bitmap
+//    ): InPaintingUiState()
 
     data class MaskedImage(
         val initialBitmap: Bitmap,

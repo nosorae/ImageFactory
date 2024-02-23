@@ -60,6 +60,7 @@
     <string name="common_response_unknown_error">예상하지 못한 에러가 발생했어요.\n인터넷 연결을 확인하시고, 재발생 시 개발자에게 문의해주세요</string>
 
     <!-- in painting -->
+    <string name="in_painting_segmentation">자동 마스킹</string>
     <string name="in_painting_segmentation_option_hair">머리</string>
     <string name="in_painting_segmentation_option_face">얼굴</string>
     <string name="in_painting_segmentation_option_body">몸</string>
@@ -68,6 +69,7 @@
     <string name="in_painting_segmentation_option_etc">기타 악세서리</string>
     <string name="in_painting_segmentation_option_all">전체</string>
     <string name="in_painting_segmentation_option_self_draw">직접 그리기</string>
+    <string name="in_painting_segmentation_error">세그먼트를 지원하지 않는 기기입니다.</string>
 
     <!-- common dialog -->
     <string name="common_dialog_title_delete_history">기록을 삭제합니다</string>

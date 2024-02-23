@@ -95,7 +95,6 @@ class TxtToImgViewModel @Inject constructor(
         initialValue = listOf()
     )
 
-    // TODO:: SR-N 더보기 모델 선택 시 featured 모델로 올라와야함
     private val _featuredSDModelOptions = MutableStateFlow<List<SDModelOption>>(listOf())
     val featuredSdModelOptions = _featuredSDModelOptions.asStateFlow().onSubscription {
         subscribeFeaturedSDModels()

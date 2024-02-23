@@ -3,12 +3,10 @@ package com.yessorae.presentation.ui.screen.main.inpainting
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,19 +28,27 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yessorae.presentation.R
+import com.yessorae.presentation.ui.components.dialog.ConfirmDialog
+import com.yessorae.presentation.ui.components.dialog.FullModelOptionBottomSheet
 import com.yessorae.presentation.ui.components.dialog.ImageAddOptionBottomSheet
+import com.yessorae.presentation.ui.components.dialog.InputDialog
 import com.yessorae.presentation.ui.components.item.ActionButton
+import com.yessorae.presentation.ui.components.item.OptionTitle
+import com.yessorae.presentation.ui.components.item.OptionTitleWithMore
+import com.yessorae.presentation.ui.components.layout.option.ModelsLayout
+import com.yessorae.presentation.ui.components.layout.option.NaturalNumberSliderOptionLayout
+import com.yessorae.presentation.ui.components.layout.option.PromptOptionLayout
 import com.yessorae.presentation.ui.screen.main.inpainting.model.InpaintingDialogState
 import com.yessorae.presentation.ui.screen.main.inpainting.model.InPaintingUiState
+import com.yessorae.presentation.ui.screen.main.tti.model.PromptOption
+import com.yessorae.presentation.ui.screen.main.tti.model.SDModelOption
+import com.yessorae.presentation.ui.screen.main.tti.model.TxtToImgDialog
 import com.yessorae.presentation.ui.theme.Dimen
 import com.yessorae.presentation.util.compose.Margin
 import com.yessorae.presentation.util.showToast
@@ -60,6 +66,11 @@ fun InPaintingScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val dialogState by viewModel.dialogState.collectAsState()
+    val positivePromptOptions by viewModel.positivePromptOptions.collectAsState()
+    val negativePromptOptions by viewModel.negativePromptOptions.collectAsState()
+    val guidanceScale by viewModel.guidanceScale.collectAsState()
+    val featuredSDModelOptions by viewModel.featuredSdModelOptions.collectAsState()
+    val sdModels by viewModel.allSDModelOptions.collectAsState()
 
     val context = LocalContext.current
 
@@ -140,32 +151,6 @@ fun InPaintingScreen(
                     )
                 }
 
-                is InPaintingUiState.Image -> {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = Dimen.side_padding),
-                            bitmap = state.initialBitmap.asImageBitmap(),
-                            contentDescription = null
-                        )
-                    }
-
-                    ActionButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Dimen.side_padding)
-                            .padding(bottom = Dimen.space_16),
-                        text = stringResource(R.string.common_button_generate_image)
-                    ) {
-                        viewModel.segmentImage()
-                    }
-                }
-
                 is InPaintingUiState.MaskedImage -> {
                     Column(
                         modifier = Modifier
@@ -190,7 +175,6 @@ fun InPaintingScreen(
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .alpha(0.9f)
                                     .padding(Dimen.side_padding),
                                 contentScale = ContentScale.FillWidth
                             )
@@ -202,17 +186,79 @@ fun InPaintingScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = Dimen.side_padding)
-                                .horizontalScroll(rememberScrollState())
+                                .horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.Start
                         ) {
                             state.segmentationLabel.forEach { label ->
-                                TextButton(onClick = { viewModel.onClickSegmentationLabel(label = label) }) {
+                                TextButton(onClick = { viewModel.clickSegmentationLabel(label = label) }) {
                                     Text(text = stringResource(id = label.resId))
                                 }
                             }
                             Margin(margin = Dimen.space_24)
                         }
-                    }
 
+                        // positive prompt
+                        OptionTitleWithMore(
+                            text = stringResource(R.string.common_section_title_positive_prompt),
+                            trailingText = stringResource(R.string.common_section_button_custom_prompt),
+                            onClickMore = viewModel::clickToAddPositivePrompt
+                        )
+                        PromptOptionLayout(
+                            prompts = { positivePromptOptions },
+                            onClick = viewModel::clickPositivePrompt,
+                            onLongClick = viewModel::longClickPrompt
+                        )
+
+                        // negative prompt
+                        OptionTitleWithMore(
+                            text = stringResource(R.string.common_section_title_negative_prompt),
+                            trailingText = stringResource(R.string.common_section_button_custom_prompt),
+                            onClickMore = viewModel::clickToAddNegativePrompt
+                        )
+                        PromptOptionLayout(
+                            prompts = { negativePromptOptions },
+                            onClick = viewModel::clickNegativePrompt,
+                            onLongClick = viewModel::longClickPrompt
+                        )
+
+                        // prompt strength
+                        OptionTitle(
+                            text = stringResource(
+                                R.string.common_section_title_prompt_strength,
+                                guidanceScale
+                            )
+                        )
+                        NaturalNumberSliderOptionLayout(
+                            value = guidanceScale,
+                            onValueChange = viewModel::changePromptStrength,
+                            valueRange = 1..20
+                        )
+
+                        // stable diffusion model
+                        OptionTitleWithMore(
+                            text = stringResource(R.string.common_section_title_model),
+                            trailingText = stringResource(R.string.common_button_see_more),
+                            onClickMore = viewModel::clickMoreSDModel
+                        )
+
+                        ModelsLayout(
+                            models = { featuredSDModelOptions },
+                            onClick = { option ->
+                                viewModel.clickFeaturedSDModel(
+                                    clickedOption = option as SDModelOption
+                                )
+                            }
+                        )
+
+                        ActionButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = Dimen.side_padding)
+                                .padding(bottom = Dimen.space_16),
+                            text = stringResource(R.string.common_button_generate_image),
+                            onClick = viewModel::inPaintImage
+                        )
+                    }
                 }
 
                 else -> {
@@ -223,12 +269,47 @@ fun InPaintingScreen(
         }
     }
 
-    when (dialogState) {
+    when (val state = dialogState) {
         is InpaintingDialogState.ImageAddMethod -> {
             ImageAddOptionBottomSheet(
                 onCancelDialog = viewModel::cancelDialog,
                 onSelectPickImage = viewModel::clickPickImage,
                 onSelectTakePicture = viewModel::clickTakePicture
+            )
+        }
+
+        is InpaintingDialogState.PositivePromptAddition -> {
+            InputDialog(
+                onDismissRequest = viewModel::cancelDialog,
+                onClickAddButton = viewModel::clickAddPositivePrompt
+            )
+        }
+
+        is InpaintingDialogState.PromptDeletionConfirmation -> {
+            ConfirmDialog(
+                title = state.title,
+                onClickConfirm = {
+                    viewModel.clickDeletePrompt(state.promptOption)
+                },
+                onCancel = viewModel::cancelDialog
+            )
+        }
+
+        is InpaintingDialogState.NegativePromptOptionAddition -> {
+            InputDialog(
+                onDismissRequest = viewModel::cancelDialog,
+                onClickAddButton = viewModel::clickAddNegativePrompt
+            )
+        }
+
+        is InpaintingDialogState.MoreSDModelBottomSheet -> {
+            FullModelOptionBottomSheet(
+                title = stringResource(R.string.common_section_title_model),
+                options = sdModels,
+                onCancelDialog = viewModel::cancelDialog,
+                onSelectModelOption = {
+                    viewModel.clickMoreSDModel(it as SDModelOption)
+                }
             )
         }
 

@@ -1,6 +1,7 @@
 package com.yessorae.data.local.database.model
 
 import androidx.room.ColumnInfo
+import com.google.gson.annotations.SerializedName
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgMetaDataResponseDto
 import com.yessorae.domain.model.TxtToImgResultMetaData
 
@@ -11,6 +12,10 @@ data class ResultMetaDataEntity(
     val modelId: String,
     @ColumnInfo(name = "negative_prompt")
     val negativePrompt: String,
+    @ColumnInfo("scheduler")
+    val scheduler: String,
+    @ColumnInfo("safetychecker")
+    val safetychecker: String,
     @ColumnInfo(name = "W")
     val w: Int,
     @ColumnInfo(name = "H")
@@ -48,6 +53,8 @@ fun ResultMetaDataEntity.asDomainModel(): TxtToImgResultMetaData {
         prompt = prompt,
         modelId = modelId,
         negativePrompt = negativePrompt,
+        scheduler = scheduler,
+        safetychecker = safetychecker,
         w = w,
         h = h,
         guidanceScale = guidanceScale,
@@ -71,6 +78,8 @@ fun TxtToImgResultMetaData.asEntity(): ResultMetaDataEntity {
         prompt = prompt,
         modelId = modelId,
         negativePrompt = negativePrompt,
+        scheduler = scheduler,
+        safetychecker = safetychecker,
         w = w,
         h = h,
         guidanceScale = guidanceScale,
@@ -94,6 +103,8 @@ fun ResultMetaDataEntity.asDto(): TxtToImgMetaDataResponseDto {
         prompt = this.prompt,
         modelId = this.modelId,
         negativePrompt = this.negativePrompt,
+        scheduler = scheduler,
+        safetychecker = safetychecker,
         w = this.w,
         h = this.h,
         guidanceScale = this.guidanceScale,

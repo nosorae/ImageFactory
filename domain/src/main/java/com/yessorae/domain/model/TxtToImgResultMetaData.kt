@@ -4,6 +4,8 @@ data class TxtToImgResultMetaData(
     val prompt: String,
     val modelId: String,
     val negativePrompt: String,
+    val scheduler: String,
+    val safetychecker: String,
     val w: Int,
     val h: Int,
     val guidanceScale: Double,
