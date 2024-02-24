@@ -2,9 +2,9 @@ package com.yessorae.data.repository
 
 import com.yessorae.common.Logger
 import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
-import com.yessorae.data.local.database.model.asDomainModel
-import com.yessorae.data.local.database.model.asEntity
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.data.local.database.model.tti.asDomainModel
+import com.yessorae.data.local.database.model.tti.asEntity
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import com.yessorae.domain.repository.TxtToImgHistoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -29,11 +29,11 @@ class TxtToImgHistoryRepositoryImpl @Inject constructor(
     override suspend fun getTxtToImgHistory(
         id: Int
     ): TxtToImgHistory {
-        return txtToImgHistoryDao.getTxtToImgHistoryModel(id = id).asDomainModel()
+        return txtToImgHistoryDao.getHistoryModel(id = id).asDomainModel()
     }
 
     override fun getHistories(): Flow<List<TxtToImgHistory>> {
-        return txtToImgHistoryDao.getTxtToImgHistoryModels().onEach {
+        return txtToImgHistoryDao.getHistoryModels().onEach {
             Logger.data("TxtToImgHistoryRepository - getHistories - $it")
         }
             .map { list ->

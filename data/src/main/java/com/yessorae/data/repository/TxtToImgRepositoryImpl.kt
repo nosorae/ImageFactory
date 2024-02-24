@@ -2,12 +2,12 @@ package com.yessorae.data.repository
 
 import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
 import com.yessorae.data.remote.stablediffusion.model.request.FetchQueuedImageRequestDto
-import com.yessorae.data.remote.stablediffusion.model.request.asRequestDto
+import com.yessorae.data.remote.stablediffusion.model.request.asDto
 import com.yessorae.data.remote.stablediffusion.model.response.asDomainModel
 import com.yessorae.data.util.handleResponse
 import com.yessorae.domain.model.FetchQueuedImgResponse
-import com.yessorae.domain.model.TxtToImgRequest
-import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.tti.TxtToImgRequest
+import com.yessorae.domain.model.tti.TxtToImgResult
 import com.yessorae.domain.repository.TxtToImgRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +21,7 @@ class TxtToImgRepositoryImpl @Inject constructor(
     ): TxtToImgResult {
         return txtToImgApi
             .generateImage(
-                request = request.asRequestDto()
+                request = request.asDto()
             )
             .handleResponse()
             .asDomainModel()

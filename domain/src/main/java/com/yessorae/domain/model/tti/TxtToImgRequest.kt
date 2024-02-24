@@ -1,4 +1,4 @@
-package com.yessorae.domain.model
+package com.yessorae.domain.model.tti
 
 import com.yessorae.domain.util.StableDiffusionConstants.ARG_NO
 import com.yessorae.domain.util.StableDiffusionConstants.DEFAULT_HEIGHT

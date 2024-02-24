@@ -1,7 +1,7 @@
 package com.yessorae.domain.usecase
 
-import com.yessorae.domain.model.TxtToImgHistory
-import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.tti.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgResult
 import com.yessorae.domain.repository.TxtToImgHistoryRepository
 import com.yessorae.domain.repository.TxtToImgRepository
 import com.yessorae.domain.util.ProcessingErrorException

@@ -1,6 +1,6 @@
 package com.yessorae.domain.usecase
 
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import com.yessorae.domain.repository.TxtToImgHistoryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

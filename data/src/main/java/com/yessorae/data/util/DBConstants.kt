@@ -31,14 +31,15 @@ object DBConstants {
     const val COL_DISPLAY_NAME = "display_name"
     const val COL_USED_AT = "used_at"
 
-    // Txt to Img History Model
+    // Request/Response History
     const val TABLE_TXT_TO_IMG_HISTORY = "txt_to_img_history"
+    const val TABLE_IN_PAINTING_HISTORY = "in_painting_history"
     const val PREFIX_REQUEST = "request_"
     const val PREFIX_RESULT = "result_"
     const val PREFIX_META = "meta_"
 
     // Txt to Img Upscale History Model
-    const val TABLE_TXT_TO_IMG_UPSCALE_HISTORY = "txt_to_img_upscale_history"
+    const val TABLE_UPSCALE_HISTORY = "upscale_history"
     const val COL_HISTORY_ID = "history_id"
 
     // common

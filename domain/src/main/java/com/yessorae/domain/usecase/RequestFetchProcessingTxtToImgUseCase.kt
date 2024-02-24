@@ -1,11 +1,9 @@
 package com.yessorae.domain.usecase
 
-import com.yessorae.domain.model.FetchQueuedImgResponse
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import com.yessorae.domain.repository.TxtToImgHistoryRepository
 import com.yessorae.domain.repository.TxtToImgRepository
 import com.yessorae.domain.util.ProcessingErrorException
-import com.yessorae.domain.util.ProcessingException
 import com.yessorae.domain.util.StableDiffusionConstants
 import javax.inject.Inject
 

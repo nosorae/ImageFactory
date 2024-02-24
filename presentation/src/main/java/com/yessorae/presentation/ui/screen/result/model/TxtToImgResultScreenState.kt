@@ -5,8 +5,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.yessorae.domain.model.TxtToImgRequest
-import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.tti.TxtToImgRequest
+import com.yessorae.domain.model.tti.TxtToImgResult
 import com.yessorae.domain.model.UpscaleResult
 import com.yessorae.presentation.R
 

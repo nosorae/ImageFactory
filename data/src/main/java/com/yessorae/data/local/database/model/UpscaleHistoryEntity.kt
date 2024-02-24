@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.yessorae.data.util.DBConstants
 
-@Entity(tableName = DBConstants.TABLE_TXT_TO_IMG_UPSCALE_HISTORY)
-data class TxtToImgUpscaleHistoryEntity(
+@Entity(tableName = DBConstants.TABLE_UPSCALE_HISTORY)
+data class UpscaleHistoryEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,

@@ -3,8 +3,8 @@ package com.yessorae.presentation.ui.screen.main.tti
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
-import com.yessorae.domain.model.TxtToImgHistory
-import com.yessorae.domain.model.TxtToImgRequest
+import com.yessorae.domain.model.tti.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgRequest
 import com.yessorae.domain.model.parameter.Prompt
 import com.yessorae.domain.usecase.DeletePromptUseCase
 import com.yessorae.domain.usecase.GetAllEmbeddingsModelsUseCase

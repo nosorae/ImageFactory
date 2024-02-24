@@ -1,8 +1,8 @@
-package com.yessorae.data.local.database.model
+package com.yessorae.data.local.database.model.tti
 
 import androidx.room.ColumnInfo
 import com.yessorae.data.remote.stablediffusion.model.request.TxtToImgRequestDto
-import com.yessorae.domain.model.TxtToImgRequest
+import com.yessorae.domain.model.tti.TxtToImgRequest
 import com.yessorae.domain.util.StableDiffusionConstants
 
 data class TxtToImgRequestEntity(
@@ -65,28 +65,6 @@ data class TxtToImgRequestEntity(
     @ColumnInfo(name = "temp")
     val temp: String = StableDiffusionConstants.ARG_YES
 )
-
-fun TxtToImgRequestEntity.asRequestBody(): TxtToImgRequestDto {
-    return TxtToImgRequestDto(
-        modelId = this.modelId,
-        prompt = this.prompt,
-        negativePrompt = this.negativePrompt,
-        width = this.width,
-        height = this.height,
-        samples = this.samples,
-        numInferenceSteps = this.numInferenceSteps,
-        safetyChecker = this.safetyChecker,
-        enhancePrompt = this.enhancePrompt,
-        seed = this.seed,
-        guidanceScale = this.guidanceScale,
-        loraStrength = this.loraStrength,
-        loraModel = this.loraModel,
-        multiLingual = this.multiLingual,
-        upscale = this.upscale,
-        embeddingsModel = this.embeddingsModel,
-        scheduler = this.scheduler
-    )
-}
 
 fun TxtToImgRequestEntity.asDomainModel(): TxtToImgRequest {
     return TxtToImgRequest(

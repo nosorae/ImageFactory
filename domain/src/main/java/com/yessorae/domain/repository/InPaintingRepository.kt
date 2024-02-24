@@ -1,16 +1,15 @@
 package com.yessorae.domain.repository
 
 import com.yessorae.domain.model.FetchQueuedImgResponse
-import com.yessorae.domain.model.tti.TxtToImgRequest
-import com.yessorae.domain.model.tti.TxtToImgResult
+import com.yessorae.domain.model.inpainting.InPaintingRequest
+import com.yessorae.domain.model.inpainting.InPaintingResult
 
-interface TxtToImgRepository {
+interface InPaintingRepository {
     suspend fun generateImage(
-        request: TxtToImgRequest
-    ): TxtToImgResult
+        request: InPaintingRequest
+    ): InPaintingResult
 
     suspend fun fetchQueuedImage(
         requestId: String
     ): FetchQueuedImgResponse
 }
-

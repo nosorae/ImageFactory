@@ -1,24 +1,22 @@
-package com.yessorae.domain.model
+package com.yessorae.domain.model.inpainting
 
-data class TxtToImgResultMetaData(
+data class InPaintingResultMetaData(
     val prompt: String,
     val modelId: String,
-    val negativePrompt: String,
     val scheduler: String,
     val safetychecker: String,
+    val negativePrompt: String,
     val w: Int,
     val h: Int,
     val guidanceScale: Double,
-    val seed: Long?,
+    val initImage: String,
+    val maskImage: String,
+    val multiLingual: String,
     val steps: Int,
     val nSamples: Int,
     val fullUrl: String,
     val upscale: String,
-    val multiLingual: String,
-    val panorama: String,
-    val selfAttention: String,
-    val embeddings: String?,
-    val lora: String?,
+    val seed: Long?,
     val outdir: String?,
     val filePrefix: String?
 )

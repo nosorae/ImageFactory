@@ -1,6 +1,6 @@
 package com.yessorae.domain.repository
 
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import kotlinx.coroutines.flow.Flow
 
 interface TxtToImgHistoryRepository {
@@ -22,3 +22,4 @@ interface TxtToImgHistoryRepository {
         id: Int
     )
 }
+

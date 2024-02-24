@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yessorae.domain.util.StableDiffusionConstants
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import com.yessorae.presentation.R
 import com.yessorae.presentation.ui.components.dialog.ConfirmDialog
 import com.yessorae.presentation.ui.components.item.common.ImageListItem

@@ -1,8 +1,8 @@
 package com.yessorae.data.remote.stablediffusion.model.response
 
 import com.google.gson.annotations.SerializedName
-import com.yessorae.data.local.database.model.ResultMetaDataEntity
-import com.yessorae.domain.model.TxtToImgResultMetaData
+import com.yessorae.data.local.database.model.tti.TxtToImgResultMetaDataEntity
+import com.yessorae.domain.model.tti.TxtToImgResultMetaData
 
 data class TxtToImgMetaDataResponseDto(
     @SerializedName("prompt") val prompt: String,
@@ -27,33 +27,8 @@ data class TxtToImgMetaDataResponseDto(
     @SerializedName("file_prefix") val filePrefix: String?
 )
 
-fun TxtToImgMetaDataResponseDto.asEntity(): ResultMetaDataEntity {
-    return ResultMetaDataEntity(
-        prompt = this.prompt,
-        modelId = this.modelId,
-        negativePrompt = this.negativePrompt,
-        scheduler = scheduler,
-        safetychecker = safetychecker,
-        w = this.w,
-        h = this.h,
-        guidanceScale = this.guidanceScale,
-        seed = this.seed,
-        steps = this.steps,
-        nSamples = this.nSamples,
-        fullUrl = this.fullUrl,
-        upscale = this.upscale,
-        multiLingual = this.multiLingual,
-        panorama = this.panorama,
-        selfAttention = this.selfAttention,
-        embeddings = this.embeddings,
-        lora = this.lora,
-        outdir = this.outdir,
-        filePrefix = this.filePrefix
-    )
-}
-
-fun TxtToImgResultMetaData.asEntity(): ResultMetaDataEntity {
-    return ResultMetaDataEntity(
+fun TxtToImgMetaDataResponseDto.asEntity(): TxtToImgResultMetaDataEntity {
+    return TxtToImgResultMetaDataEntity(
         prompt = this.prompt,
         modelId = this.modelId,
         negativePrompt = this.negativePrompt,
@@ -79,31 +54,6 @@ fun TxtToImgResultMetaData.asEntity(): ResultMetaDataEntity {
 
 fun TxtToImgMetaDataResponseDto.asDomain(): TxtToImgResultMetaData {
     return TxtToImgResultMetaData(
-        prompt = this.prompt,
-        modelId = this.modelId,
-        negativePrompt = this.negativePrompt,
-        scheduler = scheduler,
-        safetychecker = safetychecker,
-        w = this.w,
-        h = this.h,
-        guidanceScale = this.guidanceScale,
-        seed = this.seed,
-        steps = this.steps,
-        nSamples = this.nSamples,
-        fullUrl = this.fullUrl,
-        upscale = this.upscale,
-        multiLingual = this.multiLingual,
-        panorama = this.panorama,
-        selfAttention = this.selfAttention,
-        embeddings = this.embeddings,
-        lora = this.lora,
-        outdir = this.outdir,
-        filePrefix = this.filePrefix
-    )
-}
-
-fun TxtToImgResultMetaData.asDto(): TxtToImgMetaDataResponseDto {
-    return TxtToImgMetaDataResponseDto(
         prompt = this.prompt,
         modelId = this.modelId,
         negativePrompt = this.negativePrompt,

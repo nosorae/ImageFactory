@@ -2,13 +2,9 @@ package com.yessorae.data.remote.stablediffusion.model.request
 
 import com.google.gson.annotations.SerializedName
 import com.yessorae.data.BuildConfig
-import com.yessorae.data.local.database.model.TxtToImgEntity
-import com.yessorae.data.local.database.model.TxtToImgRequestEntity
-import com.yessorae.data.util.replaceDomain
-import com.yessorae.domain.model.TxtToImgRequest
-import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.data.local.database.model.tti.TxtToImgRequestEntity
+import com.yessorae.domain.model.tti.TxtToImgRequest
 import com.yessorae.domain.util.StableDiffusionConstants
-import java.time.LocalDateTime
 
 data class TxtToImgRequestDto(
     @SerializedName("key") val key: String = BuildConfig.STABLE_DIFFUSION_API_API_KEY,
@@ -65,52 +61,7 @@ fun TxtToImgRequestDto.asEntity(): TxtToImgRequestEntity {
     )
 }
 
-fun TxtToImgRequestDto.asRequestDomainModel(): TxtToImgRequest {
-    return TxtToImgRequest(
-        prompt = prompt,
-        modelId = modelId,
-        negativePrompt = negativePrompt,
-        width = width,
-        height = height,
-        guidanceScale = guidanceScale,
-        seed = seed?.toLongOrNull(),
-        steps = numInferenceSteps,
-        nSamples = samples,
-        upscale = upscale,
-        multiLingual = multiLingual,
-        panorama = panorama,
-        selfAttention = selfAttention,
-        embeddings = embeddingsModel,
-        lora = loraModel,
-        loraStrength = loraStrength,
-        scheduler = scheduler,
-        safetyChecker = safetyChecker,
-        enhancePrompt = enhancePrompt
-    )
-}
-
-fun TxtToImgRequestDto.asResultDomainModel(
-    id: Int,
-    outputUrls: List<String>,
-    status: String,
-    generationTime: Double? = null
-): TxtToImgResult {
-    return TxtToImgResult(
-        id = id,
-        outputUrls = outputUrls.map { it.replaceDomain() },
-        status = status,
-        generationTime = generationTime
-    )
-}
-
-fun TxtToImgRequestDto.asHistoryEntity(): TxtToImgEntity {
-    return TxtToImgEntity(
-        createdAt = LocalDateTime.now(),
-        request = this.asEntity()
-    )
-}
-
-fun TxtToImgRequest.asRequestDto(): TxtToImgRequestDto {
+fun TxtToImgRequest.asDto(): TxtToImgRequestDto {
     return TxtToImgRequestDto(
         prompt = prompt,
         modelId = modelId,

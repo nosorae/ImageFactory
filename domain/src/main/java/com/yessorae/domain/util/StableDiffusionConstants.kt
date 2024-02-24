@@ -25,6 +25,9 @@ object StableDiffusionConstants {
     const val DEFAULT_WIDTH = 512
     const val DEFAULT_HEIGHT = 512
     const val DEFAULT_SAMPLE_COUNT = 1
+    const val DEFAULT_SAFETY_CHECKER_TYPE = "blur"
+    const val DEFAULT_ALGORITHM_TYPE = "sde-dpmsolver++"
+    const val DEFAULT_CLIP_SKIP = 2
 
     // argument's value
     const val ARG_YES = "yes"

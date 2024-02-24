@@ -1,12 +1,12 @@
-package com.yessorae.data.local.database.model
+package com.yessorae.data.local.database.model.inpainting
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
-import com.yessorae.data.remote.stablediffusion.model.response.asEntity
+import com.yessorae.data.util.DBConstants
 import com.yessorae.data.util.replaceDomain
-import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.inpainting.InPaintingResult
 
-data class ResultEntity(
+data class InPaintingResultEntity(
     @ColumnInfo(name = "status")
     val status: String,
     @ColumnInfo(name = "generation_time")
@@ -15,12 +15,12 @@ data class ResultEntity(
     val id: Int,
     @ColumnInfo(name = "output")
     val output: List<String>,
-    @Embedded(prefix = "result_meta_data")
-    val metaData: ResultMetaDataEntity?
+    @Embedded(prefix = DBConstants.PREFIX_META)
+    val metaData: InPaintingResultMetaDataEntity?
 )
 
-fun ResultEntity.asDomainModel(): TxtToImgResult {
-    return TxtToImgResult(
+fun InPaintingResultEntity.asDomainModel(): InPaintingResult {
+    return InPaintingResult(
         id = id,
         outputUrls = output.map { it.replaceDomain() },
         status = status,
@@ -28,8 +28,8 @@ fun ResultEntity.asDomainModel(): TxtToImgResult {
     )
 }
 
-fun TxtToImgResult.asEntity(): ResultEntity {
-    return ResultEntity(
+fun InPaintingResult.asEntity(): InPaintingResultEntity {
+    return InPaintingResultEntity(
         id = id,
         output = outputUrls,
         status = status,

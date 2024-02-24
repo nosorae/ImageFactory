@@ -7,19 +7,21 @@ import com.yessorae.data.local.database.converter.BitmapConverter
 import com.yessorae.data.local.database.converter.ListStringConverter
 import com.yessorae.data.local.database.converter.LocalDateTimeConverter
 import com.yessorae.data.local.database.dao.EmbeddingsModelDao
+import com.yessorae.data.local.database.dao.InPaintingHistoryDao
 import com.yessorae.data.local.database.dao.LoRaModelDao
 import com.yessorae.data.local.database.dao.PromptDao
 import com.yessorae.data.local.database.dao.PublicModelDao
 import com.yessorae.data.local.database.dao.SDModelDao
 import com.yessorae.data.local.database.dao.TxtToImgHistoryDao
-import com.yessorae.data.local.database.dao.TxtToImgUpscaleHistoryDao
+import com.yessorae.data.local.database.dao.UpscaleHistoryDao
 import com.yessorae.data.local.database.model.EmbeddingsModelEntity
 import com.yessorae.data.local.database.model.LoRaModelEntity
 import com.yessorae.data.local.database.model.PromptEntity
 import com.yessorae.data.local.database.model.PublicModelEntity
 import com.yessorae.data.local.database.model.SDModelEntity
-import com.yessorae.data.local.database.model.TxtToImgEntity
-import com.yessorae.data.local.database.model.TxtToImgUpscaleHistoryEntity
+import com.yessorae.data.local.database.model.tti.TxtToImgHistoryEntity
+import com.yessorae.data.local.database.model.UpscaleHistoryEntity
+import com.yessorae.data.local.database.model.inpainting.InPaintingHistoryEntity
 
 @Database(
     entities = [
@@ -28,8 +30,9 @@ import com.yessorae.data.local.database.model.TxtToImgUpscaleHistoryEntity
         PromptEntity::class,
         PublicModelEntity::class,
         SDModelEntity::class,
-        TxtToImgEntity::class,
-        TxtToImgUpscaleHistoryEntity::class
+        TxtToImgHistoryEntity::class,
+        InPaintingHistoryEntity::class,
+        UpscaleHistoryEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -46,5 +49,6 @@ abstract class ImageFactoryDatabase : RoomDatabase() {
     abstract fun loRaModelDao(): LoRaModelDao
     abstract fun embeddingsModelDao(): EmbeddingsModelDao
     abstract fun txtToImgHistoryDao(): TxtToImgHistoryDao
-    abstract fun txtToImgUpscaleHistoryDao(): TxtToImgUpscaleHistoryDao
+    abstract fun inPaintingHistoryDao(): InPaintingHistoryDao
+    abstract fun txtToImgUpscaleHistoryDao(): UpscaleHistoryDao
 }

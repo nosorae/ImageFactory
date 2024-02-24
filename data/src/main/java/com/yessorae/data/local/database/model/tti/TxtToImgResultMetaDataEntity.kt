@@ -1,11 +1,10 @@
-package com.yessorae.data.local.database.model
+package com.yessorae.data.local.database.model.tti
 
 import androidx.room.ColumnInfo
-import com.google.gson.annotations.SerializedName
 import com.yessorae.data.remote.stablediffusion.model.response.TxtToImgMetaDataResponseDto
-import com.yessorae.domain.model.TxtToImgResultMetaData
+import com.yessorae.domain.model.tti.TxtToImgResultMetaData
 
-data class ResultMetaDataEntity(
+data class TxtToImgResultMetaDataEntity(
     @ColumnInfo(name = "prompt")
     val prompt: String,
     @ColumnInfo(name = "model_id")
@@ -48,7 +47,7 @@ data class ResultMetaDataEntity(
     val filePrefix: String?
 )
 
-fun ResultMetaDataEntity.asDomainModel(): TxtToImgResultMetaData {
+fun TxtToImgResultMetaDataEntity.asDomainModel(): TxtToImgResultMetaData {
     return TxtToImgResultMetaData(
         prompt = prompt,
         modelId = modelId,
@@ -73,33 +72,8 @@ fun ResultMetaDataEntity.asDomainModel(): TxtToImgResultMetaData {
     )
 }
 
-fun TxtToImgResultMetaData.asEntity(): ResultMetaDataEntity {
-    return ResultMetaDataEntity(
-        prompt = prompt,
-        modelId = modelId,
-        negativePrompt = negativePrompt,
-        scheduler = scheduler,
-        safetychecker = safetychecker,
-        w = w,
-        h = h,
-        guidanceScale = guidanceScale,
-        seed = seed,
-        steps = steps,
-        nSamples = nSamples,
-        fullUrl = fullUrl,
-        upscale = upscale,
-        multiLingual = multiLingual,
-        panorama = panorama,
-        selfAttention = selfAttention,
-        embeddings = embeddings,
-        lora = lora,
-        outdir = outdir,
-        filePrefix = filePrefix
-    )
-}
-
-fun ResultMetaDataEntity.asDto(): TxtToImgMetaDataResponseDto {
-    return TxtToImgMetaDataResponseDto(
+fun TxtToImgResultMetaData.asEntity(): TxtToImgResultMetaDataEntity {
+    return TxtToImgResultMetaDataEntity(
         prompt = this.prompt,
         modelId = this.modelId,
         negativePrompt = this.negativePrompt,

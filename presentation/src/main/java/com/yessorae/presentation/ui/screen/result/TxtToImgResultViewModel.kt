@@ -5,10 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
 import com.yessorae.common.bitmapToByteArray
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import com.yessorae.domain.util.StableDiffusionConstants
-import com.yessorae.domain.model.TxtToImgRequest
-import com.yessorae.domain.model.TxtToImgResult
+import com.yessorae.domain.model.tti.TxtToImgRequest
+import com.yessorae.domain.model.tti.TxtToImgResult
 import com.yessorae.domain.usecase.GetTxtToImgHistoryUseCase
 import com.yessorae.domain.usecase.InsertTxtToImgHistoryUseCase
 import com.yessorae.domain.usecase.RequestFetchProcessingTxtToImgUseCase

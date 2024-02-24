@@ -1,4 +1,4 @@
-package com.yessorae.domain.model
+package com.yessorae.domain.model.tti
 
 import java.time.LocalDateTime
 
@@ -8,3 +8,4 @@ data class TxtToImgHistory(
     val result: TxtToImgResult? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
 )
+

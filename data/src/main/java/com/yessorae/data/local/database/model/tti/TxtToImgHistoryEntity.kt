@@ -1,15 +1,15 @@
-package com.yessorae.data.local.database.model
+package com.yessorae.data.local.database.model.tti
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.yessorae.data.util.DBConstants
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 import java.time.LocalDateTime
 
 @Entity(tableName = DBConstants.TABLE_TXT_TO_IMG_HISTORY)
-data class TxtToImgEntity(
+data class TxtToImgHistoryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = DBConstants.COL_ID)
     var id: Int = 0,
@@ -18,12 +18,13 @@ data class TxtToImgEntity(
     @Embedded(prefix = DBConstants.PREFIX_REQUEST)
     val request: TxtToImgRequestEntity,
     @Embedded(prefix = DBConstants.PREFIX_RESULT)
-    val result: ResultEntity? = null,
+    val result: TxtToImgResultEntity? = null,
     @ColumnInfo(name = DBConstants.COL_SERVER_SYNC)
     val serverSync: Boolean = false
 )
 
-fun TxtToImgEntity.asDomainModel(): TxtToImgHistory {
+
+fun TxtToImgHistoryEntity.asDomainModel(): TxtToImgHistory {
     return TxtToImgHistory(
         id = id,
         createdAt = createdAt,
@@ -32,8 +33,8 @@ fun TxtToImgEntity.asDomainModel(): TxtToImgHistory {
     )
 }
 
-fun TxtToImgHistory.asEntity(): TxtToImgEntity {
-    return TxtToImgEntity(
+fun TxtToImgHistory.asEntity(): TxtToImgHistoryEntity {
+    return TxtToImgHistoryEntity(
         id = id,
         createdAt = createdAt,
         request = request.asEntity(),

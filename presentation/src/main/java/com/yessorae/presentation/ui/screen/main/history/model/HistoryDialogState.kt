@@ -1,6 +1,6 @@
 package com.yessorae.presentation.ui.screen.main.history.model
 
-import com.yessorae.domain.model.TxtToImgHistory
+import com.yessorae.domain.model.tti.TxtToImgHistory
 
 sealed class HistoryDialogState {
     object None : HistoryDialogState()
