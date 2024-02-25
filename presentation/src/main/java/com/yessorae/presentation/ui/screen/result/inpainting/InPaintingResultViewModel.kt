@@ -1,25 +1,24 @@
-package com.yessorae.presentation.ui.screen.result
+package com.yessorae.presentation.ui.screen.result.inpainting
 
 import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
 import com.yessorae.common.bitmapToByteArray
-import com.yessorae.domain.model.tti.TxtToImgHistory
-import com.yessorae.domain.util.StableDiffusionConstants
-import com.yessorae.domain.model.tti.TxtToImgRequest
-import com.yessorae.domain.model.tti.TxtToImgResult
-import com.yessorae.domain.usecase.tti.GetTxtToImgHistoryUseCase
-import com.yessorae.domain.usecase.tti.InsertTxtToImgHistoryUseCase
-import com.yessorae.domain.usecase.tti.RequestFetchProcessingTxtToImgUseCase
-import com.yessorae.domain.usecase.tti.RequestTxtToImgUseCase
+import com.yessorae.domain.model.inpainting.InPaintingRequest
+import com.yessorae.domain.model.inpainting.InPaintingResult
 import com.yessorae.domain.usecase.UpscaleImgUseCase
+import com.yessorae.domain.usecase.inpainting.GetInPaintingHistoryUseCase
+import com.yessorae.domain.usecase.inpainting.InsertInPaintingHistoryUseCase
+import com.yessorae.domain.usecase.inpainting.RequestFetchProcessingInPaintingUseCase
+import com.yessorae.domain.usecase.inpainting.RequestInPaintingUseCase
 import com.yessorae.domain.util.ProcessingErrorException
+import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.presentation.R
-import com.yessorae.presentation.navigation.destination.TxtToImgResultDestination
-import com.yessorae.presentation.ui.screen.result.model.TxtToImgResultScreenState
-import com.yessorae.presentation.util.helper.StringResourceHelper
+import com.yessorae.presentation.navigation.destination.InPaintingResultDestination
+import com.yessorae.presentation.ui.screen.result.inpainting.model.InPaintingResultScreenState
 import com.yessorae.presentation.util.base.BaseScreenViewModel
+import com.yessorae.presentation.util.helper.StringResourceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,36 +33,35 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TxtToImgResultViewModel @Inject constructor(
+class InPaintingResultViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getTxtToImgHistoryUseCase: GetTxtToImgHistoryUseCase,
-    private val insertTxtToImgHistoryUseCase: InsertTxtToImgHistoryUseCase,
-    private val requestTxtToImgUseCase: RequestTxtToImgUseCase,
+    private val getInPaintingHistoryUseCase: GetInPaintingHistoryUseCase,
+    private val insertInPaintingHistoryUseCase: InsertInPaintingHistoryUseCase,
+    private val requestInPaintingUseCase: RequestInPaintingUseCase,
+    private val requestFetchProcessingInPaintingUseCase: RequestFetchProcessingInPaintingUseCase,
     private val upscaleImgUseCase: UpscaleImgUseCase,
-    private val requestFetchProcessingTxtToImgUseCase: RequestFetchProcessingTxtToImgUseCase,
     private val stringResourceHelper: StringResourceHelper
 ) : BaseScreenViewModel() {
     private val historyId: Int =
-        checkNotNull(savedStateHandle[TxtToImgResultDestination.requestIdArg])
+        checkNotNull(savedStateHandle[InPaintingResultDestination.requestIdArg])
 
     private val _state =
-        MutableStateFlow<TxtToImgResultScreenState>(TxtToImgResultScreenState.Initial)
-    val state: StateFlow<TxtToImgResultScreenState> = _state.asStateFlow().onSubscription {
+        MutableStateFlow<InPaintingResultScreenState>(InPaintingResultScreenState.Initial)
+    val state: StateFlow<InPaintingResultScreenState> = _state.asStateFlow().onSubscription {
         initRequest()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = TxtToImgResultScreenState.Initial
+        initialValue = InPaintingResultScreenState.Initial
     )
 
     private val _saveImageEvent = MutableSharedFlow<String>()
     val saveImageEvent = _saveImageEvent.asSharedFlow()
 
-
     /** init **/
     private fun initRequest() = ioScope.launch {
-        val history = getTxtToImgHistoryUseCase(id = historyId)
-        Logger.temp("TxtToImgResultViewModel initRequest : ${history}")
+        val history = getInPaintingHistoryUseCase(id = historyId)
+        Logger.temp("InPaintingResultViewModel initRequest : ${history}")
         val historyResult = history.result
 
         onLoading(request = history.request)
@@ -87,24 +85,24 @@ class TxtToImgResultViewModel @Inject constructor(
     }
 
     /** onClick **/
-    fun onClickRetry(currentState: TxtToImgResultScreenState) = ioScope.launch {
+    fun onClickRetry(currentState: InPaintingResultScreenState) = ioScope.launch {
         currentState.request?.let { request ->
             val requestId =
-                insertTxtToImgHistoryUseCase(request = TxtToImgHistory(request = request))
+                insertInPaintingHistoryUseCase(request = request)
 
             _navigationEvent.emit(
-                TxtToImgResultDestination.getRouteWithArgs(requestId = requestId.toInt())
+                InPaintingResultDestination.getRouteWithArgs(requestId = requestId.toInt())
             )
         }
     }
 
-    fun onClickSave(currentState: TxtToImgResultScreenState) = viewModelScope.launch {
+    fun onClickSave(currentState: InPaintingResultScreenState) = viewModelScope.launch {
         when (currentState) {
-            is TxtToImgResultScreenState.UpscaleSuccess -> {
+            is InPaintingResultScreenState.UpscaleSuccess -> {
                 _saveImageEvent.emit(currentState.afterImageUrl)
             }
 
-            is TxtToImgResultScreenState.SdSuccess -> {
+            is InPaintingResultScreenState.SdSuccess -> {
                 try {
                     _saveImageEvent.emit(currentState.sdResult.firstImgUrl!!)
                 } catch (e: NullPointerException) {
@@ -121,7 +119,10 @@ class TxtToImgResultViewModel @Inject constructor(
         }
     }
 
-    fun onClickUpscale(currentState: TxtToImgResultScreenState.SdSuccess, sdResultBitmap: Bitmap?) =
+    fun onClickUpscale(
+        currentState: InPaintingResultScreenState.SdSuccess,
+        sdResultBitmap: Bitmap?
+    ) =
         ioScope.launch {
             try {
                 upscaleImage(
@@ -136,7 +137,7 @@ class TxtToImgResultViewModel @Inject constructor(
             }
         }
 
-    fun onClickBackFromError(backState: TxtToImgResultScreenState) {
+    fun onClickBackFromError(backState: InPaintingResultScreenState) {
         _state.update {
             backState
         }
@@ -155,20 +156,20 @@ class TxtToImgResultViewModel @Inject constructor(
         Logger.recordException(error = error)
     }
 
-    /** network request **/
 
-    private suspend fun generateImage(request: TxtToImgRequest) {
+    /** network request **/
+    private suspend fun generateImage(request: InPaintingRequest) {
         fun onFail(message: String) = ioScope.launch {
             onError(
-                currentState = TxtToImgResultScreenState.Initial,
+                currentState = InPaintingResultScreenState.Initial,
                 cause = message,
-                actionType = TxtToImgResultScreenState.Error.ActionType.FINISH
+                actionType = InPaintingResultScreenState.Error.ActionType.FINISH
             )
         }
 
         try {
-            val result = requestTxtToImgUseCase(historyId)
-            Logger.temp("TxtToImgResultViewModel result: $result")
+            val result = requestInPaintingUseCase(historyId)
+            Logger.temp("InPaintingResultViewModel result: $result")
             when (result.status) {
                 StableDiffusionConstants.RESPONSE_SUCCESS -> {
                     onSdSuccess(
@@ -213,24 +214,24 @@ class TxtToImgResultViewModel @Inject constructor(
     private suspend fun fetchImage(requestId: Int) {
         fun onFail(message: String) {
             onError(
-                currentState = TxtToImgResultScreenState.Initial,
+                currentState = InPaintingResultScreenState.Initial,
                 cause = message,
-                actionType = TxtToImgResultScreenState.Error.ActionType.FINISH
+                actionType = InPaintingResultScreenState.Error.ActionType.FINISH
             )
         }
 
         try {
-            val newTxtToImgHistory = requestFetchProcessingTxtToImgUseCase(
+            val newInPaintingHistory = requestFetchProcessingInPaintingUseCase(
                 historyId = historyId,
                 requestId = requestId.toString()
             )
-            val result = newTxtToImgHistory.result!!
+            val result = newInPaintingHistory.result!!
 
             when (result.status) {
                 StableDiffusionConstants.RESPONSE_SUCCESS -> {
                     _state.update {
-                        TxtToImgResultScreenState.SdSuccess(
-                            request = newTxtToImgHistory.request,
+                        InPaintingResultScreenState.SdSuccess(
+                            request = newInPaintingHistory.request,
                             sdResult = result
                         )
                     }
@@ -238,7 +239,7 @@ class TxtToImgResultViewModel @Inject constructor(
 
                 StableDiffusionConstants.RESPONSE_PROCESSING -> {
                     onSdProcessing(
-                        request = newTxtToImgHistory.request,
+                        request = newInPaintingHistory.request,
                         response = result
                     )
                 }
@@ -267,12 +268,12 @@ class TxtToImgResultViewModel @Inject constructor(
     }
 
     private suspend fun upscaleImage(
-        currentState: TxtToImgResultScreenState.SdSuccess,
+        currentState: InPaintingResultScreenState.SdSuccess,
         sdResultBitmap: Bitmap?
     ) {
         sdResultBitmap?.let { bitmap ->
             _state.update {
-                TxtToImgResultScreenState.UpscaleLoading(
+                InPaintingResultScreenState.UpscaleLoading(
                     request = currentState.request,
                     sdResult = currentState.sdResult
                 )
@@ -283,7 +284,7 @@ class TxtToImgResultViewModel @Inject constructor(
 
                 when (response.status) {
                     StableDiffusionConstants.RESPONSE_SUCCESS -> {
-                        TxtToImgResultScreenState.UpscaleSuccess(
+                        InPaintingResultScreenState.UpscaleSuccess(
                             request = currentState.request,
                             sdResult = currentState.sdResult,
                             upscaleResult = response
@@ -323,28 +324,35 @@ class TxtToImgResultViewModel @Inject constructor(
         }
     }
 
+
     /** util **/
 
-    private fun onLoading(request: TxtToImgRequest) {
+    private fun onLoading(request: InPaintingRequest) {
         _state.update {
-            TxtToImgResultScreenState.Loading(
+            InPaintingResultScreenState.Loading(
                 request = request
             )
         }
     }
 
-    private fun onSdSuccess(request: TxtToImgRequest, result: TxtToImgResult) {
+    private fun onSdSuccess(
+        request: InPaintingRequest,
+        result: InPaintingResult
+    ) {
         _state.update {
-            TxtToImgResultScreenState.SdSuccess(
+            InPaintingResultScreenState.SdSuccess(
                 request = request,
                 sdResult = result
             )
         }
     }
 
-    private fun onSdProcessing(request: TxtToImgRequest, response: TxtToImgResult) {
+    private fun onSdProcessing(
+        request: InPaintingRequest,
+        response: InPaintingResult
+    ) {
         _state.update {
-            TxtToImgResultScreenState.Processing(
+            InPaintingResultScreenState.Processing(
                 request = request,
                 sdResult = response,
                 message = stringResourceHelper.getString(R.string.common_response_sd_processing)
@@ -353,12 +361,12 @@ class TxtToImgResultViewModel @Inject constructor(
     }
 
     private fun onError(
-        currentState: TxtToImgResultScreenState,
+        currentState: InPaintingResultScreenState,
         cause: String,
-        actionType: TxtToImgResultScreenState.Error.ActionType = TxtToImgResultScreenState.Error.ActionType.NORMAL
+        actionType: InPaintingResultScreenState.Error.ActionType = InPaintingResultScreenState.Error.ActionType.NORMAL
     ) {
         _state.update {
-            TxtToImgResultScreenState.Error(
+            InPaintingResultScreenState.Error(
                 request = currentState.request,
                 cause = cause,
                 backState = currentState,

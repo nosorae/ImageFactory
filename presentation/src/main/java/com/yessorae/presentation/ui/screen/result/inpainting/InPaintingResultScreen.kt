@@ -1,13 +1,9 @@
-package com.yessorae.presentation.ui.screen.result
+package com.yessorae.presentation.ui.screen.result.inpainting
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,22 +29,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -57,7 +47,8 @@ import com.yessorae.presentation.ui.components.item.IconWithText
 import com.yessorae.presentation.ui.components.layout.ImageCompareLayout
 import com.yessorae.presentation.ui.components.layout.StableDiffusionLoadingLayout
 import com.yessorae.presentation.ui.components.layout.UpscaleLoadingLayout
-import com.yessorae.presentation.ui.screen.result.model.TxtToImgResultScreenState
+import com.yessorae.presentation.ui.screen.result.ResultBaseScreen
+import com.yessorae.presentation.ui.screen.result.inpainting.model.InPaintingResultScreenState
 import com.yessorae.presentation.ui.theme.Dimen
 import com.yessorae.presentation.util.downloadImage
 import com.yessorae.presentation.util.showToast
@@ -67,8 +58,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TxtToImgResultScreen(
-    viewModel: TxtToImgResultViewModel = hiltViewModel(),
+fun InPaintingResultScreen(
+    viewModel: InPaintingResultViewModel = hiltViewModel(),
     onNavEvent: (route: String) -> Unit,
     onBackEvent: () -> Unit
 ) {
@@ -141,11 +132,11 @@ fun TxtToImgResultScreen(
         }
     ) { paddingValue ->
         when (val state = screenState) {
-            is TxtToImgResultScreenState.Initial -> {
+            is InPaintingResultScreenState.Initial -> {
                 // do nothing
             }
 
-            is TxtToImgResultScreenState.Loading -> {
+            is InPaintingResultScreenState.Loading -> {
                 StableDiffusionLoadingLayout(
                     modifier = Modifier
                         .fillMaxSize()
@@ -153,7 +144,7 @@ fun TxtToImgResultScreen(
                 )
             }
 
-            is TxtToImgResultScreenState.SdSuccess -> {
+            is InPaintingResultScreenState.SdSuccess -> {
                 SdSuccessScreen(
                     state = state,
                     onClickRetry = { success ->
@@ -171,7 +162,7 @@ fun TxtToImgResultScreen(
                 )
             }
 
-            is TxtToImgResultScreenState.UpscaleLoading -> {
+            is InPaintingResultScreenState.UpscaleLoading -> {
                 UpscaleLoadingLayout(
                     modifier = Modifier
                         .fillMaxSize()
@@ -179,7 +170,7 @@ fun TxtToImgResultScreen(
                 )
             }
 
-            is TxtToImgResultScreenState.UpscaleSuccess -> {
+            is InPaintingResultScreenState.UpscaleSuccess -> {
                 UpscaleSuccessScreen(
                     state = state,
                     onClickRetry = { success ->
@@ -191,7 +182,7 @@ fun TxtToImgResultScreen(
                 )
             }
 
-            is TxtToImgResultScreenState.Processing -> {
+            is InPaintingResultScreenState.Processing -> {
                 ProcessingScreen(
                     state = state,
                     onClickBackState = {
@@ -200,7 +191,7 @@ fun TxtToImgResultScreen(
                 )
             }
 
-            is TxtToImgResultScreenState.Error -> {
+            is InPaintingResultScreenState.Error -> {
                 ErrorScreen(
                     state = state,
                     onClickBackState = { backState ->
@@ -214,10 +205,10 @@ fun TxtToImgResultScreen(
 
 @Composable
 fun SdSuccessScreen(
-    state: TxtToImgResultScreenState.SdSuccess,
-    onClickRetry: (state: TxtToImgResultScreenState.SdSuccess) -> Unit,
-    onClickSave: (state: TxtToImgResultScreenState.SdSuccess) -> Unit,
-    onClickUpscale: (state: TxtToImgResultScreenState.SdSuccess, bitmap: Bitmap?) -> Unit
+    state: InPaintingResultScreenState.SdSuccess,
+    onClickRetry: (state: InPaintingResultScreenState.SdSuccess) -> Unit,
+    onClickSave: (state: InPaintingResultScreenState.SdSuccess) -> Unit,
+    onClickUpscale: (state: InPaintingResultScreenState.SdSuccess, bitmap: Bitmap?) -> Unit
 ) {
     val imageUrl = state.sdResult.firstImgUrl
     val context = LocalContext.current
@@ -229,6 +220,7 @@ fun SdSuccessScreen(
             .build()
     )
 
+    // TODO:: SR-N ViewModel 로 옮기기
     var bitmapForUpscale: Bitmap? by remember {
         mutableStateOf(null)
     }
@@ -245,7 +237,7 @@ fun SdSuccessScreen(
         }
     }
 
-    BaseScreen(
+    ResultBaseScreen(
         backgroundImageUrl = imageUrl,
         imageContent = {
             Box(
@@ -322,12 +314,12 @@ fun SdSuccessScreen(
 
 @Composable
 fun UpscaleSuccessScreen(
-    state: TxtToImgResultScreenState.UpscaleSuccess,
-    onClickRetry: (state: TxtToImgResultScreenState.UpscaleSuccess) -> Unit,
-    onClickSave: (state: TxtToImgResultScreenState.UpscaleSuccess) -> Unit
+    state: InPaintingResultScreenState.UpscaleSuccess,
+    onClickRetry: (state: InPaintingResultScreenState.UpscaleSuccess) -> Unit,
+    onClickSave: (state: InPaintingResultScreenState.UpscaleSuccess) -> Unit
 ) {
     val beforeImgUrl = state.beforeImageUrl
-    BaseScreen(
+    ResultBaseScreen(
         backgroundImageUrl = beforeImgUrl,
         imageContent = {
             ImageCompareLayout(
@@ -371,10 +363,10 @@ fun UpscaleSuccessScreen(
 
 @Composable
 private fun ProcessingScreen(
-    state: TxtToImgResultScreenState.Processing,
+    state: InPaintingResultScreenState.Processing,
     onClickBackState: () -> Unit
 ) {
-    BaseScreen(
+    ResultBaseScreen(
         backgroundImageUrl = null,
         imageContent = {
             Text(
@@ -405,21 +397,21 @@ private fun ProcessingScreen(
 
 @Composable
 private fun ErrorScreen(
-    state: TxtToImgResultScreenState.Error,
-    onClickBackState: (TxtToImgResultScreenState) -> Unit
+    state: InPaintingResultScreenState.Error,
+    onClickBackState: (InPaintingResultScreenState) -> Unit
 ) {
     val backState = state.backState
-    BaseScreen(
+    ResultBaseScreen(
         backgroundImageUrl = when (backState) {
-            is TxtToImgResultScreenState.SdSuccess -> {
+            is InPaintingResultScreenState.SdSuccess -> {
                 backState.sdResult.firstImgUrl
             }
 
-            is TxtToImgResultScreenState.UpscaleLoading -> {
+            is InPaintingResultScreenState.UpscaleLoading -> {
                 backState.sdResult.firstImgUrl
             }
 
-            is TxtToImgResultScreenState.UpscaleSuccess -> {
+            is InPaintingResultScreenState.UpscaleSuccess -> {
                 backState.sdResult.firstImgUrl
             }
 
@@ -448,68 +440,7 @@ private fun ErrorScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(bottom = Dimen.space_24)
-
             )
         }
-    )
-}
-
-@Composable
-private fun BaseScreen(
-    backgroundImageUrl: String?,
-    imageContent: @Composable () -> Unit,
-    optionContent: @Composable RowScope.() -> Unit
-) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TxtToImgResultBackground(imageUrl = backgroundImageUrl)
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                imageContent()
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.DarkGray
-                            )
-                        )
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                optionContent()
-            }
-        }
-    }
-}
-
-@Composable
-fun TxtToImgResultBackground(imageUrl: String?) {
-    val context = LocalContext.current
-    AsyncImage(
-        model = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .build(),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxSize()
-            .blur(
-                radiusX = 10.dp,
-                radiusY = 10.dp,
-                edgeTreatment = BlurredEdgeTreatment.Unbounded
-            ),
-        contentScale = ContentScale.Crop
     )
 }

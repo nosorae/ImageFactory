@@ -1,14 +1,15 @@
-package com.yessorae.presentation.ui.screen.result.model
+package com.yessorae.presentation.ui.screen.result.tti.model
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.yessorae.domain.model.UpscaleResult
 import com.yessorae.domain.model.tti.TxtToImgRequest
 import com.yessorae.domain.model.tti.TxtToImgResult
-import com.yessorae.domain.model.UpscaleResult
 import com.yessorae.presentation.R
+import com.yessorae.presentation.ui.screen.result.Result
 
 sealed class TxtToImgResultScreenState(
     open val request: TxtToImgRequest? = null
@@ -63,6 +64,3 @@ sealed class TxtToImgResultScreenState(
     }
 }
 
-interface Result<out T> {
-    val result: T
-}

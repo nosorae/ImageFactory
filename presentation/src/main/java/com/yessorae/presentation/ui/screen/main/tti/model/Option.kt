@@ -1,5 +1,6 @@
 package com.yessorae.presentation.ui.screen.main.tti.model
 
+import androidx.compose.runtime.Stable
 import com.yessorae.domain.model.parameter.EmbeddingsModel
 import com.yessorae.domain.model.parameter.LoRaModel
 import com.yessorae.domain.model.parameter.Model
@@ -7,18 +8,22 @@ import com.yessorae.domain.model.parameter.Prompt
 import com.yessorae.domain.model.parameter.SDModel
 import com.yessorae.domain.model.parameter.Scheduler
 
+@Stable
 abstract class Option(open val selected: Boolean)
 
+@Stable
 abstract class TextOption(
     override val selected: Boolean,
     open val displayName: String
 ) : Option(selected = selected)
 
+@Stable
 abstract class ModelOption(
     override val selected: Boolean,
     open val model: Model
 ) : Option(selected = selected)
 
+@Stable
 data class PromptOption(
     val prompt: String,
     val positive: Boolean,
@@ -39,6 +44,7 @@ fun PromptOption.asDomainModel(): Prompt {
     )
 }
 
+@Stable
 
 data class SDModelOption(
     override val model: SDModel,
@@ -52,6 +58,7 @@ fun SDModel.asOption(): SDModelOption {
     return SDModelOption(model = this)
 }
 
+@Stable
 data class LoRaModelOption(
     override val model: LoRaModel,
     override val selected: Boolean = false,
@@ -64,6 +71,7 @@ fun LoRaModel.asOption(): LoRaModelOption {
     return LoRaModelOption(model = this)
 }
 
+@Stable
 data class EmbeddingsModelOption(
     override val model: EmbeddingsModel,
     override val selected: Boolean = false
@@ -76,6 +84,7 @@ fun EmbeddingsModel.asOption(): EmbeddingsModelOption {
     return EmbeddingsModelOption(model = this)
 }
 
+@Stable
 data class SchedulerOption(
     val scheduler: Scheduler,
     override val displayName: String = scheduler.displayName,

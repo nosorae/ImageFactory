@@ -4,7 +4,12 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.yessorae.common.Logger
+import com.yessorae.common.bitmapToByteArray
+import com.yessorae.domain.model.inpainting.InPaintingRequest
 import com.yessorae.domain.model.parameter.Prompt
+import com.yessorae.domain.usecase.UploadImageUseCase
+import com.yessorae.domain.usecase.inpainting.InsertInPaintingHistoryUseCase
 import com.yessorae.domain.usecase.prompt.DeletePromptUseCase
 import com.yessorae.domain.usecase.model.GetAllSDModelsUseCase
 import com.yessorae.domain.usecase.model.GetFeaturedSDModelsUseCase
@@ -13,13 +18,14 @@ import com.yessorae.domain.usecase.prompt.GetPositivePromptsFlowUseCase
 import com.yessorae.domain.usecase.prompt.InsertPromptUseCase
 import com.yessorae.domain.usecase.model.InsertUsedSDModelUseCase
 import com.yessorae.domain.util.StableDiffusionConstants
-import com.yessorae.domain.util.isMultiLanguage
 import com.yessorae.presentation.R
+import com.yessorae.presentation.navigation.destination.InPaintingResultDestination
 import com.yessorae.presentation.ui.screen.main.inpainting.model.InpaintingDialogState
 import com.yessorae.presentation.ui.screen.main.inpainting.model.InPaintingUiState
 import com.yessorae.presentation.ui.screen.main.inpainting.model.SegmentationLabel
 import com.yessorae.presentation.ui.screen.main.tti.model.PromptOption
 import com.yessorae.presentation.ui.screen.main.tti.model.SDModelOption
+import com.yessorae.presentation.ui.screen.main.tti.model.SchedulerOption
 import com.yessorae.presentation.ui.screen.main.tti.model.asDomainModel
 import com.yessorae.presentation.ui.screen.main.tti.model.asOption
 import com.yessorae.presentation.util.helper.ImageHelper
@@ -27,6 +33,7 @@ import com.yessorae.presentation.util.base.BaseScreenViewModel
 import com.yessorae.presentation.util.helper.ImageSegmentationHelper
 import com.yessorae.presentation.util.helper.StringResourceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -49,11 +56,19 @@ class InpaintingViewModel @Inject constructor(
     private val deletePromptUseCase: DeletePromptUseCase,
     private val getAllSDModelsUseCase: GetAllSDModelsUseCase,
     private val insertUsedSDModelUseCase: InsertUsedSDModelUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val insertInPaintingHistoryUseCase: InsertInPaintingHistoryUseCase,
     private val imageHelper: ImageHelper,
     private val imageSegmentationHelper: ImageSegmentationHelper,
     private val stringResourceHelper: StringResourceHelper
 ) : BaseScreenViewModel() {
     /** state field */
+    private val _uiState = MutableStateFlow<InPaintingUiState>(InPaintingUiState.Initial)
+    val uiState: StateFlow<InPaintingUiState> = _uiState.asStateFlow()
+
+    private val _dialog = MutableStateFlow<InpaintingDialogState>(InpaintingDialogState.None)
+    val dialogState = _dialog.asStateFlow()
+
     private val _positivePromptOptions = MutableStateFlow<List<PromptOption>>(listOf())
     val positivePromptOptions = _positivePromptOptions.asStateFlow().onSubscription {
         subscribePositivePrompts()
@@ -93,12 +108,11 @@ class InpaintingViewModel @Inject constructor(
         initialValue = listOf() // TODO:: SR-N check
     )
 
+    private val _schedulerOptions = MutableStateFlow(SchedulerOption.initialScheduler)
+    val schedulerOptions = _schedulerOptions.asStateFlow()
 
-    private val _uiState = MutableStateFlow<InPaintingUiState>(InPaintingUiState.Initial)
-    val uiState: StateFlow<InPaintingUiState> = _uiState.asStateFlow()
-
-    private val _dialog = MutableStateFlow<InpaintingDialogState>(InpaintingDialogState.None)
-    val dialogState = _dialog.asStateFlow()
+    private val _stepCount = MutableStateFlow(StableDiffusionConstants.INITIAL_STEP_COUNT)
+    val stepCount = _stepCount.asStateFlow()
 
     private val _takePicture = MutableSharedFlow<Unit>()
     val takePicture = _takePicture.asSharedFlow()
@@ -118,6 +132,11 @@ class InpaintingViewModel @Inject constructor(
     private val selectedSDModel: SDModelOption?
         get() {
             return featuredSdModelOptions.value.firstOrNull { it.selected }
+        }
+
+    private val selectedScheduler: SchedulerOption?
+        get() {
+            return schedulerOptions.value.firstOrNull { it.selected }
         }
 
 
@@ -337,10 +356,14 @@ class InpaintingViewModel @Inject constructor(
     }
 
     fun inPaintImage() = viewModelScope.launch {
-        // TODO:: SR-N
-        // 조건 충족 안되었을 때는 에러 그에 맞는 에러 토스트 띄우기
-        // 로컬디비에 요청 저장 -> id 받아오고
-        // id 전달하면서 결과화면으로 이동
+        // TODO:: SR-N 가공 로직을 UseCase로 올릴지 고민중. 뷰모델 사이즈 줄이고 재사용성 높일 수 있지만 파라미터 수가 부담됨.
+        val maskedImageState = uiState.value
+        if (maskedImageState !is InPaintingUiState.MaskedImage) return@launch
+        val initialByteArrayImage =
+            maskedImageState.initialBitmap.bitmapToByteArray() ?: return@launch
+        val maskedByteArrayImage =
+            maskedImageState.maskedBitmap.bitmapToByteArray() ?: return@launch
+
         val positivePrompts = selectedPositivePrompts
             .joinToString(StableDiffusionConstants.PROMPT_SEPARATOR) { it.prompt }
 
@@ -349,13 +372,7 @@ class InpaintingViewModel @Inject constructor(
 
         val sdModelId = selectedSDModel?.model?.id
 
-        val multiLingual = if (positivePrompts.isMultiLanguage() ||
-            negativePrompts.isMultiLanguage()
-        ) {
-            StableDiffusionConstants.ARG_YES
-        } else {
-            StableDiffusionConstants.ARG_NO
-        }
+        val schedulerId = selectedScheduler?.scheduler?.id
 
         if (positivePrompts.isEmpty()) {
             showToast(
@@ -374,6 +391,45 @@ class InpaintingViewModel @Inject constructor(
             )
             return@launch
         }
+
+        if (schedulerId == null) {
+            showToast(
+                message = stringResourceHelper.getString(
+                    resourceId = R.string.common_warning_select_scheduler
+                )
+            )
+            return@launch
+        }
+
+
+        val initImageUrl = async {
+            uploadImageUseCase(image = initialByteArrayImage)
+        }
+
+        val maskImageUrl = async {
+            uploadImageUseCase(image = maskedByteArrayImage)
+        }
+
+        Logger.presentation("width: ${maskedImageState.mpImage.width}, height: ${maskedImageState.mpImage.height}")
+        val historyId = insertInPaintingHistoryUseCase(
+            request = InPaintingRequest(
+                prompt = positivePrompts,
+                negativePrompt = negativePrompts,
+                initImage = initImageUrl.await(),
+                maskImage = maskImageUrl.await(),
+                guidanceScale = guidanceScale.value.toDouble(),
+                strength = 0.5, // TODO:: SR-N 0.0~1.0 사이의 UI 추가해야함
+                modelId = sdModelId,
+                width = maskedImageState.mpImage.width,
+                height = maskedImageState.mpImage.height,
+                scheduler = schedulerId,
+                steps = stepCount.value,
+            )
+        )
+
+        _navigationEvent.emit(
+            InPaintingResultDestination.getRouteWithArgs(requestId = historyId.toInt())
+        )
 
     }
 

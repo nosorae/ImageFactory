@@ -15,8 +15,8 @@ data class InPaintingRequest(
     val height: Int,
     val scheduler: String,
     val steps: Int,
-    val loraModel: String?,
-    val loraStrength: String?,
+    val loraModel: String? = null,
+    val loraStrength: String? = null,
 
     val samples: Int = StableDiffusionConstants.DEFAULT_SAMPLE_COUNT,
     val safetyChecker: String = StableDiffusionConstants.ARG_NO,

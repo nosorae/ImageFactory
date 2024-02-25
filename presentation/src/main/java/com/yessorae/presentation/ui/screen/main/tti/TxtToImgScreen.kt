@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -158,7 +159,7 @@ fun TxtToImgScreen(
                 }
             )
             PromptOptionLayout(
-                prompts = { positivePromptOptions },
+                prompts = remember { { positivePromptOptions } },
                 onClick = viewModel::clickPositivePrompt,
                 onLongClick = viewModel::longClickPrompt
             )
@@ -357,7 +358,7 @@ fun TxtToImgDialogScreen(
             FullModelOptionBottomSheet(
                 title = stringResource(R.string.common_section_title_model),
                 options = loRaModels,
-                onCancelDialog =onCancelDialog,
+                onCancelDialog = onCancelDialog,
                 onSelectModelOption = {
                     onSelectLoRaModel(it as LoRaModelOption)
                 }

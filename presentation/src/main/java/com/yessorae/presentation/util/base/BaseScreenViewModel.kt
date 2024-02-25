@@ -34,7 +34,7 @@ abstract class BaseScreenViewModel : ViewModel() {
         )
     }
 
-    val ioScope = viewModelScope + Dispatchers.IO
+    val ioScope = viewModelScope + Dispatchers.IO + ceh
 
     protected fun showLoading() {
         _loading.value = true

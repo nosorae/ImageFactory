@@ -1,14 +1,19 @@
 package com.yessorae.presentation.ui.components.layout.option
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,6 +25,7 @@ import com.yessorae.presentation.ui.screen.main.tti.model.PromptOption
 import com.yessorae.presentation.ui.screen.main.tti.model.asOption
 import com.yessorae.presentation.ui.theme.Dimen
 import com.yessorae.presentation.util.compose.ColumnPreview
+import com.yessorae.presentation.util.compose.Margin
 
 /**
  * TODO
@@ -39,7 +45,9 @@ fun PromptOptionLayout(
 
     LazyHorizontalStaggeredGrid(
         rows = StaggeredGridCells.Adaptive(24.dp),
-        modifier = modifier.height(120.dp).fillMaxWidth(),
+        modifier = modifier
+            .height(120.dp)
+            .fillMaxWidth(),
         state = state,
         contentPadding = Dimen.carousel_padding_values,
         verticalArrangement = Arrangement.spacedBy(Dimen.space_8),
