@@ -5,13 +5,13 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.yessorae.domain.model.parameter.Prompt
-import com.yessorae.domain.usecase.DeletePromptUseCase
-import com.yessorae.domain.usecase.GetAllSDModelsUseCase
-import com.yessorae.domain.usecase.GetFeaturedSDModelsUseCase
-import com.yessorae.domain.usecase.GetNegativePromptsFlowUseCase
-import com.yessorae.domain.usecase.GetPositivePromptsFlowUseCase
-import com.yessorae.domain.usecase.InsertPromptUseCase
-import com.yessorae.domain.usecase.InsertUsedSDModelUseCase
+import com.yessorae.domain.usecase.prompt.DeletePromptUseCase
+import com.yessorae.domain.usecase.model.GetAllSDModelsUseCase
+import com.yessorae.domain.usecase.model.GetFeaturedSDModelsUseCase
+import com.yessorae.domain.usecase.prompt.GetNegativePromptsFlowUseCase
+import com.yessorae.domain.usecase.prompt.GetPositivePromptsFlowUseCase
+import com.yessorae.domain.usecase.prompt.InsertPromptUseCase
+import com.yessorae.domain.usecase.model.InsertUsedSDModelUseCase
 import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.domain.util.isMultiLanguage
 import com.yessorae.presentation.R
@@ -20,7 +20,6 @@ import com.yessorae.presentation.ui.screen.main.inpainting.model.InPaintingUiSta
 import com.yessorae.presentation.ui.screen.main.inpainting.model.SegmentationLabel
 import com.yessorae.presentation.ui.screen.main.tti.model.PromptOption
 import com.yessorae.presentation.ui.screen.main.tti.model.SDModelOption
-import com.yessorae.presentation.ui.screen.main.tti.model.TxtToImgDialog
 import com.yessorae.presentation.ui.screen.main.tti.model.asDomainModel
 import com.yessorae.presentation.ui.screen.main.tti.model.asOption
 import com.yessorae.presentation.util.helper.ImageHelper
@@ -28,7 +27,6 @@ import com.yessorae.presentation.util.base.BaseScreenViewModel
 import com.yessorae.presentation.util.helper.ImageSegmentationHelper
 import com.yessorae.presentation.util.helper.StringResourceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -2,7 +2,7 @@ package com.yessorae.data.di
 
 import com.yessorae.data.remote.stablediffusion.api.ImageEditingApi
 import com.yessorae.data.remote.stablediffusion.api.ModelListApi
-import com.yessorae.data.remote.stablediffusion.api.TxtToImgApi
+import com.yessorae.data.remote.stablediffusion.api.StableDiffusionApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,8 +13,8 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 object ApiModule {
     @Provides
-    fun provideTxtToImgApi(retrofit: Retrofit): TxtToImgApi {
-        return retrofit.create(TxtToImgApi::class.java)
+    fun provideTxtToImgApi(retrofit: Retrofit): StableDiffusionApi {
+        return retrofit.create(StableDiffusionApi::class.java)
     }
 
     @Provides

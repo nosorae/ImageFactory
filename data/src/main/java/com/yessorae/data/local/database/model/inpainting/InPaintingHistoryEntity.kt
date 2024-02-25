@@ -14,7 +14,7 @@ data class InPaintingHistoryEntity(
     @ColumnInfo(name = DBConstants.COL_ID)
     var id: Int = 0,
     @ColumnInfo(DBConstants.COL_CREATED_AT)
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     @Embedded(prefix = DBConstants.PREFIX_REQUEST)
     val request: InPaintingRequestEntity,
     @Embedded(prefix = DBConstants.PREFIX_RESULT)

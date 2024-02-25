@@ -9,10 +9,10 @@ import com.yessorae.domain.model.tti.TxtToImgHistory
 import com.yessorae.domain.util.StableDiffusionConstants
 import com.yessorae.domain.model.tti.TxtToImgRequest
 import com.yessorae.domain.model.tti.TxtToImgResult
-import com.yessorae.domain.usecase.GetTxtToImgHistoryUseCase
-import com.yessorae.domain.usecase.InsertTxtToImgHistoryUseCase
-import com.yessorae.domain.usecase.RequestFetchProcessingTxtToImgUseCase
-import com.yessorae.domain.usecase.RequestTxtToImgUseCase
+import com.yessorae.domain.usecase.tti.GetTxtToImgHistoryUseCase
+import com.yessorae.domain.usecase.tti.InsertTxtToImgHistoryUseCase
+import com.yessorae.domain.usecase.tti.RequestFetchProcessingTxtToImgUseCase
+import com.yessorae.domain.usecase.tti.RequestTxtToImgUseCase
 import com.yessorae.domain.usecase.UpscaleImgUseCase
 import com.yessorae.domain.util.ProcessingErrorException
 import com.yessorae.presentation.R

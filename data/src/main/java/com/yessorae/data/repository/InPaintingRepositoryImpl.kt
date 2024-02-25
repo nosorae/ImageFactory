@@ -6,19 +6,17 @@ import com.yessorae.data.remote.stablediffusion.model.request.asDto
 import com.yessorae.data.remote.stablediffusion.model.response.asDomainModel
 import com.yessorae.data.util.handleResponse
 import com.yessorae.domain.model.FetchQueuedImgResponse
-import com.yessorae.domain.model.tti.TxtToImgRequest
-import com.yessorae.domain.model.tti.TxtToImgResult
-import com.yessorae.domain.repository.tti.TxtToImgRepository
+import com.yessorae.domain.model.inpainting.InPaintingRequest
+import com.yessorae.domain.model.inpainting.InPaintingResult
+import com.yessorae.domain.repository.inpainting.InPaintingRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TxtToImgRepositoryImpl @Inject constructor(
+class InPaintingRepositoryImpl @Inject constructor(
     private val stableDiffusionApi: StableDiffusionApi
-) : TxtToImgRepository {
+) : InPaintingRepository {
     override suspend fun generateImage(
-        request: TxtToImgRequest
-    ): TxtToImgResult {
+        request: InPaintingRequest
+    ): InPaintingResult {
         return stableDiffusionApi
             .generateImage(
                 request = request.asDto()

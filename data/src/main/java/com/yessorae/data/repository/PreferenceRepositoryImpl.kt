@@ -25,6 +25,10 @@ class PreferenceRepositoryImpl @Inject constructor(
         name = DatastoreConstants.KEY_LAST_TXT_TO_IMG_REQUEST_ID
     )
 
+    private val lastInPaintingRequestId = longPreferencesKey(
+        name = DatastoreConstants.KEY_LAST_IN_PAINTING_REQUEST_ID
+    )
+
     private val lastModelUpdateTime = stringPreferencesKey(
         name = DatastoreConstants.KEY_LAST_MODEL_UPDATE_TIME
     )
@@ -42,6 +46,18 @@ class PreferenceRepositoryImpl @Inject constructor(
     override suspend fun getLastTxtToImageRequestHistoryId(): Long? {
         return dataStorePreference.data.map { pref ->
             pref[lastTxtToImageRequestId]
+        }.firstOrNull()
+    }
+
+    override suspend fun setLastInPaintingImageRequestHistoryId(historyId: Long) {
+        dataStorePreference.edit { pref ->
+            pref[lastInPaintingRequestId] = historyId
+        }
+    }
+
+    override suspend fun getLastInPaintingRequestHistoryId(): Long? {
+        return dataStorePreference.data.map { pref ->
+            pref[lastInPaintingRequestId]
         }.firstOrNull()
     }
 

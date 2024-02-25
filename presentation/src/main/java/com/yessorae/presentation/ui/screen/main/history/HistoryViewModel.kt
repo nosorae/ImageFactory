@@ -3,8 +3,8 @@ package com.yessorae.presentation.ui.screen.main.history
 import androidx.lifecycle.viewModelScope
 import com.yessorae.common.Logger
 import com.yessorae.domain.model.tti.TxtToImgHistory
-import com.yessorae.domain.usecase.DeleteTxtToImgHistoryUseCase
-import com.yessorae.domain.usecase.GetTxtToImgHistoriesUseCase
+import com.yessorae.domain.usecase.tti.DeleteTxtToImgHistoryUseCase
+import com.yessorae.domain.usecase.tti.GetTxtToImgHistoriesUseCase
 import com.yessorae.presentation.navigation.destination.TxtToImgResultDestination
 import com.yessorae.presentation.ui.screen.main.history.model.HistoryDialogState
 import com.yessorae.presentation.ui.screen.main.history.model.TxtToImgHistoryScreenState
